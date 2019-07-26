@@ -1,4 +1,5 @@
 //Function Definations
+//Comments complete
 	
 	#include <iostream>
 	#include "particle.h"
@@ -8,18 +9,21 @@
 	#include "random.h"
 	using namespace std;
 
-	//Constructor - only energy
+	//Constructor - only energy 	//1
 	particle::particle()
 	{
 		c_energy=0.00;
 	}
 
 
-	//Destructor
+	//Destructor	 //2
 	particle::~particle() {}
 
-	//Overloading Initializer
+	//Overloading Initializer 	//3
 	particle::particle(double &position[], double &orientation[])
+		//Calls initializer and sets up the initial environment
+		//@param - &position[], &orientation[]
+
 	{
 		random::initializerP(); //Notdefined - class random
 		random::initializerO();	//Notdefined - class random
@@ -27,11 +31,11 @@
 		c_orientation[] = &orientation[];
 		//Returns 6 values of randomly generated coordinates
 		double render::createxyz(c_position); //Not defined
-			//Creates a trajectory file of the position
+			//Creates a trajectory file of the initial setup
 	}
 
-	//Translaton Updator - Mutator
-	double particle::translator(double &translate[], double &c_position[]);
+	//Translaton Updator - Mutator 		//4
+	void particle::translator(double &translate[], double &c_position[])
 		//double particle::translator -Updates the position of the particle
 		//double particle::translator -Contains rejection condition
 		//@param - &translate[], &c_position[]
@@ -48,8 +52,8 @@
 			}
 		}
 
-	//Orientation Updator - Mutator
-	void particle::orienter(double &orient[], double &c_orientation[]);
+	//Orientation Updator - Mutator 	//5
+	void particle::orienter(double &orient[], double &c_orientation[])
 	{
 		//Updates the angular orientation of the particle
 		//@param - &orient[], &c_orientation[] 
@@ -59,16 +63,16 @@
 		}
 	}
 
-	//Energy Updator - Mutator
-	void particle::energiser(double &c_energy, &c_position[])
+	//Energy Updator - Mutator 		//6
+	void particle::energiser(double &c_energy, double &c_position[])
 	{
 		//Updates the energy of the particle
 		//@param - &c_energy, &c_position
 		c_energy = energycalc::positionalenergy(c_position); //Not defined
 	}
 	
-	//getPosition - Accessor
-	double particle::getPosition(&c_position) const
+	//getPosition - Accessor 	//7
+	double particle::getPosition(&c_position[]) const
 	{
 		//Returns the position array of the particle
 		//@param - &c_position[]
@@ -77,8 +81,8 @@
 	
 	}
 
-	//printPosition - Accessor
-	void particle::getPosition(&c_position) const
+	//printPosition - Accessor 	//8
+	void particle::printPosition(&c_position[]) const
 	{
 		//Prints the position array of the particle And ends line
 		//@param - &c_position[]
@@ -89,8 +93,8 @@
 		cout<<endl;
 	}
 	
-	//getOrientation - Accessor
-	double particle::getOrientation(&c_orientation) const
+	//getOrientation - Accessor 	//9
+	double particle::getOrientation(&c_orientation[]) const
 	{
 		//Returns the orientation of the particle
 		//@param - c_orientation
@@ -99,8 +103,8 @@
 	
 	}
 
-	//printOrientation - Accessor
-	void particle::printOrientation(&c_orientation) const
+	//printOrientation - Accessor 	//10
+	void particle::printOrientation(&c_orientation[]) const
 	{
 		//Prints the orientation of the particle And ends line
 		//@param - &c_orientation
@@ -111,8 +115,8 @@
 		cout<<endl;
 	}
 
-	//getEnergy - Accessor
-	double particle::getEnergy(&c_energy) const
+	//getEnergy - Accessor 	//11
+	double particle::getEnergy(&c_energy[]) const
 	{
 		//Returns the Energy of the particle And ends line
 		//@return double c_energy
