@@ -2,6 +2,10 @@
 #include<ostream>
 #include<iostream>
 #include<iomanip>
+
+void createxyz(&double[]);
+void closerend();
+
 using namespace std;
 
 	ofstream orend;
@@ -15,8 +19,16 @@ using namespace std;
 	cerr<<"File initialrender.dat ::open failure!"<<endl;
 void createxyz(&c_position[])
 {
-	orend<<setprecision(7)<<c_position[0]<<"\t"<<c_position[1]<<"\t"<<c_position[2]<<endl;
+	if (orend.is_open)
+	{
+		orend << setprecision(7) << c_position[0] << "\t" << c_position[1] << "\t" << c_position[2] << endl;
+	}
+	else cerr<< "File initialrender.dat ::open failure!" << endl;
 }
 
+void closerend()
+{
+	orend.ofstream::close();
+}
 
-
+orend.ofstream::close();
