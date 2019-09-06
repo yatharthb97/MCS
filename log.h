@@ -1,39 +1,42 @@
 #include<iostream>
 #include<fstream>
+#include<iomanip>
 
-#include "./Global.h"
-
-
-ofstream eo;
-ofstream oo;
-eo.open(errorlog, ios::in);
-oo.open(outputlog, ios::in);
+#include "./Global.h"  //Global Variables File defining log filenames
 
 if(RUN == false){eo.close(); oo.close(); }
 
+else{
+	ofstream eo;
+	ofstream oo;
+	eo.open(errorlog, ios::in);
+	oo.open(outputlog, ios::in);
+}
+
+const std::string red("\033[0;31m");
+const std::string blue("\033[0;34m");
 
 class Log{
 
 public:
 
 	void logerror(const char* filename, string arguement){
-		std::cerr<<"[ERROR] "<<filename<<"  ==>"<<arguement<<std::endl;
+		std::cerr<<red<<"[ERROR]"<<"\t"<<filename<<"  ==>"<<arguement<<std::endl;
 
 		if(eo.is_open())
-			eo<<"[ERROR] "<<filename<<"  ==>"<<arguement<<std::endl;
+			eo<<"[ERROR]"<<"\t"<<filename<<"\t"<<arguement<<std::endl;
 		else{
-			std::cerr<<"[FATAL ERROR] log failure: logerror"<<std::endl;
-			exit(1);
+			std::cerr<<red<<"[FATAL ERROR] log failure: logerror"<<std::endl;
 		}
 
 
 	void logout(const char* filename, string arguement, bool out){
 
 		if(out == true){
-			std::cerr<<<<filename<<"  ==>"<<arguement<<std::endl;
+			std::cerr<<blue<<"[LOG]"<<"\t"<<filename<<"  ==>"<<arguement<<std::endl;
 
 			if(oo.is_open())
-			oo<<"[LOG] "<<filename<<"  ==>"<<arguement<<std::endl;
+			oo<<"[LOG]"<<"\t"<<filename<<"\t"<<arguement<<std::endl;
 			else{
 			Log::logerror(outputlog, "[FATAL ERROR] log failure: logerror");
 			}
@@ -42,12 +45,12 @@ public:
 		else{
 
 			if(oo.is_open())
-			oo<<"[LOG] "<<filename<<"  ==>"<<arguement<<std::endl;
+			oo<<"[LOG]"<<"\t"<<filename<<"\t"<<arguement<<std::endl;
 			else{
 			Log::logerror(outputlog, "[FATAL ERROR] log failure: logerror");
 			}
 
-		}23
+		}
 	}
 
 
