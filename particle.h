@@ -28,8 +28,8 @@ public:
 	{
 		//random::initializerP(); //Notdefined - class random
 		//random::initializerO();	//Notdefined - class random
-		position.x, position.y, position.z = random::initializerP();
-		orientation.a, orientation.b, orientation.c, orientation.d = random::initializerO();
+		initializerP(&position.x, &position.y, &position.z);
+		initializerO(&orientation.a, &orientation.b, &orientation.c, &orientation.d);
 		this->partid = partid;
 		//Returns 6 values of randomly generated coordinates
 		Render::createxyz(filename); //INsert filename config reference
@@ -83,8 +83,11 @@ public:
 	//@brief - Updates the position of the particle
 	//	   Contains rejection condition, periodic boundary conditions not implemented
 	//@param - double &translate[]
-	void translator(double &translate[])
+	void translator()
 	{
+		int translate[3];
+		Updator(translate);
+
 		if((position.x+=translate[0] && position.y+=translate[1] && < position.z+=translate[2]) < EDGE)
 		//if(for(i = 0 && 1 && 2):(c_position[0]+=c_translate[0]) < EDGE)
 		{
@@ -95,7 +98,7 @@ public:
 		}
 		else
 			{
-				Log::logerror([Move Rejected],"Tranlation move out of bounds!");
+				Log::logout([Move Rejected],"Tranlation move out of bounds!", false);
 				REJECT = REJECT+1; //REJECT defined globally
 			}
 	}
@@ -104,9 +107,10 @@ public:
 	//brief - Updates the angular orientation of the particle
 	// 	  Contains no rejection condition
 	//@param - double &orient[]
-	void orienter(double &orient[])
+	void orienter()
 	{
-		
+			int orient[4];
+			Updator(orient);
 			orientation.a+=orient[0];
 			orientation.b+=orient[1];
 			orientation.c+=orient[2];
