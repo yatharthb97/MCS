@@ -8,6 +8,13 @@ class V{
 //A class of variables that defines a three component Vector
 public:
 
+//Default Constructor
+V():x(0), y(0), z(0) {}
+
+//Overloading Constriuctor
+V(double x, double y, double z):x(x), y(y), z(z){}
+	
+privte:
 	double x; //x-component
 	double y; //y-component
 	double z; //z-component
@@ -18,8 +25,12 @@ public:
 class Q{
 //Class "Quaternion"
 //A class of variables that defines a four component Quaternion
-
 public:
+	
+
+	
+	
+private:
 
 	double a; //real component of quart
 	double b; //imaginary component 1
