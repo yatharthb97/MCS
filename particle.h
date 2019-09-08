@@ -6,16 +6,15 @@
 
 #include "./Vector.h"
 
+
+extern int checkBoxSize();
+
 class particle
 {
 public:
 /////Constructor - only for energy
 	//Initializes energy
-	particle()
-	{
-		energy=0.000000; //Float precision - 6
-		c_energy=0.000000; //Float precision - 6
-	}
+	particle(): energy(0.0000), c_energy(0.0000) {} //Float precision 4
 	
 
 /////Destructor
@@ -24,16 +23,14 @@ public:
 /////Overloading Constructor
 	//@brief - Calls initializer and sets up the initial environment
 	//@param - partid ==> particle ID	
-	particle(int partid)
+	particle(int partid): energy(0.0000), c_energy(0.0000), partid(partid)
 	{
-		//random::initializerP(); //Notdefined - class random
-		//random::initializerO();	//Notdefined - class random
-		initializerP(&position.x, &position.y, &position.z);
+		
+		extern int checkBoxSize();
+		int EDGE = checkBoxSize();
+		initializerP(&position.x, &position.y, &position.z); //No overlap check, defined in initial.cpp
 		initializerO(&orientation.a, &orientation.b, &orientation.c, &orientation.d);
-		this->partid = partid;
-		//Returns 6 values of randomly generated coordinates
-		Render::createxyz(filename); //INsert filename config reference
-			//Creates a trajectory file of the initial setup*/
+		
 	}
 
 //////Accessor Functions
@@ -86,20 +83,23 @@ public:
 	void translator()
 	{
 		int translate[3];
-		Updator(translate);
+		Updator3(translate);
 
 		if((position.x+=translate[0] && position.y+=translate[1] && < position.z+=translate[2]) < EDGE)
 		//if(for(i = 0 && 1 && 2):(c_position[0]+=c_translate[0]) < EDGE)
 		{
-			
+				if()
 				position.x+=translate[0];
 				position.y+=translate[1];
 				position.z+=translate[2];
+				extern Step(int); //Defined in Global.cpp
+				Step(+1);
 		}
 		else
 			{
-				Log::logout([Move Rejected],"Tranlation move out of bounds!", false);
-				REJECT = REJECT+1; //REJECT defined globally
+				Log::logoutput([Move Rejected],"Tranlation move out of bounds!", false); //Check if [Move Rejected] satisfies const char*
+				extern Reject(int); //Defined in Global.cpp
+				Reject(+1);
 			}
 	}
 
@@ -110,7 +110,7 @@ public:
 	void orienter()
 	{
 			int orient[4];
-			Updator(orient);
+			Updator4(orient);
 			orientation.a+=orient[0];
 			orientation.b+=orient[1];
 			orientation.c+=orient[2];
@@ -143,6 +143,7 @@ private:
 	double energy;
 	double c_energy
 	int partid;
+	const int EDGE;
 
 
 
