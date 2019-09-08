@@ -20,3 +20,9 @@ volatile const char* fileConfig(int i)
 		case 2: return("output.txt"); break; //For output log
 	}
 }
+
+
+volatile double checkStepSize()
+{
+	return(1); //STEP SIZE
+}
