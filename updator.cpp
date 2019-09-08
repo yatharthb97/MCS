@@ -1,20 +1,15 @@
-#pragma once
 
 #include<random>
 #include<iostream>
-#include "urandom.h"
-#include <cstdlib>
-#include <ctime>
-
-#define STEPSIZE 1
-
+#include "urandom.h" //seedby_urandom
+#include <cstdlib> //using rand
+#include <ctime> //using time
 using namespace std;
 
 int Updator(int[3]);
 int Updator(int[4]);
-int seedby_urandom();
-
-
+extern int seedby_urandom();
+extern volatile double checkStepSize();
 
 int Updator(int array[3]){
 	ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
@@ -59,9 +54,9 @@ int Updator(int array[3]){
 		default: {z = 0; std::cout<<"error"; break;}
 	}
 	
-	array[0] = x*STEPSIZE;
-	array[1] = y*STEPSIZE;
-	array[2] = z*STEPSIZE;
+	array[0] = x*checkStepSize();
+	array[1] = y*checkStepSize();
+	array[2] = z*checkStepSize();
 }
 
 //Overloaded
@@ -121,8 +116,8 @@ int Updator(int array[4]){
 		default: {w = 0; std::cout<<"error"; break;}
 	}
 	
-	array[0] = x*STEPSIZE;
-	array[1] = y*STEPSIZE;
-	array[2] = z*STEPSIZE;
-	array[3] = w*STEPSIZE;
+	array[0] = x*checkStepSize();
+	array[1] = y*checkStepSize();
+	array[2] = z*checkStepSize();
+	array[3] = w*checkStepSize();
 }
