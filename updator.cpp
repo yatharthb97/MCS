@@ -1,21 +1,33 @@
+//Implementation of Updator mechanism - Random Walker
 
+//Dependencies ==> urandom.h for seedby_urandom()
+//			   ==> log.h for logerror()
+//			   ==> global.cpp for checkStepSize()
+
+//Status - Complete and Tested
+//@Author - yatharthb97
+
+//--------------------------
+
+//Preprocessors
 #include<random>
 #include<iostream>
 #include "urandom.h" //seedby_urandom
 #include <cstdlib> //using rand
 #include <ctime> //using time
+#include<log.h> //Log errors
 using namespace std;
 
-int Updator(int[3]);
-int Updator(int[4]);
-extern int seedby_urandom();
-extern volatile double checkStepSize();
+void Updator3(int[3]);
+void Updator4(int[4]);
+extern volatile int checkStepSize();
 
-int Updator(int array[3]){
+void Updator3(int array[3]){
 	ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
 	uniform_real_distribution<double> drandom;
 
-	int sx = seedby_urandom(); //Seeding
+	Urandom urandom;//Object for Urandom class
+	int sx = urandom.seedby_urandom(); //Seeding
 	rlx.seed(sx);
 	std::srand(std::time(nullptr)); // use current time as seed for random generator
 
@@ -26,7 +38,9 @@ int Updator(int array[3]){
 		case 0: {x = 0; break;}
 		case 1: {x = 1; break;}
 		case 2: {x = -1; break;}
-		default: {x = 0; std::cout<<"error"; break;}
+		default: {x = 0; Log updator;
+						updator.logerror("updator.cpp",  "Random number generator overflow. 'default' invoked.");
+						 break;}
 	}
 	int sy = sx+std::rand();
 	rlx.seed(sy);
@@ -38,7 +52,9 @@ int Updator(int array[3]){
 		case 0: {y = 0; break;}
 		case 1: {y = 1; break;}
 		case 2: {y = -1; break;}
-		default: {y = 0; std::cout<<"error"; break;}
+		default: {x = 0; Log updator;
+						updator.logerror("updator.cpp",  "Random number generator overflow. 'default' invoked.");
+						 break;}
 	}
 
 	int sz = sy+std::rand();
@@ -51,7 +67,9 @@ int Updator(int array[3]){
 		case 0: {z = 0; break;}
 		case 1: {z = 1; break;}
 		case 2: {z = -1; break;}
-		default: {z = 0; std::cout<<"error"; break;}
+		default: {x = 0; Log updator;
+						updator.logerror("updator.cpp",  "Random number generator overflow. 'default' invoked.");
+						 break;}
 	}
 	
 	array[0] = x*checkStepSize();
@@ -60,11 +78,12 @@ int Updator(int array[3]){
 }
 
 //Overloaded
-int Updator(int array[4]){
+void Updator4(int array[4]){
 	ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
 	uniform_real_distribution<double> drandom;
 
-	int sx = seedby_urandom(); //Seeding
+	Urandom urandom; //Object for Urandom class
+	int sx = urandom.seedby_urandom(); //Seeding
 	rlx.seed(sx);
 	std::srand(std::time(nullptr)); // use current time as seed for random generator
 
@@ -75,7 +94,9 @@ int Updator(int array[4]){
 		case 0: {x = 0; break;}
 		case 1: {x = 1; break;}
 		case 2: {x = -1; break;}
-		default: {x = 0; std::cout<<"error"; break;}
+		default: {x = 0; Log updator3;
+						updator.logerror("updator.cpp",  "Random number generator overflow. 'default' invoked.");
+						 break;}
 	}
 	int sy = sx+std::rand();
 	rlx.seed(sy);
@@ -87,7 +108,9 @@ int Updator(int array[4]){
 		case 0: {y = 0; break;}
 		case 1: {y = 1; break;}
 		case 2: {y = -1; break;}
-		default: {y = 0; std::cout<<"error"; break;}
+		default: {x = 0; Log updator3;
+						updator.logerror("updator.cpp",  "Random number generator overflow. 'default' invoked.");
+						 break;}
 	}
 
 	int sz = sy+std::rand();
@@ -100,7 +123,9 @@ int Updator(int array[4]){
 		case 0: {z = 0; break;}
 		case 1: {z = 1; break;}
 		case 2: {z = -1; break;}
-		default: {z = 0; std::cout<<"error"; break;}
+		default: {x = 0; Log updator3;
+						updator.logerror("updator.cpp",  "Random number generator overflow. 'default' invoked.");
+						 break;}
 	}
 	
 	int sw = sz+std::rand();
@@ -113,7 +138,9 @@ int Updator(int array[4]){
 		case 0: {w = 0; break;}
 		case 1: {w = 1; break;}
 		case 2: {w = -1; break;}
-		default: {w = 0; std::cout<<"error"; break;}
+		default: {x = 0; Log updator3;
+						updator.logerror("updator.cpp",  "Random number generator overflow. 'default' invoked.");
+						 break;}
 	}
 	
 	array[0] = x*checkStepSize();
