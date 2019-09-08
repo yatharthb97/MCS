@@ -4,7 +4,8 @@ define bool RUN = true;*/
 
 
 //fileconfig
-
+#define REJECT
+REJECT = 0;
 //Switch to indicate if the program is running
 bool volatile checkRUN()
 {
@@ -22,7 +23,18 @@ volatile const char* fileConfig(int i)
 }
 
 
-volatile double checkStepSize()
+volatile int checkStepSize()
 {
 	return(1); //STEP SIZE
 }
+
+volatile double checkBoxSize()
+{
+	return(); //Size of the box
+}
+
+volatile void Reject(int a)
+{
+	if(a==1) {extern REJECT+=1;}
+}
+
