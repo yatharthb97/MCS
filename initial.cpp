@@ -13,7 +13,7 @@
 using namespace std;
 
 
-extern volatile checkBoxSize();
+extern volatile Box::checkBoxSize();
 void initializerP(&double, &double, &double);
 void initializerO(&double, &double, &double, &double);
 
@@ -21,7 +21,7 @@ void initializerO(&double, &double, &double, &double);
 
 void initializerP(&double x, &double y, &double z)
 {
-	double BoxSize = checkBoxSize();
+	double BoxSize = Box::checkBoxSize();
 	ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
 	uniform_real_distribution<double> drandom(0.0, BoxSize);
 
@@ -38,6 +38,14 @@ void initializerP(&double x, &double y, &double z)
 	int sz = sx+std::rand();
 	rlx.seed(sz);
 	z = drandom(rlx);
+
+	//Periodic Boundary condition
+	if (x > BoxSize) { x = (x - BoxSize) }
+	if (y > BoxSize) { y = (y - BoxSize) }
+	if (z > BoxSize) { x = (z - BoxSize) }
+
+
+
 
 }
 

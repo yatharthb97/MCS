@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include<cmath>
+
 class V{
 //Class "Vector"
 //A class of variables that defines a three component Vector
@@ -13,6 +15,12 @@ V():x(0), y(0), z(0) {}
 
 //Overloading Constriuctor
 V(double x, double y, double z):x(x), y(y), z(z){}
+
+
+
+inline double size() const {
+        return sqrt( pow(this->x,2) + pow(this->y,2) + pow(this->z,2));
+    }
 	
 privte:
 	double x; //x-component

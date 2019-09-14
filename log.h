@@ -35,11 +35,11 @@ public:
 	Log()
 	{
 		//Check if the program is running
-		extern volatile bool checkRUN();
+		inline extern volatile bool checkRUN();
 		RUN = checkRUN();
 
 		//File assignments
-		extern const char* fileConfig(int);
+		inline extern const char* fileConfig(int);
 		errorlog = fileConfig(1);
 		outputlog = fileConfig(2);
 		

@@ -20,7 +20,7 @@ using namespace std;
 
 void Updator3(int[3]);
 void Updator4(int[4]);
-extern volatile int checkStepSize();
+inline extern volatile int checkStepSize();
 
 void Updator3(int array[3]){
 	ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator

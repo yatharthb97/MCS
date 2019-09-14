@@ -7,36 +7,42 @@
 #include "./Vector.h"
 
 
-extern int checkBoxSize();
+inline extern int checkBoxSize();
 
-class particle
+class Particle
 {
 public:
-/////Constructor - only for energy
-	//Initializes energy
-	particle(): energy(0.0000), c_energy(0.0000) {} //Float precision 4
-	
 
-/////Destructor
-	~particle(){}
-
-/////Overloading Constructor
+//Overloading Constructor
 	//@brief - Calls initializer and sets up the initial environment
 	//@param - partid ==> particle ID	
-	particle(int partid): energy(0.0000), c_energy(0.0000), partid(partid)
+	Particle(int partid): energy(0.0000), c_energy(0.0000), partid(partid)
 	{
 		
-		extern int checkBoxSize();
-		int EDGE = checkBoxSize();
+		volatile double Box::checkBoxSize();
+		double EDGE = Box::checkBoxSize(); //set the value for EDGE
+		V position; //Create Position Vector
+		Q orientaion; //Create orientation Quaternion
 		initializerP(&position.x, &position.y, &position.z); //No overlap check, defined in initial.cpp
-		initializerO(&orientation.a, &orientation.b, &orientation.c, &orientation.d);
+		initializerO(&orientation.a, &orientation.b, &orientation.c, &orientation.d); //Defined in initial.cpp
 		
 	}
+
+
+/*/////Constructor - only for energy
+	//Initializes energy
+	Particle(): energy(0.0000), c_energy(0.0000) {} //Float precision 4*/
+	
+
+//Destructor
+	~Particle(){}
+
+
 
 //////Accessor Functions
 
 	//getPosition - Accessor
-	//@brief - Returns the position array of the particle
+	//@brief - Returns the position vector of the particle
 	//@return - position[]
 	double getPosition() const
 	{
@@ -80,27 +86,18 @@ public:
 	//@brief - Updates the position of the particle
 	//	   Contains rejection condition, periodic boundary conditions not implemented
 	//@param - double &translate[]
-	void translator()
+	void translator(V translate)
 	{
-		int translate[3];
-		Updator3(translate);
 
-		if((position.x+=translate[0] && position.y+=translate[1] && < position.z+=translate[2]) < EDGE)
-		//if(for(i = 0 && 1 && 2):(c_position[0]+=c_translate[0]) < EDGE)
-		{
-				if()
-				position.x+=translate[0];
-				position.y+=translate[1];
-				position.z+=translate[2];
-				extern Step(int); //Defined in Global.cpp
-				Step(+1);
-		}
-		else
-			{
-				Log::logoutput([Move Rejected],"Tranlation move out of bounds!", false); //Check if [Move Rejected] satisfies const char*
-				extern Reject(int); //Defined in Global.cpp
-				Reject(+1);
-			}
+		position.x+=translate.x;
+		position.y+=translate.y;
+		position.z+=translate.z;
+		
+		//Periodic Boundary condition
+		if (position.x > EDGE) { position.x = (position,x - EDGE) }
+		if (position.y > EDGE) { position.y = (position.y - EDGE) }
+		if (position.z > EDGE) { position.z = (position.z - EDGE) }
+	
 	}
 
 	//Orientation Updator - Mutator
@@ -138,16 +135,16 @@ public:
 	
 private:
 /////Member variables
-	V.position;
-	Q.orientation;
+	
 	double energy;
 	double c_energy
 	int partid;
-	const int EDGE;
+	bool ghost;
+	static int EDGE;
 
 
 
 /////Friend declarations
 Friend class Render;
 
-};
+}; //End of class Particle
