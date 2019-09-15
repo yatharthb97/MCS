@@ -93,10 +93,13 @@ public:
 		position.y+=translate.y;
 		position.z+=translate.z;
 		
-		//Periodic Boundary condition
+		//Simple Periodic Boundary Conditions
 		if (position.x > EDGE) { position.x = (position,x - EDGE) }
 		if (position.y > EDGE) { position.y = (position.y - EDGE) }
 		if (position.z > EDGE) { position.z = (position.z - EDGE) }
+		if (position.x < 0) { position.x = (-1*position,x) }
+		if (position.y < 0) { position.y = (-1*position.y) }
+		if (position.z < 0) { position.z = (-1*position.z) }
 	
 	}
 
@@ -104,14 +107,13 @@ public:
 	//brief - Updates the angular orientation of the particle
 	// 	  Contains no rejection condition
 	//@param - double &orient[]
-	void orienter()
+	void orienter(Q orient)
 	{
-			int orient[4];
-			Updator4(orient);
-			orientation.a+=orient[0];
-			orientation.b+=orient[1];
-			orientation.c+=orient[2];
-			orientation.d+=orient[3];
+
+			orientation.a+=orient.a;
+			orientation.b+=orient.b;
+			orientation.c+=orient.c;
+			orientation.d+=orient.d;
 	}
 
 	//Energy Updator - Mutator
