@@ -159,43 +159,16 @@ void RemoveAllGhosts()
 {}
 
 
+
 //13
-double LjLoop() //Skeleton Function
-{
-	double Eta, sigma ; //Make static
-	double A = 4*Eta*pow(sigma,12); //make static
-	double B = 4*Eta*pow(sigma,6); //make static
-	double rc = 1000000; //Cutoff distance
-	for(unsigned int i = 1; i<=count; i++)
-	{
-		for(unsigned int j = 1; j<=count; j++)
-		{
-			if(i!=j) //If i = j, the contribution is zero. 
-			{
-				r = b.partlist(i).size() - b.partlist(j).size();
-				if(r>rc) //Accept only if the distance
-				{
-					r6 = pow(r,6);
-					r12 = r6*r6;
-					E+= (A/r12) - (B/r6);
-				}
-			}	
-		}
-	}
-
-	return E;
-}
-
-//14
 double trialPos()
 {
 	int pid = Random(1, count); //Random not defined
 	V temp;
-	//temp = partlist(pid).getPosition(); //temp.y = partlist(pid).position.y; temp.z = partlist(pid).position.z;
-	V temp;
 	temp = Updator3();
 	partlist(pid).translate(temp); //Edit Updator3 function
-	double E_new = LjLoop(); //Run LJ Loop
+	extern double LjLoop(std::vector<Particle> &vect);
+	double E_new = LjLoop(this->partlist); //Run LJ Loop
 
 	//Energy Considerations
 	if(E_new <= this->energy)
@@ -217,7 +190,7 @@ double trialPos()
 		{
 			partlist(pid).translate(-1*temp); //Complete vector class
 			Log trial;
-			trial.logoutput("particle.h","[Move Rejected] Tranlation move out of bounds!", false);
+			trial.logoutput("particle.h","Move Rejected!", false);
 			extern inline Reject(int); //Defined in Global.cpp
 			Reject(1);
 		}
