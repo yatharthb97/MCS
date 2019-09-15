@@ -39,11 +39,11 @@ void initializerP(&double x, &double y, &double z)
 	rlx.seed(sz);
 	z = drandom(rlx);
 
-	//Periodic Boundary condition
+	/*//Periodic Boundary condition
 	if (x > BoxSize) { x = (x - BoxSize) }
 	if (y > BoxSize) { y = (y - BoxSize) }
 	if (z > BoxSize) { x = (z - BoxSize) }
-
+*/
 
 
 
