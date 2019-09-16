@@ -13,8 +13,9 @@ class Particle
 {
 public:
 
-//Overloading Constructor
-	//@brief - Calls initializer and sets up the initial environment
+//1
+//Constructor
+	//@brief - Calls initializer and sets up the particle
 	//@param - partid ==> particle ID	
 	Particle(int partid): energy(0.0000), c_energy(0.0000), partid(partid)
 	{
@@ -27,32 +28,28 @@ public:
 		initializerO(&orientation.a, &orientation.b, &orientation.c, &orientation.d); //Defined in initial.cpp
 		
 	}
-
-
-/*/////Constructor - only for energy
-	//Initializes energy
-	Particle(): energy(0.0000), c_energy(0.0000) {} //Float precision 4*/
 	
-
+//2	
 //Destructor
 	~Particle(){}
 
 
-
 //////Accessor Functions
 
+	//3
 	//getPosition - Accessor
 	//@brief - Returns the position vector of the particle
-	//@return - position[]
+	//@return - V position
 	double getPosition() const
 	{
 		
 		return(this->position);
 	}
 
+	//4
 	//getOrientation - Accessor
 	//@brief - Returns the orientation of the particle
-	//@return - orientation[]
+	//@return - Q orientation
 	double getOrientation() const
 	{
 		
@@ -60,8 +57,9 @@ public:
 	
 	}
 
+	//5
 	//getEnergy - Accessor
-	//@brief - Returns the Energy of the particle And ends line
+	//@brief - Returns the Energy of the particle
 	//@return - double energy
 	double getEnergy() const
 	{
@@ -69,9 +67,9 @@ public:
 		return(this -> energy);
 	}
 
-
+	//6
 	//getc_Energy - Accessor
-	//@brief - Returns the Chemical Energy of the particle And ends line
+	//@brief - Returns the Chemical Energy of the particle
 	//@return - double c_energy
 	double getc_Energy() const
 	{
@@ -82,10 +80,11 @@ public:
 
 /////Mutator Functions
 
+	//7
 	//Translaton Updator - Mutator
 	//@brief - Updates the position of the particle
-	//	   Contains rejection condition, periodic boundary conditions not implemented
-	//@param - double &translate[]
+	//	 	   Contains periodic boundary condition
+	//@param - V translate
 	void translator(V translate)
 	{
 
@@ -94,19 +93,20 @@ public:
 		position.z+=translate.z;
 		
 		//Simple Periodic Boundary Conditions
-		if (position.x > EDGE) { position.x = (position,x - EDGE) }
-		if (position.y > EDGE) { position.y = (position.y - EDGE) }
-		if (position.z > EDGE) { position.z = (position.z - EDGE) }
-		if (position.x < 0) { position.x = (-1*position,x) }
-		if (position.y < 0) { position.y = (-1*position.y) }
-		if (position.z < 0) { position.z = (-1*position.z) }
+		if (x > BoxSize) { x = (x - BoxSize) }
+		if (y > BoxSize) { y = (y - BoxSize) }
+		if (z > BoxSize) { x = (z - BoxSize) }
+		if (x < 0) { x = (x + BoxSize) }
+		if (y < 0) { y = (y + BoxSize) }
+		if (z < 0) { x = (z + BoxSize) }
 	
 	}
 
+	//8
 	//Orientation Updator - Mutator
 	//brief - Updates the angular orientation of the particle
-	// 	  Contains no rejection condition
-	//@param - double &orient[]
+	//  	  Contains no rejection condition
+	//@param - Q orient
 	void orienter(Q orient)
 	{
 
@@ -116,19 +116,21 @@ public:
 			orientation.d+=orient.d;
 	}
 
+	//9
 	//Energy Updator - Mutator
 	//@brief - Updates the energy of the particle
-	//	   Contains no rejecion condition
+	//		   Contains no rejecion condition
 	//@param - double energise
 	void energiser(double &energise)
 	{
 		energy = energise;
 	}
 
+	//10
 	//Chemical Energy Updator - Mutator
 	//@brief - Updates the cheical energy of the particle
-	//	   Contains no rejecion condition
-	//@param - double energise
+	//		   Contains no rejecion condition
+	//@param - double c_energise
 	void energiser(double &c_energise)
 	{
 		energy+=energise;

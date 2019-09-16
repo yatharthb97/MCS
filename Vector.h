@@ -4,6 +4,7 @@
 #pragma once
 
 #include<cmath>
+#include <sstream>
 
 class V{
 //Class "Vector"
@@ -21,8 +22,15 @@ V(double x, double y, double z):x(x), y(y), z(z){}
 inline double size() const {
         return sqrt( pow(this->x,2) + pow(this->y,2) + pow(this->z,2));
     }
+
+
+   std::string info() const {
+        std::ostringstream o;
+        o << "(" <<x << ", " << y << ", " << z <<")";
+        return o.str();
+    }
 	
-privte:
+private:
 	double x; //x-component
 	double y; //y-component
 	double z; //z-component
