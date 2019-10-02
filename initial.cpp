@@ -21,6 +21,8 @@ void initializerO(&double, &double, &double, &double);
 
 void initializerP(&double x, &double y, &double z)
 {
+	
+	double BoxSize = Box::checkBoxSize(); 
 	//**double BoxSize = Box::checkBoxSize();
 	ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
 	uniform_real_distribution<double> drandom(0.0, BoxSize);
@@ -48,6 +50,10 @@ void initializerP(&double x, &double y, &double z)
 	if (z < 0) { x = (z + BoxSize) }
 
 
+	double tempenergy =  LjLoop(&partlist);
+	double tempoldenegy = Box::getEnergy();
+	double ratio = tempoldenegy/tempenergy;
+	if(ratio<0.001) {initializerP(&double x, &double y, double z)} //Recursive step
 
 
 }

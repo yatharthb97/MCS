@@ -105,7 +105,7 @@ std::vector<int> const getGhostList()
 	return ghostlist;
 }
 
-//7
+//8
 //@brief - prints the ghostlist vector - tab seperated
 void const printGhostList()
 {
@@ -115,7 +115,11 @@ void const printGhostList()
 	}
 	std::cout<<std::endl;
 }
-
+//9
+double const getEnergy()
+{
+	return this->energy;
+}
 
 
 ///Mutators
@@ -165,7 +169,8 @@ double trialPos()
 {
 	int pid = Random(1, count); //Random not defined
 	V temp;
-	temp = Updator3();
+	temp.null(); //define in vector V class
+	extern Updator3(&temp);
 	partlist(pid).translate(temp); //Edit Updator3 function
 	extern double LjLoop(std::vector<Particle> &vect);
 	double E_new = LjLoop(this->partlist); //Run LJ Loop

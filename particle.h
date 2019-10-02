@@ -1,9 +1,16 @@
-//Header file for Particle class
+//Header file - For class BoxParticle
+//Creates a particle
 
-//Periodic boundary conditions not implemented
+//Dependencies ==> Box.h for checkBoxSize() 
+//				   initial.cpp for initializerP and initializero
+//					Vector.h for class V and class Q
 
+//Status - Incomplete, Not tested
+//Author - yatharthb97
+
+//Preprocessors
 #pragma once
-
+#include "box.h"
 #include "./Vector.h"
 
 
@@ -24,7 +31,7 @@ public:
 		double EDGE = Box::checkBoxSize(); //set the value for EDGE
 		V position; //Create Position Vector
 		Q orientaion; //Create orientation Quaternion
-		initializerP(&position.x, &position.y, &position.z); //No overlap check, defined in initial.cpp
+		initializerP(&position.x, &position.y, &position.z); //Defined in initial.cpp
 		initializerO(&orientation.a, &orientation.b, &orientation.c, &orientation.d); //Defined in initial.cpp
 		
 	}
