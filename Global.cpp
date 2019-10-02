@@ -28,7 +28,7 @@ inline volatile const char* fileConfig(int i)
 }
 
 //3
-inline volatile int checkStepSize()
+inline volatile double checkStepSize()
 {
 	return(1); //STEP SIZE
 }
@@ -45,3 +45,7 @@ inline accept void Accept(int a)
 	if(a==1){extern ACCEPT+=1; }
 }
 
+inline volatile int checkLJARatio
+{
+	return 20; //Acceptance of higher energy configuration
+}

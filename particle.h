@@ -17,7 +17,7 @@ public:
 //Constructor
 	//@brief - Calls initializer and sets up the particle
 	//@param - partid ==> particle ID	
-	Particle(int partid): energy(0.0000), c_energy(0.0000), partid(partid)
+	Particle(int partid): energy(0.0000), c_energy(0.0000), partid(partid), ghost(false)
 	{
 		
 		volatile double Box::checkBoxSize();
@@ -40,7 +40,7 @@ public:
 	//getPosition - Accessor
 	//@brief - Returns the position vector of the particle
 	//@return - V position
-	double getPosition() const
+	V getPosition() const
 	{
 		
 		return(this->position);
@@ -50,7 +50,7 @@ public:
 	//getOrientation - Accessor
 	//@brief - Returns the orientation of the particle
 	//@return - Q orientation
-	double getOrientation() const
+	Q getOrientation() const
 	{
 		
 		return(this->orientation);
@@ -77,10 +77,19 @@ public:
 		return(this -> c_energy);
 	}
 
+	//7
+	//bool is ghost - Mutator
+	//@brief - Checks if the particle is a ghost particle
+	//@return - bool true/false
+	bool isGhost()
+	{
+		if(ghost) return true;
+		else return false;
+	}
 
 /////Mutator Functions
 
-	//7
+	//8
 	//Translaton Updator - Mutator
 	//@brief - Updates the position of the particle
 	//	 	   Contains periodic boundary condition
@@ -102,7 +111,7 @@ public:
 	
 	}
 
-	//8
+	//9
 	//Orientation Updator - Mutator
 	//brief - Updates the angular orientation of the particle
 	//  	  Contains no rejection condition
@@ -116,7 +125,7 @@ public:
 			orientation.d+=orient.d;
 	}
 
-	//9
+	//10
 	//Energy Updator - Mutator
 	//@brief - Updates the energy of the particle
 	//		   Contains no rejecion condition
@@ -126,7 +135,7 @@ public:
 		energy = energise;
 	}
 
-	//10
+	//11
 	//Chemical Energy Updator - Mutator
 	//@brief - Updates the cheical energy of the particle
 	//		   Contains no rejecion condition
@@ -136,10 +145,17 @@ public:
 		energy+=energise;
 	}
 
-	
-private:
+	//12
+	//void MakeGhost - Mutator
+	//@bref - CChange the Ghost status of the particle
+	//@param - bool
+	void MakeGhost(bool b)
+	{
+		this->ghost = b;
+	}
+
 /////Member variables
-	
+	private:
 	double energy;
 	double c_energy
 	int partid;

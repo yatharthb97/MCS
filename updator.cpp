@@ -1,10 +1,10 @@
-//Implementation of Updator mechanism - Random Walker
+//Implementation of Updator mechanism - Random Walker Static Step Size
 
 //Dependencies ==> urandom.h for seedby_urandom()
 //			   ==> log.h for logerror()
 //			   ==> global.cpp for checkStepSize()
 
-//Status - Complete and Tested
+//Status - Not tested
 //@Author - yatharthb97
 
 //--------------------------
@@ -16,13 +16,14 @@
 #include <cstdlib> //using rand
 #include <ctime> //using time
 #include<log.h> //Log errors
+#include "Vector.h"
 using namespace std;
 
-void Updator3(int[3]);
-void Updator4(int[4]);
+void Updator3(V &temp);
+void Updator4(Q &temp);
 inline extern volatile int checkStepSize();
 
-void Updator3(int array[3]){
+void Updator3(V &temp){
 	ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
 	uniform_real_distribution<double> drandom;
 
@@ -72,13 +73,15 @@ void Updator3(int array[3]){
 						 break;}
 	}
 	
-	array[0] = x*checkStepSize();
-	array[1] = y*checkStepSize();
-	array[2] = z*checkStepSize();
+	double check = checkStepSize();
+	V temp;
+	temp.x = x*check;
+	temp.y = y*check;
+	temp.z = z*check;
 }
 
 //Overloaded
-void Updator4(int array[4]){
+void Updator4(Q &temp){
 	ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
 	uniform_real_distribution<double> drandom;
 
@@ -143,8 +146,10 @@ void Updator4(int array[4]){
 						 break;}
 	}
 	
-	array[0] = x*checkStepSize();
-	array[1] = y*checkStepSize();
-	array[2] = z*checkStepSize();
-	array[3] = w*checkStepSize();
+	double check = checkStepSize();
+	Q temp;
+	temp.a = x*check;
+	temp.b = y*check;
+	temp.c = z*check;
+	temp.d = w*check;
 }

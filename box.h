@@ -131,7 +131,7 @@ volatile void setBoxSize(double size)
 //Remove Particle
 void RemoveParticle(int partid)
 {
-	partlist(partid).ghost = true;
+	partlist(partid).MakeGhost(true);
 	ghost+=1;
 	ghostlist.push_back(partid); //Maintain a ghost list
 }
@@ -140,7 +140,7 @@ void RemoveParticle(int partid)
 //Bring back a removed particle
 void CPRParticle(int partid, int vectorpos)
 {
-	partlist(partid).ghost = false;
+	partlist(partid).MakeGhost(false);
 	ghost-=ghost;
 	ghostlist.erase(ghostlist.begin() + vectorpos);
 }
@@ -178,8 +178,10 @@ double trialPos()
 		}
 	else
 	{
+		extern inline volatile checkLJARatio();
+		int LJRR = checkLJARatio();
 		//Increased energy acceptance move
-		if(Random(0,100) < 20) //Accept with 20 % probablity
+		if(Random(0,100) < LJRR)
 		{
 			extern inline Accept(1);
 			Accept(1);
