@@ -4,10 +4,10 @@ define bool RUN = true;*/
 
 
 //fileconfig
-#define REJECT
-#define ACCEPT
-REJECT = 0;
-ACCEPT = 0;
+/*#define REJECT
+#define ACCEPT*/
+int REJECT = 0;
+int ACCEPT = 0;
 
 //1
 //Switch to indicate if the program is running
@@ -36,16 +36,21 @@ inline volatile double checkStepSize()
 //4
 inline volatile void Reject(int a)
 {
-	if(a==1) {extern REJECT+=1;}
+	if(a==1) {REJECT+=1;}
 }
 
 //5
-inline accept void Accept(int a)
+inline volatile void Accept(int a)
 {
-	if(a==1){extern ACCEPT+=1; }
+	if(a==1){ACCEPT+=1; }
 }
 
-inline volatile int checkLJARatio
+inline volatile int checkLJARatio()
 {
 	return 20; //Acceptance of higher energy configuration
+}
+
+volatile double checkBoxSize()
+{
+	return 5.00;
 }

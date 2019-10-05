@@ -3,10 +3,11 @@
 
 //Dependencies ==> Box.h for checkBoxSize() 
 //				   initial.cpp for initializerP and initializero
-//					Vector.h for class V and class Q
+//				   Vector.h for class V and class Q
+//				   Global.cpp for checkBoxSize
 
 //Status - Incomplete, Not tested
-//Author - yatharthb97
+//Author - yatharthb97s
 
 //Preprocessors
 #pragma once
@@ -14,7 +15,7 @@
 #include "./Vector.h"
 
 
-inline extern int checkBoxSize();
+extern volatile double checkBoxSize();
 
 class Particle
 {
@@ -27,12 +28,12 @@ public:
 	Particle(int partid): energy(0.0000), c_energy(0.0000), partid(partid), ghost(false)
 	{
 		
-		volatile double Box::checkBoxSize();
-		double EDGE = Box::checkBoxSize(); //set the value for EDGE
-		V position; //Create Position Vector
-		Q orientaion; //Create orientation Quaternion
-		initializerP(&position.x, &position.y, &position.z); //Defined in initial.cpp
-		initializerO(&orientation.a, &orientation.b, &orientation.c, &orientation.d); //Defined in initial.cpp
+		extern volatile double checkBoxSize();
+		extern void initializerP(double &x, double &y, double &z);
+		//extern void initializerO(&double a, &double b, &double c, &double d);
+		double EDGE = checkBoxSize(); //set the value for EDGE
+		initializerP(position.x, position.y, position.z); //Defined in initial.cpp
+		//initializerO(&orientation.a, &orientation.b, &orientation.c, &orientation.d); //Defined in initial.cpp
 		
 	}
 	
@@ -50,7 +51,7 @@ public:
 	V getPosition() const
 	{
 		
-		return(this->position);
+		return V(this->position);
 	}
 
 	//4
@@ -60,7 +61,7 @@ public:
 	Q getOrientation() const
 	{
 		
-		return(this->orientation);
+		return (this->orientation);
 	
 	}
 
@@ -104,17 +105,15 @@ public:
 	void translator(V translate)
 	{
 
-		position.x+=translate.x;
-		position.y+=translate.y;
-		position.z+=translate.z;
+		position=position+translate;
 		
 		//Simple Periodic Boundary Conditions
-		if (x > BoxSize) { x = (x - BoxSize) }
-		if (y > BoxSize) { y = (y - BoxSize) }
-		if (z > BoxSize) { x = (z - BoxSize) }
-		if (x < 0) { x = (x + BoxSize) }
-		if (y < 0) { y = (y + BoxSize) }
-		if (z < 0) { x = (z + BoxSize) }
+		if (position.x > EDGE) { position.x = (position.x - EDGE); }
+		if (position.y > EDGE) { position.y = (position.y - EDGE); }
+		if (position.z > EDGE) { position.z = (position.z - EDGE); }
+		if (position.x < 0) { position.x = (position.x + EDGE); }
+		if (position.y < 0) { position.y = (position.y + EDGE); }
+		if (position.z < 0) { position.x = (position.z + EDGE); }
 	
 	}
 
@@ -123,14 +122,14 @@ public:
 	//brief - Updates the angular orientation of the particle
 	//  	  Contains no rejection condition
 	//@param - Q orient
-	void orienter(Q orient)
+	/*void orienter(Q orient)
 	{
 
 			orientation.a+=orient.a;
 			orientation.b+=orient.b;
 			orientation.c+=orient.c;
 			orientation.d+=orient.d;
-	}
+	}*/
 
 	//10
 	//Energy Updator - Mutator
@@ -147,9 +146,9 @@ public:
 	//@brief - Updates the cheical energy of the particle
 	//		   Contains no rejecion condition
 	//@param - double c_energise
-	void energiser(double &c_energise)
+	void c_energiser(double &c_energise)
 	{
-		energy+=energise;
+		energy+=c_energise;
 	}
 
 	//12
@@ -164,14 +163,16 @@ public:
 /////Member variables
 	private:
 	double energy;
-	double c_energy
+	double c_energy;
 	int partid;
 	bool ghost;
 	static int EDGE;
+	V position;
+	Q orientation;
 
 
 
 /////Friend declarations
-Friend class Render;
+//Friend class Render;
 
 }; //End of class Particle

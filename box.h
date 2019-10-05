@@ -12,6 +12,7 @@
 #include<iostream>
 #include<vector>
 #include "particle.h" //for the Particle class
+#include"random.h"
 #include "log.h" //For logoutput()
 #include<sstream> //ostringstream used in Constructor
 using namespace std;
@@ -24,39 +25,44 @@ private: //Member Variables
 
 int count;
 double edge;
-static vector<int> ghostlist;
+vector<int> ghostlist;
 int ghost;
 double energy;
+vector<Particle> partlist;
 
 public: //Member Functions
 
 //1
 //@brief - Constructor - Create empty countainer with edge 1
-Box():count(0), edge(1), ghost(0), energy(0){}
+Box():count(0), ghost(0), energy(0)
+{
+	extern volatile double checkBoxSize();
+	this->edge = checkBoxSize();
+}
 
 //2
 //Overloading Constructor
 //@brief - Create a box container with a fixed size and particles
 //@param - count - number of particles
 //		 - size - edge size of the box
-Box(int count, double size, double energy):count(count), edge(size), ghost(0), energy(energy)
+Box(int count, double energy):count(count), ghost(0), energy(energy)
 {
-	vector<Particle> partlist;
-
+	extern volatile double checkBoxSize();
+	this->edge = checkBoxSize();
 	for(unsigned int i = 1; i<=count; i++ )
 	{
-		partlist.push_backpush(Particle((int)i));
+		partlist.push_back(Particle((int)i));
 		//Include code to catch exception thrown and generate error log
 
 	}
 
 	//Condition that checks if the conatiner is empty
-	if(partlist.empty)
-	{Log box; box.logerror("box.h","Container empty!")}
+	if(partlist.empty())
+	{Log box; box.logerror("box.h","Container empty!");}
 
 	else{
 	std::ostringstream o;
-	o<<"Box created with edge: "<<this->size<<" and particles: "<<count;
+	o<<"Box created with edge: "<<this->edge<<" and particles: "<<count;
 	Log box;
 	box.logoutput("box.h", o.str(), true);
 	}
@@ -84,7 +90,8 @@ volatile double checkBoxSize()
 
 //5
 //Returns the number of particles in the box excluding the ghost particles
-void const getCount()
+//@return - int count - ghost
+int const getCount()
 {
 	return(count-ghost);
 }
@@ -135,7 +142,7 @@ volatile void setBoxSize(double size)
 //Remove Particle
 void RemoveParticle(int partid)
 {
-	partlist(partid).MakeGhost(true);
+	this->partlist.at(partid).MakeGhost(true);
 	ghost+=1;
 	ghostlist.push_back(partid); //Maintain a ghost list
 }
@@ -144,7 +151,7 @@ void RemoveParticle(int partid)
 //Bring back a removed particle
 void CPRParticle(int partid, int vectorpos)
 {
-	partlist(partid).MakeGhost(false);
+	this->partlist.at(partid).MakeGhost(false);
 	ghost-=ghost;
 	ghostlist.erase(ghostlist.begin() + vectorpos);
 }
@@ -153,7 +160,7 @@ void CPRParticle(int partid, int vectorpos)
 //Add new Particle to the container
 void AddParticle()
 {
-	partlist.push_back(count+1);
+	this->partlist.push_back(count+1);
 	count+=1;
 }
 
@@ -167,38 +174,39 @@ void RemoveAllGhosts()
 //13
 double trialPos()
 {
+	extern int Random(int, int);
 	int pid = Random(1, count); //Random not defined
 	V temp;
-	temp.null(); //define in vector V class
-	extern Updator3(&temp);
-	partlist(pid).translate(temp); //Edit Updator3 function
+	//temp.null(); //define in vector V class
+	extern void Updator3(V &temp);
+	partlist.at(pid).translator(temp); //Edit Updator3 function
 	extern double LjLoop(std::vector<Particle> &vect);
 	double E_new = LjLoop(this->partlist); //Run LJ Loop
 
 	//Energy Considerations
 	if(E_new <= this->energy)
-		{	extern inline Accept(1);
+		{	extern inline volatile void Accept(int);
 			Accept(1);
 			this->energy = E_new;
 		}
 	else
 	{
-		extern inline volatile checkLJARatio();
+		extern inline volatile int checkLJARatio();
 		int LJRR = checkLJARatio();
 		//Increased energy acceptance move
 		if(Random(0,100) < LJRR)
 		{
-			extern inline Accept(1);
+			extern inline void Accept(int);
 			Accept(1);
 			this->energy = E_new;
 		}
 
 		else
 		{
-			partlist(pid).translate(-1*temp); //Complete vector class
+			partlist.at(pid).translator(-1*temp); //Complete vector class
 			Log trial;
 			trial.logoutput("particle.h","Move Rejected!", false);
-			extern inline Reject(int); //Defined in Global.cpp
+			extern inline volatile void Reject(int); //Defined in Global.cpp
 			Reject(1);
 		}
 

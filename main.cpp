@@ -3,16 +3,14 @@
 //Preprocessors
 #include<iostream>
 using namespace std;
-#include "particle.h"
+#include "box.h"
 
 
 int main()
 {
 	cout<<"Welocme Message!";
-	Particle p1;
-	Particle p2;
-	cout<<p1.getPosition().info()<<endl;
-	cout<<p2.getPosition().info()<<endl;
+	Box b;
+	
 
 
 

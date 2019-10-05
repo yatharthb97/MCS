@@ -13,41 +13,40 @@
 using namespace std;
 
 
-extern volatile Box::checkBoxSize();
-void initializerP(&double, &double, &double);
-void initializerO(&double, &double, &double, &double);
+extern volatile double checkBoxSize();
+void initializerP(double &x, double &y, double &z);
+//void initializerO(&double, &double, &double, &double);
+double BoxSize = checkBoxSize();
 
 
-
-void initializerP(&double x, &double y, &double z)
+void initializerP(double &x, double &y, double &z)
 {
 	
-	double BoxSize = Box::checkBoxSize(); 
+	
 	//**double BoxSize = Box::checkBoxSize();
 	ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
-	uniform_real_distribution<double> drandom(0.0, BoxSize);
-
+	uniform_real_distribution<double> drandom(0.00, BoxSize);
 	Urandom urandom;//Object for Urandom class
 	int sx = urandom.seedby_urandom(); //Seeding
 	rlx.seed(sx);
 	std::srand(std::time(nullptr)); // use current time as seed for random generator
 
-	double x = drandom(rlx);
+	x = drandom(rlx);
 	int sy = sx+std::rand();
 	rlx.seed(sy);
-	double y = drandom(rlx);
-
+	y = drandom(rlx);
+ 
 	int sz = sx+std::rand();
 	rlx.seed(sz);
-	double z = drandom(rlx);
+	z = drandom(rlx);
 
 	//Periodic Boundary condition
-	if (x > BoxSize) { x = (x - BoxSize) }
-	if (y > BoxSize) { y = (y - BoxSize) }
-	if (z > BoxSize) { x = (z - BoxSize) }
-	if (x < 0) { x = (x + BoxSize) }
-	if (y < 0) { y = (y + BoxSize) }
-	if (z < 0) { x = (z + BoxSize) }
+	if (x > BoxSize) { x = (x - BoxSize); }
+	if (y > BoxSize) { y = (y - BoxSize); }
+	if (z > BoxSize) { x = (z - BoxSize); }
+	if (x < 0) { x = (x + BoxSize); }
+	if (y < 0) { y = (y + BoxSize); }
+	if (z < 0) { x = (z + BoxSize); }
 
 
 	double tempenergy =  LjLoop(&partlist);
@@ -55,11 +54,10 @@ void initializerP(&double x, &double y, &double z)
 	double ratio = tempoldenegy/tempenergy;
 	if(ratio<0.001) {initializerP(&double x, &double y, double z)} //Recursive step
 
-
 }
 
 
-void initializerO(&double a, &double b, &double c, &double d)
+/*void initializerO(&double a, &double b, &double c, &double d)
 {
 	///
-}
+}*/
