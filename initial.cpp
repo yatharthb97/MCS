@@ -49,10 +49,10 @@ void initializerP(double &x, double &y, double &z)
 	if (z < 0) { x = (z + BoxSize); }
 
 
-	double tempenergy =  LjLoop(&partlist);
+	/*double tempenergy =  LjLoop(&partlist);
 	double tempoldenegy = Box::getEnergy();
 	double ratio = tempoldenegy/tempenergy;
-	if(ratio<0.001) {initializerP(&double x, &double y, double z)} //Recursive step
+	if(ratio<0.001) {initializerP(&double x, &double y, double z)} //Recursive step*/
 
 }
 

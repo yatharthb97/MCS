@@ -1,10 +1,13 @@
 //Particle Engergy Calculator - Calculate the energy terms of the particle using hamiltonian and reject the move if the energy calculated is out of the box
 #include<cmath>
 #include<vector>
+#include"runparam.h"
 //Truncated LJ Potential - Weeks-Chandler Anderson Potential
 
 
-	double Eta = 0.0000; //Set value
+	
+	
+	double Eta = RunParam::RepEta //Set value
 	double sigma = 0.0000; //Set value
 	double A = 4*Eta*pow(sigma,12);
 	double B = 4*Eta*pow(sigma,6);

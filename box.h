@@ -11,10 +11,11 @@
 #pragma once
 #include<iostream>
 #include<vector>
+#include<sstream> //ostringstream used in Constructor
 #include "particle.h" //for the Particle class
 #include"random.h"
 #include "log.h" //For logoutput()
-#include<sstream> //ostringstream used in Constructor
+#include "runparam.h"
 using namespace std;
 
 //Class Box
@@ -29,14 +30,16 @@ vector<int> ghostlist;
 int ghost;
 double energy;
 vector<Particle> partlist;
+int ACCEPT;
+int REJECT;
 
 public: //Member Functions
 
 //1
 //@brief - Constructor - Create empty countainer with edge 1
-Box():count(0), ghost(0), energy(0)
+Box():count(0), ghost(0), edge(1), ACCEPT(0), REJECT(0)
 {
-	extern volatile double checkBoxSize();
+	RunParam::BoxSize = 1;
 	this->edge = checkBoxSize();
 }
 
@@ -45,10 +48,9 @@ Box():count(0), ghost(0), energy(0)
 //@brief - Create a box container with a fixed size and particles
 //@param - count - number of particles
 //		 - size - edge size of the box
-Box(int count, double energy):count(count), ghost(0), energy(energy)
+Box(int count, double edge):count(count), ghost(0), energy(energy), edge(edge), ACCEPT(0), REJECT(0)
 {
-	extern volatile double checkBoxSize();
-	this->edge = checkBoxSize();
+	RunParam::BoxSize = edge;
 	for(unsigned int i = 1; i<=count; i++ )
 	{
 		partlist.push_back(Particle((int)i));
@@ -56,13 +58,16 @@ Box(int count, double energy):count(count), ghost(0), energy(energy)
 
 	}
 
+	extern double LjLoop(std::vector<Particle> &vect);
+	this->energy = LjLoop(this->partlist); //Run LJ Loop
+
 	//Condition that checks if the conatiner is empty
 	if(partlist.empty())
 	{Log box; box.logerror("box.h","Container empty!");}
 
 	else{
 	std::ostringstream o;
-	o<<"Box created with edge: "<<this->edge<<" and particles: "<<count;
+	o<<"Box created with edge: "<<this->edge<<", particles: "<<count<<", and energy: "<<energy;
 	Log box;
 	box.logoutput("box.h", o.str(), true);
 	}
@@ -128,17 +133,34 @@ double const getEnergy()
 	return this->energy;
 }
 
+//10
+volatile int countReject()
+{
+	return REJECT;
+}
+
+//11
+volatile int countAccept()
+{
+	return ACCEPT;
+}
+
+//12
+volatile double getRatio()
+{
+	return (double)(ACCEPT/REJECT);
+}
 
 ///Mutators
 
-//8
+//13
 //Changes the box size - use with causion
 volatile void setBoxSize(double size)
 {
 	this->edge = edge;
 }
 
-//9
+//14
 //Remove Particle
 void RemoveParticle(int partid)
 {
@@ -147,7 +169,7 @@ void RemoveParticle(int partid)
 	ghostlist.push_back(partid); //Maintain a ghost list
 }
 
-//10
+//15
 //Bring back a removed particle
 void CPRParticle(int partid, int vectorpos)
 {
@@ -156,7 +178,7 @@ void CPRParticle(int partid, int vectorpos)
 	ghostlist.erase(ghostlist.begin() + vectorpos);
 }
 
-//11
+//16
 //Add new Particle to the container
 void AddParticle()
 {
@@ -164,14 +186,24 @@ void AddParticle()
 	count+=1;
 }
 
-//12
+//17
 //Remove all ghost particles and renormalize the list
 void RemoveAllGhosts()
 {}
 
+//18
+volatile void Reject(int a)
+{
+	if(a==1) {REJECT+=1;}
+}
 
+//19
+volatile void Accept(int a)
+{
+	if(a==1){ACCEPT+=1; }
+}
 
-//13
+//20
 double trialPos()
 {
 	extern int Random(int, int);
@@ -185,18 +217,16 @@ double trialPos()
 
 	//Energy Considerations
 	if(E_new <= this->energy)
-		{	extern inline volatile void Accept(int);
+		{
 			Accept(1);
 			this->energy = E_new;
 		}
 	else
 	{
-		extern inline volatile int checkLJARatio();
-		int LJRR = checkLJARatio();
+		int LJRR = RunParam::LJARatio();
 		//Increased energy acceptance move
 		if(Random(0,100) < LJRR)
 		{
-			extern inline void Accept(int);
 			Accept(1);
 			this->energy = E_new;
 		}
@@ -206,7 +236,6 @@ double trialPos()
 			partlist.at(pid).translator(-1*temp); //Complete vector class
 			Log trial;
 			trial.logoutput("particle.h","Move Rejected!", false);
-			extern inline volatile void Reject(int); //Defined in Global.cpp
 			Reject(1);
 		}
 
@@ -214,6 +243,7 @@ double trialPos()
 	}
 
 }
+
 //Friend class Declarations
 
 };//End of Class Box
