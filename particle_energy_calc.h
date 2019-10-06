@@ -2,24 +2,27 @@
 #include<cmath>
 #include<vector>
 #include"runparam.h"
-//Truncated LJ Potential - Weeks-Chandler Anderson Potential
+#include "Vector.h"
+
+//Truncated LJ Potential - Weeks-Chandler Anderson Potential - Repulsion
+//		0	- Attraction
 
 
 	
 	
-	double Eta = RunParam::RepEta //Set value
-	double sigma = 0.0000; //Set value
-	double A = 4*Eta*pow(sigma,12);
-	double B = 4*Eta*pow(sigma,6);
-	double rc = 2.5*sigma; //Cutoff distance of 2.5 Sigma
-	double C= (A/pow(rc,6));
+	/*double Eta = RunParam::RepEta //Set value
+	double sigma = 0.0000; //Set value*/
+	double A = 4*EtaRep*pow(SigmaRep,12);
+	double B = 4*EtaRep*pow(SigmaRep,6);
+	//double rc = 2.5*SigmaRep; //Cutoff distance of 2.5 Sigma
+	double C= (A/pow(rCutOffRep,6));
 	double D = B/(rc6*rc6);
 	double vlj = 0.0000; //Initialize
 
 
-double LjLoop(std::vector<Particle> &partlist) //Skeleton Function
+double LjLoop(std::vector<Particle> &partlist) 
 {
-	//Neither shifted nor truncated
+	//Probably Not Shifted
 	V r; //Define vector r
 	for(unsigned int i = 1; i<=count; i++)
 	{
@@ -27,18 +30,26 @@ double LjLoop(std::vector<Particle> &partlist) //Skeleton Function
 		{
 			if((i!=j) && (partlist(i).isGhost() == false) && (partlist(j).isGhost()) == false)//If i = j, the contribution is zero and if particle is ghost.
 			{
-				r = b.partlist(i).getPosition() - b.partlist(j).getPosition();
+				r = b.at().partlist(i).getPosition() - b.partlist(j).getPosition();
 				r = r.size();
-				if(r<=rc) //Accept only if the distance is less than cutoff distance
+
+
+				//Repulsion Portion
+				if(r<=CutOffRep) //Accept only if the distance is less than cutoff distance
 				{
 					r6 = pow(r,6);
 					r12 = r6*r6;
-					Vlj+= ((A/r12) - (B/r6)) -(C-D);
+					Vlj+= ((A/r12) - (B/r6)) -(C-D); 
 				}
+
+				//Attraction Portion
+				//{Vlj +=0;}
+
 			}	
 		}
 	}
 
 	return Vlj;
+
 }
 

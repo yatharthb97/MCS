@@ -1,7 +1,7 @@
 //Implementation for Initializer
 
 //Dependencied ==> urandom.h for seedby_urandom()
-//			   ==> Global.cpp for checkBoxSize()
+//
 
 
 #include<random>
@@ -9,6 +9,7 @@
 #include "urandom.h" //seedby_urandom
 #include <cstdlib> //using rand
 #include <ctime> //using time
+#include"runparam.h"
 //#include<log.h> //Log errors
 using namespace std;
 
@@ -16,13 +17,14 @@ using namespace std;
 extern volatile double checkBoxSize();
 void initializerP(double &x, double &y, double &z);
 //void initializerO(&double, &double, &double, &double);
-double BoxSize = checkBoxSize();
+
 
 
 void initializerP(double &x, double &y, double &z)
 {
-	
-	
+	RunParam r;
+	double BoxSize = r.checkBoxSize();
+	if()
 	//**double BoxSize = Box::checkBoxSize();
 	ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
 	uniform_real_distribution<double> drandom(0.00, BoxSize);
@@ -48,7 +50,7 @@ void initializerP(double &x, double &y, double &z)
 	if (y < 0) { y = (y + BoxSize); }
 	if (z < 0) { x = (z + BoxSize); }
 
-
+	//Overlap Conditions
 	/*double tempenergy =  LjLoop(&partlist);
 	double tempoldenegy = Box::getEnergy();
 	double ratio = tempoldenegy/tempenergy;

@@ -1,5 +1,12 @@
 #pragma once
 
+
+#define EtaRep 1
+#define SigmaRep 1
+#define CutOffRep 0.5
+
+
+
 class RunParam{
 
 public:
@@ -8,6 +15,9 @@ static bool RUN;
 static double StepSize;
 static int LJARatio;
 static double BoxSize;
+static bool MaxStep;
+
+//Log File Config
 static const* char LogOutput;
 static const* char LogErrorOut;
 
@@ -51,5 +61,5 @@ volatile const char* fileConfig(int i)
 	}
 }
 
-};
+};//End of class RunParam
 

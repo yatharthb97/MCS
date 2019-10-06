@@ -11,11 +11,10 @@
 
 //Preprocessors
 #pragma once
-#include "box.h"
-#include "./Vector.h"
+#include "Vector.h"
 
-
-extern volatile double checkBoxSize();
+//Static Member initialization
+Particle::EDGE = RunParam::checkBoxSize();
 
 class Particle
 {
@@ -27,11 +26,8 @@ public:
 	//@param - partid ==> particle ID	
 	Particle(int partid): energy(0.0000), c_energy(0.0000), partid(partid), ghost(false)
 	{
-		
-		extern volatile double checkBoxSize();
 		extern void initializerP(double &x, double &y, double &z);
 		//extern void initializerO(&double a, &double b, &double c, &double d);
-		double EDGE = checkBoxSize(); //set the value for EDGE
 		initializerP(position.x, position.y, position.z); //Defined in initial.cpp
 		//initializerO(&orientation.a, &orientation.b, &orientation.c, &orientation.d); //Defined in initial.cpp
 		
@@ -162,13 +158,16 @@ public:
 
 /////Member variables
 	private:
+	//Two sets of energy
 	double energy;
 	double c_energy;
+	//Box Parameters
 	int partid;
 	bool ghost;
 	static int EDGE;
+	//Particle Properties
 	V position;
-	Q orientation;
+	//Q orientation;
 
 
 

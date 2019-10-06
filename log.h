@@ -1,5 +1,5 @@
 //Header File to create Logs
-//Dependency ==> - Global.cpp for defination of checkRUN() and fileConfig
+//Dependency ==> - runparam.h for RunParam class
 
 ///Status - Complete and Tested
 //@Author - yatharthb97
@@ -9,6 +9,7 @@
 //Preprocessors
 #include<iostream>
 #include<fstream>
+#include "runparam.h"
 using namespace std;
 
 //class Log
@@ -18,8 +19,8 @@ private:
 	//Data Members
 
 	//Output Stream colour selection
-	const std::string red = "\033[0;31m";
-	const std::string blue = "\033[0;34m";
+	/*const std::string red = "\033[0;31m";
+	const std::string blue = "\033[0;34m";*/
 	
 	//Filestream objects
 	ofstream eo;
@@ -36,12 +37,12 @@ public:
 	{
 		//Check if the program is running
 		inline extern volatile bool checkRUN();
-		RUN = checkRUN();
+		RunParam l;
+		RUN = l.checkRUN();
 
 		//File assignments
-		inline extern const char* fileConfig(int);
-		errorlog = fileConfig(1);
-		outputlog = fileConfig(2);
+		errorlog = l.fileConfig(1);
+		outputlog = l.fileConfig(2);
 		
 
 	if(RUN == false){eo.close(); oo.close(); }
@@ -58,12 +59,12 @@ public:
 	//@brief - Function for creating Error Log on xterm and file
 	//@param - const char* filename, string arguement
 	void logerror(const char* filename, string arguement){
-		std::cerr<<red<<"[ERROR]"<<"\t"<<filename<<"  ==>"<<arguement<<std::endl<<"\033[0;0m";
+		std::cerr<<"\033[0;31m"<<"[ERROR]"<<"\t"<<filename<<"  ==>"<<arguement<<std::endl<<"\033[0;0m";
 
 		if(eo.is_open())
 			eo<<"[ERROR]"<<"\t"<<filename<<"\t"<<arguement<<std::endl;
 		else{
-			std::cerr<<red<<"[FATAL ERROR] log failure: logerror"<<std::endl<<"\033[0;0m";
+			std::cerr<<"\033[0;31m"<<"[FATAL ERROR] log failure: logerror"<<std::endl<<"\033[0;0m";
 		}
 	}
 
@@ -72,7 +73,7 @@ public:
 	void logoutput(const char* filename, string arguement, bool out){
 
 		if(out == true){
-			std::cerr<<blue<<"[LOG]"<<"\t"<<filename<<"  ==>"<<arguement<<std::endl<<"\033[0;0m";
+			std::cerr<<"\033[0;34m"<<"[LOG]"<<"\t"<<filename<<"  ==>"<<arguement<<std::endl<<"\033[0;0m";
 
 			if(oo.is_open())
 			oo<<"[LOG]"<<"\t"<<filename<<"\t"<<arguement<<std::endl;

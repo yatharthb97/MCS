@@ -2,7 +2,7 @@
 //Creates a square conatainer for Particles
 
 //Dependencies ==> log.h for logout()
-//				   particle.h for class Particle 
+//				   particle.h for class Particle
 
 //Status - Incomplete, Not tested
 //Author - yatharthb97
@@ -13,9 +13,10 @@
 #include<vector>
 #include<sstream> //ostringstream used in Constructor
 #include "particle.h" //for the Particle class
-#include"random.h"
+#include"random.h" //For Random(int, int)
 #include "log.h" //For logoutput()
-#include "runparam.h"
+#include "runparam.h" //Obvious
+#include "particle_energy_calc.h" //For LJ Loop
 using namespace std;
 
 //Class Box
@@ -40,7 +41,6 @@ public: //Member Functions
 Box():count(0), ghost(0), edge(1), ACCEPT(0), REJECT(0)
 {
 	RunParam::BoxSize = 1;
-	this->edge = checkBoxSize();
 }
 
 //2
@@ -58,6 +58,7 @@ Box(int count, double edge):count(count), ghost(0), energy(energy), edge(edge), 
 
 	}
 
+	//Assign initial Energy to the Box
 	extern double LjLoop(std::vector<Particle> &vect);
 	this->energy = LjLoop(this->partlist); //Run LJ Loop
 
@@ -87,7 +88,7 @@ Box(int count, double edge):count(count), ghost(0), energy(energy), edge(edge), 
 ///Accessors
 
 //4
-//Returns the box size
+//Returns the box size - Redundant after RunParam
 volatile double checkBoxSize()
 {
 	return(edge); //Size of the box
@@ -157,7 +158,8 @@ volatile double getRatio()
 //Changes the box size - use with causion
 volatile void setBoxSize(double size)
 {
-	this->edge = edge;
+	this->edge = size;
+	RunParam::BoxSize = size;
 }
 
 //14
@@ -224,7 +226,7 @@ double trialPos()
 	else
 	{
 		int LJRR = RunParam::LJARatio();
-		//Increased energy acceptance move
+		//Increased energy - acceptance move
 		if(Random(0,100) < LJRR)
 		{
 			Accept(1);
@@ -233,7 +235,7 @@ double trialPos()
 
 		else
 		{
-			partlist.at(pid).translator(-1*temp); //Complete vector class
+			partlist.at(pid).translator(-1*temp);
 			Log trial;
 			trial.logoutput("particle.h","Move Rejected!", false);
 			Reject(1);

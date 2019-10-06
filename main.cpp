@@ -4,7 +4,7 @@
 #include<iostream>
 using namespace std;
 #include "box.h"
-
+#include "runparam.h"
 
 int main()
 {
@@ -12,7 +12,16 @@ int main()
 	Box b;
 	
 
-
+//Running Parameters - Initialization
+{
+RunParam::RUN = true;
+RunParam::StepSize = 0.1;
+RunParam::LJARatio = 20;
+RunParam::BoxSize = 5;
+RunParam::MaxStep = true;
+RunPAram::LogOutput = "log.txt";
+RunParam::LogErrorOut = "error.txt";
+}
 
 
 

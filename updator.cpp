@@ -10,78 +10,86 @@
 //--------------------------
 
 //Preprocessors
-#include<random>
 #include<iostream>
 #include "urandom.h" //seedby_urandom
 #include <cstdlib> //using rand
 #include <ctime> //using time
 #include<log.h> //Log errors
 #include "Vector.h"
+#include"runparam.h"
 using namespace std;
 
 void Updator3(V &temp);
 void Updator4(Q &temp);
-inline extern volatile int checkStepSize();
 
 void Updator3(V &temp){
-	ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
-	uniform_real_distribution<double> drandom;
+	RunParam up;
 
-	Urandom urandom;//Object for Urandom class
-	int sx = urandom.seedby_urandom(); //Seeding
-	rlx.seed(sx);
-	std::srand(std::time(nullptr)); // use current time as seed for random generator
+	if(up.MaxStep)
+	{
+		ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
+		uniform_real_distribution<double> drandom;
 
-	double d = drandom(rlx);
-	int i = int(d*3);
-	int x = 0;
-	switch(i){
-		case 0: {x = 0; break;}
-		case 1: {x = 1; break;}
-		case 2: {x = -1; break;}
-		default: {x = 0; Log updator;
-						updator.logerror("updator.cpp",  "Random number generator overflow. 'default' invoked.");
-						 break;}
+		Urandom urandom;//Object for Urandom class
+		int sx = urandom.seedby_urandom(); //Seeding
+		rlx.seed(sx);
+		std::srand(std::time(nullptr)); // use current time as seed for random generator
+
+		double d = drandom(rlx);
+		int i = int(d*3);
+		int x = 0;
+		switch(i){
+			case 0: {x = 0; break;}
+			case 1: {x = 1; break;}
+			case 2: {x = -1; break;}
+			default: {x = 0; Log updator;
+							updator.logerror("updator.cpp",  "Random number generator overflow. 'default' invoked.");
+							 break;}
+		}
+		int sy = sx+std::rand();
+		rlx.seed(sy);
+
+		d = drandom(rlx);
+		i = int(d*3);
+		int y = 0;
+		switch(i){
+			case 0: {y = 0; break;}
+			case 1: {y = 1; break;}
+			case 2: {y = -1; break;}
+			default: {x = 0; Log updator;
+							updator.logerror("updator.cpp",  "Random number generator overflow. 'default' invoked.");
+							 break;}
+		}
+
+		int sz = sy+std::rand();
+		rlx.seed(sz);
+
+		d = drandom(rlx);
+		i = int(d*3);
+		int z = 0;
+		switch(i){
+			case 0: {z = 0; break;}
+			case 1: {z = 1; break;}
+			case 2: {z = -1; break;}
+			default: {x = 0; Log updator;
+							updator.logerror("updator.cpp",  "Random number generator overflow. 'default' invoked.");
+							 break;}
+		}
+		
+		double check = up.checkStepSize();
+		V temp;
+		temp.x = x*check;
+		temp.y = y*check;
+		temp.z = z*check;
 	}
-	int sy = sx+std::rand();
-	rlx.seed(sy);
 
-	d = drandom(rlx);
-	i = int(d*3);
-	int y = 0;
-	switch(i){
-		case 0: {y = 0; break;}
-		case 1: {y = 1; break;}
-		case 2: {y = -1; break;}
-		default: {x = 0; Log updator;
-						updator.logerror("updator.cpp",  "Random number generator overflow. 'default' invoked.");
-						 break;}
-	}
-
-	int sz = sy+std::rand();
-	rlx.seed(sz);
-
-	d = drandom(rlx);
-	i = int(d*3);
-	int z = 0;
-	switch(i){
-		case 0: {z = 0; break;}
-		case 1: {z = 1; break;}
-		case 2: {z = -1; break;}
-		default: {x = 0; Log updator;
-						updator.logerror("updator.cpp",  "Random number generator overflow. 'default' invoked.");
-						 break;}
-	}
-	
-	double check = checkStepSize();
-	V temp;
-	temp.x = x*check;
-	temp.y = y*check;
-	temp.z = z*check;
+	else if(up.MaxStep == false)
+	{}
 }
 
-//Overloaded
+
 void Updator4(Q &temp){
+	RunParam up;
 	ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
 	uniform_real_distribution<double> drandom;
 
@@ -146,7 +154,7 @@ void Updator4(Q &temp){
 						 break;}
 	}
 	
-	double check = checkStepSize();
+	double check = up.checkStepSize();
 	Q temp;
 	temp.a = x*check;
 	temp.b = y*check;
