@@ -7,6 +7,7 @@
 //---------------
 
 //Preprocessors
+#pragma once
 #include<iostream>
 #include<fstream>
 #include "runparam.h"

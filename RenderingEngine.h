@@ -8,7 +8,8 @@ class Render{
 
 public:
 
-	//printPosition
+//Obsolete
+/*	//printPosition
 	//@brief - Prints the position array of the particle that is tab seperated. And ends line.
 	void printPosition() const
 	{
@@ -28,7 +29,7 @@ public:
 			std::cout<<ori.a<<"\t"<<ori.b<<"\t"<<ori.c<<"\t"<<ori.d;
 		
 		std::cout<<endl;
-	}
+	}*/
 
 
 	
@@ -40,18 +41,19 @@ public:
 		render::printPosition();
 	}*/
 	
-	void createxyz(const char* initial) const
+	void createxyz(Box b&, const char* filename) const
 	{
+	Runparam p; //For fileConfig
 	ofstream orend; //Try to create externally
-	orend.open(initiallog, ios::in); //*
+	orend.open(filename, ios::in); //*
 	if(orend.is_open())
 	{
 		std::cout.rdbuf(out.rdbuf());
-		render::printPosition();
+		b.
 	}
 
 	else
-	{Log::logerror(initial, ("::open failure!"));}
+	{Log::logerror("RenderingEngine.h", ("createxyz::open failure!"));}
 
 	if(RUN == false) orend.close();
 

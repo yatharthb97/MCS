@@ -15,30 +15,31 @@
 	double A = 4*EtaRep*pow(SigmaRep,12);
 	double B = 4*EtaRep*pow(SigmaRep,6);
 	//double rc = 2.5*SigmaRep; //Cutoff distance of 2.5 Sigma
-	double C= (A/pow(rCutOffRep,6));
-	double D = B/(rc6*rc6);
-	double vlj = 0.0000; //Initialize
+	double C= (A/pow(CutOffRep,6));
+	double D = B/(CutOffRep*CutOffRep);
 
 
 double LjLoop(std::vector<Particle> &partlist) 
 {
 	//Probably Not Shifted
+	double Vlj = 0.0000; //Initialize
 	V r; //Define vector r
-	for(unsigned int i = 1; i<=count; i++)
+	int count = partlist.size();
+	for(unsigned int i = 0; i<count; i++)
 	{
-		for(unsigned int j = 1; j<=count; j++)
+		for(unsigned int j = 0; j<count; j++)
 		{
-			if((i!=j) && (partlist(i).isGhost() == false) && (partlist(j).isGhost()) == false)//If i = j, the contribution is zero and if particle is ghost.
+			if((i!=j) && (partlist.at(i).isGhost() == false) && (partlist.at(j).isGhost()) == false)//If i = j, the contribution is zero and if particle is ghost.
 			{
-				r = b.at().partlist(i).getPosition() - b.partlist(j).getPosition();
-				r = r.size();
+				r = partlist.at(i).getPosition() - partlist.at(j).getPosition();
+				double rval = r.size();
 
 
 				//Repulsion Portion
-				if(r<=CutOffRep) //Accept only if the distance is less than cutoff distance
+				if(rval<=CutOffRep) //Accept only if the distance is less than cutoff distance
 				{
-					r6 = pow(r,6);
-					r12 = r6*r6;
+					double r6 = pow(rval,6);
+					double r12 = r6*r6;
 					Vlj+= ((A/r12) - (B/r6)) -(C-D); 
 				}
 

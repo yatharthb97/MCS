@@ -5,27 +5,20 @@
 using namespace std;
 #include "box.h"
 #include "runparam.h"
+#include "log.h"
 
 int main()
 {
-	cout<<"Welocme Message!";
-	Box b;
+	cout<<"Welocme Message!"<<endl;
 	
 
 //Running Parameters - Initialization
-{
-RunParam::RUN = true;
-RunParam::StepSize = 0.1;
-RunParam::LJARatio = 20;
-RunParam::BoxSize = 5;
-RunParam::MaxStep = true;
-RunPAram::LogOutput = "log.txt";
-RunParam::LogErrorOut = "error.txt";
-}
 
-
-
-
+//Create Box
+Log boxdes;
+	boxdes.logoutput("main.cpp", "Creating Box!", true);
+Box b(10,5);
+	boxdes.logoutput("main.cpp", "Destroying Box!", true);
 
 	/*//Create container with the desired number of particles - Take 200, Size 5 units
 	Box b(200,5, 20);//Particles, size, energy

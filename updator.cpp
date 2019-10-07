@@ -14,13 +14,14 @@
 #include "urandom.h" //seedby_urandom
 #include <cstdlib> //using rand
 #include <ctime> //using time
-#include<log.h> //Log errors
+#include"log.h" //Log errors
 #include "Vector.h"
 #include"runparam.h"
+#include<random>
 using namespace std;
 
 void Updator3(V &temp);
-void Updator4(Q &temp);
+/*void Updator4(Q &temp);*/
 
 void Updator3(V &temp){
 	RunParam up;
@@ -87,7 +88,7 @@ void Updator3(V &temp){
 	{}
 }
 
-
+/*
 void Updator4(Q &temp){
 	RunParam up;
 	ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
@@ -160,4 +161,4 @@ void Updator4(Q &temp){
 	temp.b = y*check;
 	temp.c = z*check;
 	temp.d = w*check;
-}
+}*/

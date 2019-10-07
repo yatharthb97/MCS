@@ -51,7 +51,7 @@ Box():count(0), ghost(0), edge(1), ACCEPT(0), REJECT(0)
 Box(int count, double edge):count(count), ghost(0), energy(energy), edge(edge), ACCEPT(0), REJECT(0)
 {
 	RunParam::BoxSize = edge;
-	for(unsigned int i = 1; i<=count; i++ )
+	for(unsigned int i = 0; i<count; i++ )
 	{
 		partlist.push_back(Particle((int)i));
 		//Include code to catch exception thrown and generate error log
@@ -70,7 +70,7 @@ Box(int count, double edge):count(count), ghost(0), energy(energy), edge(edge), 
 	std::ostringstream o;
 	o<<"Box created with edge: "<<this->edge<<", particles: "<<count<<", and energy: "<<energy;
 	Log box;
-	box.logoutput("box.h", o.str(), true);
+	box.logoutput("box.h", "o.str()", true);
 	}
 }
 
@@ -135,6 +135,12 @@ double const getEnergy()
 }
 
 //10
+std::vector<Particle> PassPartlist()
+{
+	return vector<Particle>(this->partlist);
+}
+
+//10
 volatile int countReject()
 {
 	return REJECT;
@@ -152,7 +158,6 @@ volatile double getRatio()
 	return (double)(ACCEPT/REJECT);
 }
 
-///Mutators
 
 //13
 //Changes the box size - use with causion
@@ -225,7 +230,7 @@ double trialPos()
 		}
 	else
 	{
-		int LJRR = RunParam::LJARatio();
+		int LJRR = RunParam::checkLJARatio();
 		//Increased energy - acceptance move
 		if(Random(0,100) < LJRR)
 		{
@@ -235,7 +240,7 @@ double trialPos()
 
 		else
 		{
-			partlist.at(pid).translator(-1*temp);
+			partlist.at(pid).translator(temp*-1);
 			Log trial;
 			trial.logoutput("particle.h","Move Rejected!", false);
 			Reject(1);

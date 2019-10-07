@@ -18,8 +18,8 @@ static double BoxSize;
 static bool MaxStep;
 
 //Log File Config
-static const* char LogOutput;
-static const* char LogErrorOut;
+static const char* LogOutput;
+static const char* LogErrorOut;
 
 
 
@@ -40,9 +40,9 @@ volatile double checkStepSize()
 }
 
 //3
-volatile int checkLJARatio()
+volatile static int checkLJARatio()
 {
-	return checkLJARatio; //Acceptance of higher energy configuration
+	return LJARatio; //Acceptance of higher energy configuration
 }
 
 //4
@@ -51,7 +51,7 @@ volatile double checkBoxSize()
 	return BoxSize;
 }
 //5
-volatile const char* fileConfig(int i)
+const char* fileConfig(int i)
 {
 	switch(i)
 	{	

@@ -119,7 +119,10 @@ V(double x, double y, double z):x(x), y(y), z(z){}
         this->x*=scale, this->y*=scale, this->z*=scale;
     }
 
-    friend inline V operator* (double, const V&);
+    /*inline V operator* (double, const V&)
+    {
+        
+    }*/
 
     inline V cross(const V& B) const {
         return V(this->y*B.z - this->z*B.y, -this->x*B.z + this->z*B.x, this->x*B.y - this->y*B.x);

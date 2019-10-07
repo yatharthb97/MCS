@@ -24,38 +24,39 @@ void initializerP(double &x, double &y, double &z)
 {
 	RunParam r;
 	double BoxSize = r.checkBoxSize();
-	if()
-	//**double BoxSize = Box::checkBoxSize();
-	ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
-	uniform_real_distribution<double> drandom(0.00, BoxSize);
-	Urandom urandom;//Object for Urandom class
-	int sx = urandom.seedby_urandom(); //Seeding
-	rlx.seed(sx);
-	std::srand(std::time(nullptr)); // use current time as seed for random generator
+	if(r.MaxStep)
+	{
+		//**double BoxSize = Box::checkBoxSize();
+		ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
+		uniform_real_distribution<double> drandom(0.00, BoxSize);
+		Urandom urandom;//Object for Urandom class
+		int sx = urandom.seedby_urandom(); //Seeding
+		rlx.seed(sx);
+		std::srand(std::time(nullptr)); // use current time as seed for random generator
 
-	x = drandom(rlx);
-	int sy = sx+std::rand();
-	rlx.seed(sy);
-	y = drandom(rlx);
- 
-	int sz = sx+std::rand();
-	rlx.seed(sz);
-	z = drandom(rlx);
+		x = drandom(rlx);
+		int sy = sx+std::rand();
+		rlx.seed(sy);
+		y = drandom(rlx);
+	 
+		int sz = sx+std::rand();
+		rlx.seed(sz);
+		z = drandom(rlx);
 
-	//Periodic Boundary condition
-	if (x > BoxSize) { x = (x - BoxSize); }
-	if (y > BoxSize) { y = (y - BoxSize); }
-	if (z > BoxSize) { x = (z - BoxSize); }
-	if (x < 0) { x = (x + BoxSize); }
-	if (y < 0) { y = (y + BoxSize); }
-	if (z < 0) { x = (z + BoxSize); }
+		//Periodic Boundary condition
+		if (x > BoxSize) { x = (x - BoxSize); }
+		if (y > BoxSize) { y = (y - BoxSize); }
+		if (z > BoxSize) { x = (z - BoxSize); }
+		if (x < 0) { x = (x + BoxSize); }
+		if (y < 0) { y = (y + BoxSize); }
+		if (z < 0) { x = (z + BoxSize); }
 
-	//Overlap Conditions
-	/*double tempenergy =  LjLoop(&partlist);
-	double tempoldenegy = Box::getEnergy();
-	double ratio = tempoldenegy/tempenergy;
-	if(ratio<0.001) {initializerP(&double x, &double y, double z)} //Recursive step*/
-
+		//Overlap Conditions
+		/*double tempenergy =  LjLoop(&partlist);
+		double tempoldenegy = Box::getEnergy();
+		double ratio = tempoldenegy/tempenergy;
+		if(ratio<0.001) {initializerP(&double x, &double y, double z)} //Recursive step*/
+	}
 }
 
 
