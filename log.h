@@ -50,8 +50,8 @@ public:
 
 	else{
 		
-		eo.open(errorlog, ios::out);
-		oo.open(outputlog, ios::out);
+		eo.open(errorlog, ios::app);
+		oo.open(outputlog, ios::app);
 		}
 
 

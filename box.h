@@ -70,7 +70,7 @@ Box(int count, double edge):count(count), ghost(0), energy(energy), edge(edge), 
 	std::ostringstream o;
 	o<<"Box created with edge: "<<this->edge<<", particles: "<<count<<", and energy: "<<energy;
 	Log box;
-	box.logoutput("box.h", "o.str()", true);
+	box.logoutput("box.h", o.str(), true);
 	}
 }
 
