@@ -227,8 +227,8 @@ double trialPos()
 		{
 			Accept(1);
 			this->energy = E_new;
-			Log trial;
-			trial.logoutput("particle.h","Move Accepted! Energy Decreased!", false);
+			/*Log trial;
+			trial.logoutput("particle.h","Move Accepted! Energy Decreased!", false);*/
 		}
 	else
 	{
@@ -238,15 +238,15 @@ double trialPos()
 		{
 			Accept(1);
 			this->energy = E_new;
-			Log trial;
-			trial.logoutput("particle.h","Move Accepted! Energy Increased!", false);
+			/*Log trial;
+			trial.logoutput("particle.h","Move Accepted! Energy Increased!", false);*/
 		}
 
 		else
 		{
 			partlist.at(pid).translator(temp*-1);
 			Log trial;
-			trial.logoutput("particle.h","Move Rejected!", false);
+			/*trial.logoutput("particle.h","Move Rejected!", false);*/
 			Reject(1);
 		}
 

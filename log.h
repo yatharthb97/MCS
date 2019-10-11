@@ -60,7 +60,7 @@ public:
 	//@brief - Function for creating Error Log on xterm and file
 	//@param - const char* filename, string arguement
 	void logerror(const char* filename, string arguement){
-		std::cerr<<"\033[0;31m"<<"[ERROR]"<<"\t"<<filename<<"  ==>"<<arguement<<std::endl<<"\033[0;0m";
+		std::cerr<<"\033[0;31m"<<"[ERROR]"<<"\t"<<filename<<",\t"<<arguement<<std::endl<<"\033[0;0m";
 
 		if(eo.is_open())
 			eo<<"[ERROR]"<<"\t"<<filename<<"\t"<<arguement<<std::endl;
@@ -74,7 +74,7 @@ public:
 	void logoutput(const char* filename, string arguement, bool out){
 
 		if(out == true){
-			std::cerr<<"\033[0;34m"<<"[LOG]"<<"\t"<<filename<<"  ==>"<<arguement<<std::endl<<"\033[0;0m";
+			std::cerr<<"\033[0;34m"<<"[LOG]"<<"\t"<<filename<<",\t"<<arguement<<std::endl<<"\033[0;0m";
 
 			if(oo.is_open())
 			oo<<"[LOG]"<<"\t"<<filename<<"\t"<<arguement<<std::endl;

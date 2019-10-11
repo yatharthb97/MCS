@@ -28,7 +28,7 @@ void initializerP(double &x, double &y, double &z)
 	{
 		//**double BoxSize = Box::checkBoxSize();
 		ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
-		std::normal_distribution<double> drandom(0.00, BoxSize);
+		uniform_real_distribution<double> drandom(0.00, BoxSize);
 		Urandom urandom;//Object for Urandom class
 		int sx = urandom.seedby_urandom(); //Seeding
 		rlx.seed(sx);
