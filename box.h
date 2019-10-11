@@ -99,7 +99,7 @@ volatile double checkBoxSize()
 //@return - int count - ghost
 int const getCount()
 {
-	return(count-ghost);
+	return(count);
 }
 
 //6
@@ -214,7 +214,7 @@ volatile void Accept(int a)
 double trialPos()
 {
 	extern int Random(int, int);
-	int pid = Random(1, count); //Random not defined
+	int pid = Random(0, count-1); //Random not defined
 	V temp;
 	//temp.null(); //define in vector V class
 	extern void Updator3(V &temp);
@@ -227,6 +227,8 @@ double trialPos()
 		{
 			Accept(1);
 			this->energy = E_new;
+			Log trial;
+			trial.logoutput("particle.h","Move Accepted! Energy Decreased!", false);
 		}
 	else
 	{
@@ -236,6 +238,8 @@ double trialPos()
 		{
 			Accept(1);
 			this->energy = E_new;
+			Log trial;
+			trial.logoutput("particle.h","Move Accepted! Energy Increased!", false);
 		}
 
 		else
@@ -248,6 +252,8 @@ double trialPos()
 
 		
 	}
+
+
 
 }
 

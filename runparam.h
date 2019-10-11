@@ -1,9 +1,9 @@
 #pragma once
 
 
-#define EtaRep 1
+#define EtaRep 0.00001
 #define SigmaRep 1
-#define CutOffRep 0.5
+#define CutOffRep 0.01
 
 
 

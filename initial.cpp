@@ -28,19 +28,19 @@ void initializerP(double &x, double &y, double &z)
 	{
 		//**double BoxSize = Box::checkBoxSize();
 		ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
-		uniform_real_distribution<double> drandom(0.00, BoxSize);
+		std::normal_distribution<double> drandom(0.00, BoxSize);
 		Urandom urandom;//Object for Urandom class
 		int sx = urandom.seedby_urandom(); //Seeding
 		rlx.seed(sx);
 		std::srand(std::time(nullptr)); // use current time as seed for random generator
 
 		x = drandom(rlx);
-		int sy = sx+std::rand();
-		rlx.seed(sy);
+		//int sy = sx+std::rand();
+		//rlx.seed(sy);
 		y = drandom(rlx);
 	 
-		int sz = sx+std::rand();
-		rlx.seed(sz);
+		//int sz = sx+std::rand();
+		//rlx.seed(sz);
 		z = drandom(rlx);
 
 		//Periodic Boundary condition
