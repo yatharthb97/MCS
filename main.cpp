@@ -74,7 +74,7 @@ la<<"Accepted Moves: "<<b.countAccept()<<"  Rejected Moves: "<<b.countReject()<<
 la<<"Accept/Reject Ratio: "<<b.getRatio()<<endl;
 double e2 = b.getEnergy();
 la<<"Final Energy: "<<e2<<endl;
-la<<"Energy Change: "<<e1-e2<<endl;
+la<<"Energy Change: "<<e2-e1<<endl;
 last.logoutput("main.cpp", la.str(), true);
 
 cout<<"-------------------Termination----------------------"<<endl;
