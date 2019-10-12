@@ -26,15 +26,13 @@ void Updator3(V &temp);
 void Updator3(V &temp){
 	RunParam up;
 
-	if(up.MaxStep)
-	{
 		ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
 		uniform_real_distribution<double> drandom;
 
 		Urandom urandom;//Object for Urandom class
 		int sx = urandom.seedby_urandom(); //Seeding
 		rlx.seed(sx);
-		std::srand(std::time(nullptr)); // use current time as seed for random generator
+		//std::srand(std::time(nullptr)); // use current time as seed for random generator
 
 		double d = drandom(rlx);
 		int i = int(d*3);
@@ -47,8 +45,9 @@ void Updator3(V &temp){
 							updator.logerror("updator.cpp",  "Random number generator overflow. 'default' invoked.");
 							 break;}
 		}
-		int sy = sx+std::rand();
-		rlx.seed(sy);
+		
+		//int sy = sx+std::rand();
+		//rlx.seed(sy);
 
 		d = drandom(rlx);
 		i = int(d*3);
@@ -61,9 +60,9 @@ void Updator3(V &temp){
 							updator.logerror("updator.cpp",  "Random number generator overflow. 'default' invoked.");
 							 break;}
 		}
-
-		int sz = sy+std::rand();
-		rlx.seed(sz);
+		
+		//int sz = sy+std::rand();
+		//rlx.seed(sz);
 
 		d = drandom(rlx);
 		i = int(d*3);
@@ -78,15 +77,30 @@ void Updator3(V &temp){
 		}
 		
 		double check = up.checkStepSize();
-		V temp;
-		temp.x = x*check;
-		temp.y = y*check;
-		temp.z = z*check;
-	}
+		if(up.MaxStep) //Output Max Step Size
+		{
+			temp.x = x*check;
+			temp.y = y*check;
+			temp.z = z*check;
+		}
 
-	else if(up.MaxStep == false)
-	{}
+		else if(up.MaxStep == false) //Output Dynamic Step Sizes
+		{
+			double lcheck = up.checkMinStepSize();
+			ranlux48 rlx2; // ranlux48_base rlx; //Creating object for RANLUX random number generator
+			uniform_real_distribution<double> erandom(lcheck, check);
+
+			int st = sx+std::rand();
+			rlx2.seed(st);
+
+		temp.x = x*erandom(rlx2);
+		temp.y = y*erandom(rlx2);
+		temp.z = z*erandom(rlx2);
+		//cout<<temp.info()<<endl;
+		}
+
 }
+
 
 /*
 void Updator4(Q &temp){

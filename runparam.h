@@ -3,7 +3,7 @@
 
 #define EtaRep 0.25e-20
 #define SigmaRep 1
-#define CutOffRep 3
+#define CutOffRep 2
 
 
 
@@ -13,6 +13,7 @@ public:
 //Member VAriables
 static bool RUN;
 static double StepSize;
+static double MinStepSize;
 static int LJARatio;
 static double BoxSize;
 static bool MaxStep;
@@ -37,6 +38,11 @@ bool volatile checkRUN()
 volatile double checkStepSize()
 {
 	return StepSize;
+}
+
+volatile double checkMinStepSize()
+{
+	return MinStepSize;
 }
 
 //3

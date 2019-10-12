@@ -55,6 +55,7 @@ Box(int count, double edge):count(count), ghost(0), energy(energy), edge(edge), 
 	{
 		partlist.push_back(Particle((int)i));
 		//Include code to catch exception thrown and generate error log
+		//cout<<partlist.at(i).getPosition().info()<<endl;
 
 	}
 
@@ -155,7 +156,7 @@ volatile int countAccept()
 //12
 volatile double getRatio()
 {
-	return (double)(ACCEPT/REJECT);
+	return ((double)ACCEPT/REJECT);
 }
 
 
@@ -218,17 +219,19 @@ double trialPos()
 	V temp;
 	//temp.null(); //define in vector V class
 	extern void Updator3(V &temp);
+	Updator3(temp);
+	//cout<<"Temp Vector"<<temp.info()<<endl;
 	partlist.at(pid).translator(temp); //Edit Updator3 function
 	extern double LjLoop(std::vector<Particle> &vect);
 	double E_new = LjLoop(this->partlist); //Run LJ Loop
 
 	//Energy Considerations
-	if(E_new <= this->energy)
+	if(E_new < this->energy)
 		{
 			Accept(1);
 			this->energy = E_new;
 			/*Log trial;
-			trial.logoutput("particle.h","Move Accepted! Energy Decreased!", false);*/
+			trial.logoutput("particle.h","Move Accepted! Energy Decreased!", true);*/
 		}
 	else
 	{
@@ -239,15 +242,17 @@ double trialPos()
 			Accept(1);
 			this->energy = E_new;
 			/*Log trial;
-			trial.logoutput("particle.h","Move Accepted! Energy Increased!", false);*/
+			trial.logoutput("particle.h","Move Accepted! Energy Increased!", true);*/
 		}
 
 		else
 		{
 			partlist.at(pid).translator(temp*-1);
-			Log trial;
-			/*trial.logoutput("particle.h","Move Rejected!", false);*/
 			Reject(1);
+			cout<<"___Move Rejected!___"<<endl;
+			/*Log trial;
+			trial.logoutput("particle.h","Move Rejected!", true);*/
+			
 		}
 
 		

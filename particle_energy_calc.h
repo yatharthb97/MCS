@@ -50,6 +50,7 @@ double LjLoop(std::vector<Particle> &partlist)
 		}
 	}
 
+	//cout<<"Energy: "<<Vlj<<endl;
 	return Vlj;
 
 }

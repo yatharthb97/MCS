@@ -103,13 +103,18 @@ public:
 		position=position+translate;
 		
 		//Simple Periodic Boundary Conditions
-		if (position.x > EDGE) { position.x = (position.x - EDGE); }
-		if (position.y > EDGE) { position.y = (position.y - EDGE); }
-		if (position.z > EDGE) { position.z = (position.z - EDGE); }
-		if (position.x < 0) { position.x = (position.x + EDGE); }
-		if (position.y < 0) { position.y = (position.y + EDGE); }
-		if (position.z < 0) { position.x = (position.z + EDGE); }
+		//cout<<"1.     "<<position.x<<" "<<position.y<<" "<<position.z<<endl;
+		if (position.x > EDGE) { position.x = (position.x - EDGE);}
+		if (position.y > EDGE) { position.y = (position.y - EDGE);}
+		if (position.z > EDGE) { position.z = (position.z - EDGE);}
+		if (position.x < 0.0000000) { position.x = (EDGE+position.x);}
+		if (position.y < 0.0000000) { position.y = (EDGE+position.y);}
+		if (position.z < 0.0000000) { position.z = (EDGE+position.z);}
+		//cout<<"2.     "<<position.x<<" "<<position.y<<" "<<position.z<<endl;
 	
+
+		//Translation Info
+		cout<<"---Particle "<<partid<<" moved to "<<position.info()<<endl;
 	}
 
 	//9
@@ -167,6 +172,9 @@ public:
 	//Particle Properties
 	V position;
 	Q orientation;
+	V unit;
+	V normal;
+
 
 
 
