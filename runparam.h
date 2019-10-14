@@ -22,12 +22,17 @@ static bool MaxStep;
 static const char* LogOutput;
 static const char* LogErrorOut;
 
+//Rotation parameters
+static double minRotor;
+static double maxRotor;
+static double resoRotor;
+static bool MaxRot;
 
 
 //1
 //Accessor - checkRUN()
 //Switch to indicate if the program is running
-bool volatile checkRUN()
+inline bool volatile checkRUN()
 {
 	return RUN;
 }
@@ -40,24 +45,24 @@ volatile double checkStepSize()
 	return StepSize;
 }
 
-volatile double checkMinStepSize()
+inline volatile double checkMinStepSize()
 {
 	return MinStepSize;
 }
 
 //3
-volatile static int checkLJARatio()
+inline volatile static int checkLJARatio()
 {
 	return LJARatio; //Acceptance of higher energy configuration
 }
 
 //4
-volatile double checkBoxSize()
+inline volatile double checkBoxSize()
 {
 	return BoxSize;
 }
 //5
-const char* fileConfig(int i)
+inline const char* fileConfig(int i)
 {
 	switch(i)
 	{	
@@ -66,6 +71,24 @@ const char* fileConfig(int i)
 		case 2: return(LogOutput); break; //For output log
 	}
 }
+
+//6
+
+inline volatile double RotParam(int i)
+{
+	switch(i)
+	{
+		case 1: return(minRotor); break;
+		case 2: return(maxRotor); break;
+		case 3: return(resoRotor); break;
+	}
+}
+
+inline volatile bool isMaxRot()
+{
+	return MaxRot;
+}
+
 
 };//End of class RunParam
 

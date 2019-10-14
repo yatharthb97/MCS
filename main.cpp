@@ -43,19 +43,19 @@ Box b(1000,5);
 Render(b, "./Output/initial.txt");
 double e1 = b.getEnergy();
 //1
-for(int i = 0; i<1000; i++)
+for(int i = 0; i<3000; i++)
 {
 b.trialPos();
 }
 Render(b, "./Output/final1.txt");
 //2
-for(int i = 0; i<1000; i++)
+for(int i = 0; i<3000; i++)
 {
 b.trialPos();
 }
 Render(b, "./Output/final2.txt");
 //3
-for(int i = 0; i<1000; i++)
+for(int i = 0; i<3000; i++)
 {
 b.trialPos();
 }
@@ -73,6 +73,7 @@ la<<"Run ID: "<<RunID<<"  Finished computation at " << std::ctime(&end_time)<<en
 la<<"Accepted Moves: "<<b.countAccept()<<"  Rejected Moves: "<<b.countReject()<<endl;
 la<<"Accept/Reject Ratio: "<<b.getRatio()<<endl;
 double e2 = b.getEnergy();
+la<<"Final Energy: "<<e1<<endl;
 la<<"Final Energy: "<<e2<<endl;
 la<<"Energy Change: "<<e2-e1<<endl;
 last.logoutput("main.cpp", la.str(), true);

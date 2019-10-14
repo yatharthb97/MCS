@@ -7,21 +7,23 @@
 #include<random>
 #include<iostream>
 #include "urandom.h" //seedby_urandom
-#include <cstdlib> //using rand
-#include <ctime> //using time
-#include<cmath>
 #include"runparam.h"
+#include"Vector.h"
+//#include <cstdlib> //using rand
+//#include <ctime> //using time
+//#include<cmath>
 //#include<log.h> //Log errors
 using namespace std;
 
+#define PI 3.14159
 
 extern volatile double checkBoxSize();
-void initializerP(double &x, double &y, double &z);
-//void initializerO(&double, &double, &double, &double);
+void initializerP(V &v);
+void initializerO(V &v);
 
 
 
-void initializerP(double &x, double &y, double &z)
+void initializerP(V &v)
 {
 	RunParam r;
 	double BoxSize = r.checkBoxSize();
@@ -36,17 +38,17 @@ void initializerP(double &x, double &y, double &z)
 		normal_distribution<double> drandom(2.5, BoxSize/5); //StdDev = Range/5
 		//std::srand(std::time(nullptr)); // use current time as seed for random generator
 
-		x = abs(drandom(rlx));
+		v.x = abs(drandom(rlx));
 		//x = drandom(rlx);
 
 		//int sy = sx+std::rand();
 		//rlx.seed(sy);
-		y = abs(drandom(rlx));
+		v.y = abs(drandom(rlx));
 		//y = drandom(rlx);
 	 
 		//int sz = sx+std::rand();
 		//rlx.seed(sz);
-		z = abs(drandom(rlx));
+		v.z = abs(drandom(rlx));
 		//z = drandom(rlx);
 
 		//Periodic Boundary condition
@@ -65,7 +67,32 @@ void initializerP(double &x, double &y, double &z)
 }
 
 
-/*void initializerO(&double a, &double b, &double c, &double d)
+void initializerO(V &v)
 {
-	///
-}*/
+	RunParam inio;
+
+	ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
+		Urandom urandom;//Object for Urandom class
+		int sx = urandom.seedby_urandom(); //Seeding
+		rlx.seed(sx);
+		//Uniform
+		uniform_real_distribution<double> drandom;
+		//Gaussian
+		//normal_distribution<double> drandom(2.5, BoxSize/5); //StdDev = Range/5
+		//std::srand(std::time(nullptr)); // use current time as seed for random generator
+
+		v.x = drandom(rlx);
+
+		//int sy = sx+std::rand();
+		//rlx.seed(sy);
+		v.y = drandom(rlx);
+	 
+		//int sz = sx+std::rand();
+		//rlx.seed(sz);
+		v.z = drandom(rlx);
+
+		while(!v.isUnit())
+		{
+			v.normalise();
+		}
+}

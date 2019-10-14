@@ -22,14 +22,15 @@ public:
 //Constructor
 	//@brief - Calls initializer and sets up the particle
 	//@param - partid ==> particle ID	
-	Particle(int partid): energy(0.0000), c_energy(0.0000), partid(partid), ghost(false)
+	Particle(int partid): energy(0.0000), c_energy(0.0000), partid(partid), ghost(false), moves(0)
 	{
-		extern void initializerP(double &x, double &y, double &z);
-		//extern void initializerO(&double a, &double b, &double c, &double d);
-		initializerP(position.x, position.y, position.z); //Defined in initial.cpp
-		//initializerO(&orientation.a, &orientation.b, &orientation.c, &orientation.d); //Defined in initial.cpp
-		RunParam p;
-		EDGE = p.checkBoxSize();
+		extern void initializerP(V &v); //Defined in initial.cpp
+		extern void initializerO(V &v);
+		initializerP(position);
+		initializerO(unit);
+		normal = unit.orthagonalise(); //set normal as orthogonal to the unit
+		/*RunParam p;
+		EDGE = p.checkBoxSize();*/
 	}
 	
 //2	
@@ -53,12 +54,12 @@ public:
 	//getOrientation - Accessor
 	//@brief - Returns the orientation of the particle
 	//@return - Q orientation
-	Q getOrientation() const
+	/*Q getOrientation() const
 	{
 		
 		return (this->orientation);
 	
-	}
+	}*/
 
 	//5
 	//getEnergy - Accessor
@@ -99,8 +100,10 @@ public:
 	//@param - V translate
 	void translator(V translate)
 	{
-
+		RunParam p;
+		double EDGE = p.checkBoxSize();
 		position=position+translate;
+		this->moves++;
 		
 		//Simple Periodic Boundary Conditions
 		//cout<<"1.     "<<position.x<<" "<<position.y<<" "<<position.z<<endl;
@@ -117,19 +120,20 @@ public:
 		cout<<"---Particle "<<partid<<" moved to "<<position.info()<<endl;
 	}
 
-	//9
+	
 	//Orientation Updator - Mutator
 	//brief - Updates the angular orientation of the particle
 	//  	  Contains no rejection condition
 	//@param - Q orient
-	/*void orienter(Q orient)
+	void orienter(Q orient)
 	{
+		//1. Perform a 3D rotation on the unit vector, which is in the global frame
+		//2. Normalise unit
+		//3. Select unit vector as thea xis and generate a 2D rotation around it - normal vector
+		//4. Normalise normal
+		//5. No boundary conditions
 
-			orientation.a+=orient.a;
-			orientation.b+=orient.b;
-			orientation.c+=orient.c;
-			orientation.d+=orient.d;
-	}*/
+	}
 
 	//10
 	//Energy Updator - Mutator
@@ -160,18 +164,28 @@ public:
 		this->ghost = b;
 	}
 
+
+	/*static void setEDGE(double e)
+	{
+		EDGE = e;
+	}*/
+
 /////Member variables
 	private:
+
 	//Two sets of energy
 	double energy;
 	double c_energy;
+
 	//Box Parameters
 	int partid;
 	bool ghost;
-	int EDGE;
+	int moves;//Records the number of times the particle is called
+	int reject; //Records the number of times the particle is rejected when called
+	//static double EDGE;
+
 	//Particle Properties
 	V position;
-	Q orientation;
 	V unit;
 	V normal;
 

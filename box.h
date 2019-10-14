@@ -41,6 +41,8 @@ public: //Member Functions
 Box():count(0), ghost(0), edge(1), ACCEPT(0), REJECT(0)
 {
 	RunParam::BoxSize = 1;
+	//Particle p(-1);
+	//p.setEDGE(1.000000);
 }
 
 //2
@@ -51,6 +53,8 @@ Box():count(0), ghost(0), edge(1), ACCEPT(0), REJECT(0)
 Box(int count, double edge):count(count), ghost(0), energy(energy), edge(edge), ACCEPT(0), REJECT(0)
 {
 	RunParam::BoxSize = edge;
+	//Particle p(-1);
+	//p.setEDGE(this->edge);
 	for(unsigned int i = 0; i<count; i++ )
 	{
 		partlist.push_back(Particle((int)i));
