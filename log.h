@@ -27,10 +27,16 @@ private:
 	//Filestream objects
 	ofstream eo;
 	ofstream oo;
+	ofstream term2;
 
+	//Filenmaes from RunParam
 	const char* errorlog;
 	const char* outputlog;
+
+	//From RunParam
 	bool RUN;
+	bool is_term2;
+	bool is_interrupt;
 
 public:
 
@@ -41,6 +47,8 @@ public:
 		inline extern volatile bool checkRUN();
 		RunParam l;
 		RUN = l.checkRUN();
+		is_term2 = l.checkTerm2();
+		is_interrupt = l.checkInterrupt();
 
 		//File assignments
 		errorlog = l.fileConfig(1);
@@ -53,6 +61,8 @@ public:
 		
 		eo.open(errorlog, ios::app);
 		oo.open(outputlog, ios::app);
+		if(is_term2){term2.open("/dev/pts/2");}
+
 		}
 
 
@@ -72,11 +82,26 @@ public:
 		if(eo.is_open())
 			eo<<"[ERROR]"<<"\t"<<filename<<"\t"<<arguement<<std::endl;
 		else{
-			std::cerr<<"\033[0;31m"<<"[FATAL ERROR] log failure: logerror"<<std::endl<<"\033[0;0m"<<"\a\a\a\a\a";
+			std::cerr<<"\033[0;31m"<<"[FATAL ERROR] logerror Output File Not Open.   "<<errorlog<<std::endl<<"\033[0;0m"<<"\a\a\a\a\a";
 			
 			//If condition
 			{
 				cout<<"\033[0;31m"<<"*****Press any key to continue.*****"<<std::endl<<"\033[0;0m";
+				std::cin.get();
+			}
+		}
+
+		//Terminal 2
+		if(is_term2 && term2.is_open())
+			term2<<"[ERROR]"<<"\t"<<filename<<"\t"<<arguement<<std::endl;
+		if(!term2.is_open())
+		{
+			std::cerr<<"\033[0;31m"<<"[FATAL ERROR] logerror Output File Not Open.   Terminal 2"<<std::endl<<"\033[0;0m"<<"\a\a\a\a\a";
+			
+			if(is_interrupt)
+			{
+				term2<<"\033[0;31m"<<"*****Press any key to continue.*****"<<std::endl<<"\033[0;0m";
+				std::cerr<<"\033[0;31m"<<"*****Press any key to continue.*****"<<std::endl<<"\033[0;0m";
 				std::cin.get();
 			}
 		}
@@ -90,7 +115,7 @@ public:
 			std::cerr<<"\033[0;34m"<<"[LOG]"<<"\t"<<filename<<",\t"<<arguement<<std::endl<<"\033[0;0m";
 
 			if(oo.is_open())
-			oo<<"[LOG]"<<"\t"<<filename<<"\t"<<arguement<<std::endl;
+			oo<<"\t"<<filename<<"\t"<<arguement<<std::endl;
 			else{
 			Log::logerror(outputlog, "[FATAL ERROR] log failure: logerror");
 			}
@@ -100,12 +125,30 @@ public:
 		else{
 
 			if(oo.is_open())
-			oo<<"[LOG]"<<"\t"<<filename<<"\t"<<arguement<<std::endl;
+			oo<<"\t"<<filename<<"\t"<<arguement<<std::endl;
 			
 			else{
 				Log::logerror(outputlog, "[FATAL ERROR] log failure: logerror");
 				}
 
+		}
+
+
+		//Terminal 2
+		if(is_term2 && term2.is_open())
+			{
+				term2<<"[ERROR]"<<"\t"<<filename<<"\t"<<arguement<<std::endl;
+			}
+		if(is_term2)
+		{
+			std::cerr<<"\033[0;31m"<<"[FATAL ERROR] logerror Output File Not Open.   Terminal 2"<<std::endl<<"\033[0;0m"<<"\a\a\a\a\a";
+			
+			if(is_interrupt)
+			{
+				term2<<"\033[0;31m"<<"*****Press any key to continue.*****"<<std::endl<<"\033[0;0m";
+				std::cerr<<"\033[0;31m"<<"*****Press any key to continue.*****"<<std::endl<<"\033[0;0m";
+				std::cin.get();
+			}
 		}
 
 	}
