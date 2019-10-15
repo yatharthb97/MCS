@@ -61,12 +61,24 @@ public:
 	//@brief - Function for creating Error Log on xterm and file
 	//@param - const char* filename, string arguement
 	void logerror(const char* filename, string arguement){
-		std::cerr<<"\033[0;31m"<<"[ERROR]"<<"\t"<<filename<<",\t"<<arguement<<std::endl<<"\033[0;0m";
+		std::cerr<<"\033[0;31m"<<"[ERROR]"<<"\t"<<filename<<",\t"<<arguement<<std::endl<<"\033[0;0m"<<"\a";
+		
+		//If condition
+		{
+			cout<<"\033[0;31m"<<"*****Press any key to continue.*****"<<std::endl<<"\033[0;0m";
+			std::cin.get(); 
+		}
 
 		if(eo.is_open())
 			eo<<"[ERROR]"<<"\t"<<filename<<"\t"<<arguement<<std::endl;
 		else{
-			std::cerr<<"\033[0;31m"<<"[FATAL ERROR] log failure: logerror"<<std::endl<<"\033[0;0m";
+			std::cerr<<"\033[0;31m"<<"[FATAL ERROR] log failure: logerror"<<std::endl<<"\033[0;0m"<<"\a\a\a\a\a";
+			
+			//If condition
+			{
+				cout<<"\033[0;31m"<<"*****Press any key to continue.*****"<<std::endl<<"\033[0;0m";
+				std::cin.get();
+			}
 		}
 	}
 
