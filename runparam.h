@@ -21,6 +21,8 @@ static bool MaxStep;
 //Log File Config
 static const char* LogOutput;
 static const char* LogErrorOut;
+static bool term2;
+static bool sysInterrupt;
 
 //Rotation parameters
 static double minRotor;
@@ -89,6 +91,15 @@ inline volatile bool isMaxRot()
 	return MaxRot;
 }
 
+inline volatile bool checkTerm2()
+{
+	return term2;
+}
+	
+inline volatile bool checkInterrupt()
+{
+	return sysInterrupt;
+}
 
 };//End of class RunParam
 
