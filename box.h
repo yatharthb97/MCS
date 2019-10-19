@@ -218,8 +218,8 @@ volatile void Accept(int a)
 //20
 double trialPos()
 {
-	extern int Random(int, int);
-	int pid = Random(0, count-1); //Random not defined
+	extern int Rndm(int, int);
+	int pid = Rndm(0, count-1); //Random not defined
 	V temp;
 	//temp.null(); //define in vector V class
 	extern void Updator3(V &temp);
@@ -241,7 +241,7 @@ double trialPos()
 	{
 		int LJRR = RunParam::checkLJARatio();
 		//Increased energy - acceptance move
-		if(Random(0,100) < LJRR)
+		if(Rndm(0,100) < LJRR)
 		{
 			Accept(1);
 			this->energy = E_new;

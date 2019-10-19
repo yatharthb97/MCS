@@ -11,11 +11,13 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include <stdlib.h>
 #include "runparam.h"
 using namespace std;
 
 //class Log
-class Log{
+class Log
+{
 private:
 
 	//Data Members
@@ -32,6 +34,7 @@ private:
 	//Filenmaes from RunParam
 	const char* errorlog;
 	const char* outputlog;
+	const char* termpath;
 
 	//From RunParam
 	bool RUN;
@@ -44,16 +47,27 @@ public:
 	Log()
 	{
 		//Check if the program is running
-		inline extern volatile bool checkRUN();
 		RunParam l;
 		RUN = l.checkRUN();
 		is_term2 = l.checkTerm2();
+		//cout<<is_term2<<endl;
 		is_interrupt = l.checkInterrupt();
+		//cout<<is_interrupt<<endl;
 
 		//File assignments
 		errorlog = l.fileConfig(1);
 		outputlog = l.fileConfig(2);
-		
+		if(is_term2)
+		{
+			ifstream t2;
+			t2.open(".LogTerm",ios::in);
+			string t2path;
+			t2>>t2path;
+			termpath = t2path.c_str();
+			t2.close();
+		}
+
+		else{termpath = "" ;}
 
 	if(RUN == false){eo.close(); oo.close(); }
 
@@ -61,7 +75,7 @@ public:
 		
 		eo.open(errorlog, ios::app);
 		oo.open(outputlog, ios::app);
-		if(is_term2){term2.open("/dev/pts/2");}
+		if(is_term2){term2.open(termpath);}
 
 		}
 
@@ -73,10 +87,11 @@ public:
 	void logerror(const char* filename, string arguement){
 		std::cerr<<"\033[0;31m"<<"[ERROR]"<<"\t"<<filename<<",\t"<<arguement<<std::endl<<"\033[0;0m"<<"\a";
 		
-		//If condition
+		if(is_interrupt)
 		{
 			cout<<"\033[0;31m"<<"*****Press any key to continue.*****"<<std::endl<<"\033[0;0m";
-			std::cin.get(); 
+			std::cin.get();
+			 cin.sync(); //Clear std::in Buffer
 		}
 
 		if(eo.is_open())
@@ -84,17 +99,18 @@ public:
 		else{
 			std::cerr<<"\033[0;31m"<<"[FATAL ERROR] logerror Output File Not Open.   "<<errorlog<<std::endl<<"\033[0;0m"<<"\a\a\a\a\a";
 			
-			//If condition
+			/*if(is_interrupt)
 			{
 				cout<<"\033[0;31m"<<"*****Press any key to continue.*****"<<std::endl<<"\033[0;0m";
 				std::cin.get();
-			}
+				 cin.sync(); //Clear std::in Buffer
+			}*/
 		}
 
 		//Terminal 2
 		if(is_term2 && term2.is_open())
-			term2<<"[ERROR]"<<"\t"<<filename<<"\t"<<arguement<<std::endl;
-		if(!term2.is_open())
+			term2<<"\033[0;31m"<<"[ERROR]"<<"\t"<<filename<<",\t"<<arguement<<std::endl<<"\033[0;0m"<<"\a";
+		if(!term2.is_open() && is_term2)
 		{
 			std::cerr<<"\033[0;31m"<<"[FATAL ERROR] logerror Output File Not Open.   Terminal 2"<<std::endl<<"\033[0;0m"<<"\a\a\a\a\a";
 			
@@ -103,6 +119,7 @@ public:
 				term2<<"\033[0;31m"<<"*****Press any key to continue.*****"<<std::endl<<"\033[0;0m";
 				std::cerr<<"\033[0;31m"<<"*****Press any key to continue.*****"<<std::endl<<"\033[0;0m";
 				std::cin.get();
+				 cin.sync(); //Clear std::in Buffer
 			}
 		}
 	}
@@ -137,9 +154,9 @@ public:
 		//Terminal 2
 		if(is_term2 && term2.is_open())
 			{
-				term2<<"[ERROR]"<<"\t"<<filename<<"\t"<<arguement<<std::endl;
+				term2<<"\033[0;34m"<<"[LOG]"<<"\t"<<filename<<",\t"<<arguement<<std::endl<<"\033[0;0m";
 			}
-		if(is_term2)
+		if(!term2.is_open() && is_term2)
 		{
 			std::cerr<<"\033[0;31m"<<"[FATAL ERROR] logerror Output File Not Open.   Terminal 2"<<std::endl<<"\033[0;0m"<<"\a\a\a\a\a";
 			
@@ -148,6 +165,7 @@ public:
 				term2<<"\033[0;31m"<<"*****Press any key to continue.*****"<<std::endl<<"\033[0;0m";
 				std::cerr<<"\033[0;31m"<<"*****Press any key to continue.*****"<<std::endl<<"\033[0;0m";
 				std::cin.get();
+				 cin.sync(); //Clear std::in Buffer
 			}
 		}
 
@@ -158,8 +176,8 @@ public:
 	{
 		eo.close();
 		oo.close();
+		term2.close();
 		cout<<"\033[0;0m";
 	}
-
-
+	
 };//end of class Log

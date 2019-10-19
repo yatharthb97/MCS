@@ -5,6 +5,7 @@
 
 #include<cmath>
 #include <sstream>
+//#include"random.h"
 
 class Q{
 //Class "Quaternion"
@@ -157,8 +158,13 @@ V(double x, double y, double z):x(x), y(y), z(z){}
         return V(this->y*B.z - this->z*B.y, -this->x*B.z + this->z*B.x, this->x*B.y - this->y*B.x);
     }
 
-    inline void orthogonalise(V& B) {
-        double dp(dot(B));    this->x -= dp*B.x;    this->y -= dp*B.y;    this->z -= dp*B.z;
+    inline void orthogonal(V& B) {
+        extern int Rndm(int, int);
+        this->x = Rndm(1,5);
+        this->y = Rndm(1,5);
+        this->z = (x*B.x + y*B.y)/B.z;
+        normalise();
+        
     }
 	
 

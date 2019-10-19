@@ -28,7 +28,7 @@ public:
 		extern void initializerO(V &v);
 		initializerP(position);
 		initializerO(unit);
-		normal = unit.orthagonalise(); //set normal as orthogonal to the unit
+		//normal = unit.orthagonalise(); //set normal as orthogonal to the unit
 		/*RunParam p;
 		EDGE = p.checkBoxSize();*/
 	}

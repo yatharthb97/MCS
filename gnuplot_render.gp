@@ -1,8 +1,9 @@
 #gnuplot script
 
 reset
-#set term svg enhanced size 25,100
-#set output 'output_plot.svg'
+#set term svg enhanced size 25,1
+set term pngcairo size 400, 1500
+set output './plots/output_plot.png'
 set multiplot
 
 set size 1, 0.25

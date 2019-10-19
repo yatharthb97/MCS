@@ -76,7 +76,7 @@ void initializerO(V &v)
 		int sx = urandom.seedby_urandom(); //Seeding
 		rlx.seed(sx);
 		//Uniform
-		uniform_real_distribution<double> drandom;
+		uniform_real_distribution<double> drandom(0,1);
 		//Gaussian
 		//normal_distribution<double> drandom(2.5, BoxSize/5); //StdDev = Range/5
 		//std::srand(std::time(nullptr)); // use current time as seed for random generator
