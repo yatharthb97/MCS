@@ -42,4 +42,4 @@ Particles in Box: 1000 (default: 100)
 Notes: 
 1. The parameters can be entered in any order.
 2. Additional parameters can be modified in "runparam.cpp".
-3. Sudo access is recommended for running the Simulation.
+3. Sudo session is not recommended for running the Simulation.
