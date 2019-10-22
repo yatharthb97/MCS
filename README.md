@@ -1,5 +1,11 @@
 # MCS
-Simulation X
+Simulatior X
+
+Developed by:
+Yatharth Bhasin
+Discipline of Physics
+IIT Indore
+
 This is a simulation framework for carrying out metropolis monte calo simulations of Patchy Spherocylinders.
 The project is under continuous development.
 
