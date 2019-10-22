@@ -7,7 +7,7 @@ double RunParam::MinStepSize = 0.1000000;
 int RunParam::LJARatio = 20;
 double RunParam::BoxSize = 5.0000000;
 //Particle::EDGE = 5.0000000; //Streamline
-bool RunParam::MaxStep = true;
+bool RunParam::MaxStep = false;
 
 
 //Rotation parameters
@@ -19,15 +19,15 @@ bool RunParam::MaxRot= true;
 
 
 //Log Parameters
-bool RunParam::term2 = false;
-bool RunParam::sysInterrupt = false;
+bool RunParam::term2 = true;
+bool RunParam::sysInterrupt = true;
 const char* RunParam::LogOutput = "./Output/log.txt";
 const char* RunParam::LogErrorOut = "./Output/error.txt";
 
 
 //
-const char* RunParam::ParentPath = "/home/yatharth1997/";
-std::string RunParam::ParentPathS = "/home/yatharth1997/";
+const char* RunParam::ParentPath = "/home/";
+std::string RunParam::ParentPathS = "/home/";
 
 
 

@@ -50,9 +50,8 @@ Box():count(0), ghost(0), edge(1), ACCEPT(0), REJECT(0)
 //@brief - Create a box container with a fixed size and particles
 //@param - count - number of particles
 //		 - size - edge size of the box
-Box(int count, double edge):count(count), ghost(0), energy(energy), edge(edge), ACCEPT(0), REJECT(0)
+Box(int count):count(count), ghost(0), energy(energy), ACCEPT(0), REJECT(0), edge(5.00000)
 {
-	RunParam::BoxSize = edge;
 	//Particle p(-1);
 	//p.setEDGE(this->edge);
 	for(unsigned int i = 0; i<count; i++ )
