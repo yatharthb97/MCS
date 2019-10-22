@@ -1,0 +1,178 @@
+Run ID: 7  Time of initiation: Fri Oct 11 00:20:40 2019
+
+Run ID: 7  Time of initiation: Fri Oct 11 00:30:16 2019
+
+Run ID: 8  Time of initiation: Fri Oct 11 00:31:04 2019
+
+Run ID: 9  Time of initiation: Fri Oct 11 00:36:48 2019
+
+Run ID: 10  Time of initiation: Fri Oct 11 00:46:58 2019
+
+Run ID: 11  Time of initiation: Fri Oct 11 00:50:36 2019
+
+Run ID: 12  Time of initiation: Fri Oct 11 01:02:32 2019
+
+Run ID: 13   Time of initiation: Fri Oct 11 01:06:49 2019
+
+Run ID: 14   Time of initiation: Fri Oct 11 03:21:08 2019
+
+Run ID: 15   Time of initiation: Fri Oct 11 03:27:02 2019
+
+Run ID: 16   Time of initiation: Fri Oct 11 03:33:36 2019
+
+Run ID: 17   Time of initiation: Fri Oct 11 03:38:43 2019
+
+Run ID: 17   Time of initiation: Fri Oct 11 03:40:01 2019
+
+Run ID: 17   Time of initiation: Fri Oct 11 03:41:42 2019
+
+Run ID: 17   Time of initiation: Fri Oct 11 03:45:11 2019
+
+Run ID: 17   Time of initiation: Fri Oct 11 03:46:15 2019
+
+Run ID: 17   Time of initiation: Fri Oct 11 03:46:50 2019
+
+Run ID: 17   Time of initiation: Fri Oct 11 03:47:24 2019
+
+Run ID: 17   Time of initiation: Fri Oct 11 03:48:28 2019
+
+Run ID: 17   Time of initiation: Fri Oct 11 03:48:48 2019
+
+Run ID: 17   Time of initiation: Fri Oct 11 03:50:16 2019
+
+Run ID: 17   Time of initiation: Fri Oct 11 03:51:05 2019
+
+Run ID: 17   Time of initiation: Fri Oct 11 03:51:34 2019
+
+Run ID: 18   Time of initiation: Fri Oct 11 03:53:58 2019
+
+Run ID: 19   Time of initiation: Fri Oct 11 17:04:36 2019
+
+Run ID: 20   Time of initiation: Fri Oct 11 17:13:55 2019
+
+Run ID: 20   Time of initiation: Fri Oct 11 17:24:55 2019
+
+Run ID: 20   Time of initiation: Fri Oct 11 17:26:57 2019
+
+Run ID: 20   Time of initiation: Fri Oct 11 17:27:46 2019
+
+Run ID: 20   Time of initiation: Fri Oct 11 17:29:47 2019
+
+Run ID: 20   Time of initiation: Fri Oct 11 17:30:43 2019
+
+Run ID: 20   Time of initiation: Fri Oct 11 17:31:33 2019
+
+Run ID: 20   Time of initiation: Fri Oct 11 17:32:32 2019
+
+Run ID: 20   Time of initiation: Fri Oct 11 17:33:11 2019
+
+Run ID: 21   Time of initiation: Fri Oct 11 17:35:54 2019
+
+Run ID: 21   Time of initiation: Fri Oct 11 17:36:10 2019
+
+Run ID: 22   Time of initiation: Fri Oct 11 17:43:02 2019
+
+Run ID: 22   Time of initiation: Fri Oct 11 17:45:01 2019
+
+Run ID: 22   Time of initiation: Fri Oct 11 17:47:33 2019
+
+Run ID: 22   Time of initiation: Fri Oct 11 17:47:40 2019
+
+Run ID: 23   Time of initiation: Fri Oct 11 17:49:44 2019
+
+Run ID: 23   Time of initiation: Fri Oct 11 17:51:03 2019
+
+Run ID: 23   Time of initiation: Fri Oct 11 17:56:57 2019
+
+Run ID: 23   Time of initiation: Fri Oct 11 17:58:52 2019
+
+Run ID: 23   Time of initiation: Fri Oct 11 17:59:37 2019
+
+Run ID: 23   Time of initiation: Fri Oct 11 17:59:56 2019
+
+Run ID: 23   Time of initiation: Fri Oct 11 18:04:10 2019
+
+Run ID: 23   Time of initiation: Fri Oct 11 18:23:23 2019
+
+Run ID: 23   Time of initiation: Fri Oct 11 18:23:31 2019
+
+Run ID: 24   Time of initiation: Fri Oct 11 18:32:04 2019
+
+Run ID: 25   Time of initiation: Fri Oct 11 18:39:53 2019
+
+Run ID: 26   Time of initiation: Fri Oct 11 18:49:33 2019
+
+Run ID: 27   Time of initiation: Fri Oct 11 19:14:12 2019
+
+[ERROR]	main.cpp/Rend(int, int)	./Output/initial.txt file not open!
+Run ID: 27   Time of initiation: Fri Oct 11 19:15:47 2019
+
+[ERROR]	main.cpp/Rend(int, int)	./Output/initial.txt file not open!
+Run ID: 27   Time of initiation: Fri Oct 11 19:16:37 2019
+
+Run ID: 28   Time of initiation: Sat Oct 12 00:45:09 2019
+
+Run ID: 29   Time of initiation: Sat Oct 12 01:07:24 2019
+
+Run ID: 30   Time of initiation: Sat Oct 12 01:25:22 2019
+
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	temp.exe	Trying system interupt!
+[ERROR]	runtime.cpp	Filesystem not created! ==> Parent Directory RunID_10
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Plots'
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Raw_Render'
+[ERROR]	runtime.cpp	Filesystem not created! ==> Parent Directory RunID_11
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Plots'
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Raw_Render'
+[ERROR]	runtime.cpp	Filesystem not created! ==> Parent Directory RunID_12
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Plots'
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Raw_Render'
+[ERROR]	runtime.cpp	Filesystem not created! ==> Parent Directory RunID_13
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Plots'
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Raw_Render'
+[ERROR]	runtime.cpp	Filesystem not created! ==> Parent Directory RunID_14
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Plots'
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Raw_Render'
+[ERROR]	runtime.cpp	Filesystem not created! ==> Parent Directory RunID_0
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Plots'
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Raw_Render'
+[ERROR]	runtime.cpp	Filesystem not created! ==> Parent Directory RunID_0
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Plots'
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Raw_Render'
+[ERROR]	runtime.cpp	Filesystem not created! ==> Parent Directory RunID_0
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Plots'
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Raw_Render'
+[ERROR]	runtime.cpp	Filesystem not created! ==> Parent Directory RunID_0
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Plots'
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Raw_Render'
+[ERROR]	runtime.cpp	Filesystem not created! ==> Parent Directory RunID_0
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Plots'
+[ERROR]	runtime.cpp	Filesystem not created! ==> 'Parent/Raw_Render'
+[ERROR]	main.cpp/Rend(int, int)	/Raw_Render/Thread_1_Run_1_checkpoint_0 :file not open!
+[ERROR]	main.cpp/Rend(int, int)	/Raw_Render/Thread_1_Run_2_checkpoint_0 :file not open!
+[ERROR]	main.cpp/Rend(int, int)	/Raw_Render/Thread_1_Run_3_checkpoint_0 :file not open!
+[ERROR]	main.cpp/Rend(int, int)	/Raw_Render/Thread_1_Run_4_checkpoint_0 :file not open!
+[ERROR]	main.cpp/Rend(int, int)	/Raw_Render/Thread_1_Run_5_checkpoint_0 :file not open!
