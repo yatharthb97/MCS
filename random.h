@@ -1,5 +1,5 @@
 //Header file for a basic random number generator - seeded by random_device
-//#pragma once
+#pragma once
 #include "urandom.h"
 #include<random>
 
