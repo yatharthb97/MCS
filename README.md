@@ -9,7 +9,7 @@ IIT Indore
 This is a simulation framework for carrying out metropolis monte calo simulations of Patchy Spherocylinders.
 The project is under continuous development.
 
-Compile via: g++ -std=c++11 main2.cpp runparam.cpp initial.cpp updator.cpp  -o SimX
+Compile via: g++ -std=c++11 main2.cpp runparam.cpp initial.cpp updator.cpp particle_energy_calc.cpp random.cpp -pthread -o SimX
 
 Run: ./SimX <Parameter Parameter_Value>
 
