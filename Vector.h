@@ -5,7 +5,10 @@
 
 #include<cmath>
 #include <sstream>
+#include<iostream>
+using namespace std;
 //#include"random.h"
+extern int Rndm(int, int);
 
 class Q{
 //Class "Quaternion"
@@ -49,6 +52,9 @@ public:
 
 //Default Constructor
 V():x(0), y(0), z(0) {}
+
+//Copy a vector(or construt from a vector)
+V(V const &other):x(other.x), y(other.y), z(other.z){}
 
 //Overloading Constriuctor
 V(double x, double y, double z):x(x), y(y), z(z){}
@@ -103,13 +109,29 @@ V(double x, double y, double z):x(x), y(y), z(z){}
      * @param other
      * @return
      */
-    inline double dot(const V& other)  {
-        return x*other.x + y*other.y + z*other.z;
+    inline double dot(const V& other)  
+    {
+         double temp = x*other.x + y*other.y + z*other.z;
+         if(temp<0.0000001 || temp< -0.0000001){return 0;}
+         else{return temp;}
+    }
+
+    inline double arccos(const V& other)  
+    {
+         double temp = x*other.x + y*other.y + z*other.z;
+         return acos(temp);
     }
 
     inline void scale(double scale) {
         x=x*scale; y=y*scale, z=z*scale;
     }
+
+    inline void operator= (const V& o) {
+        x=o.x;
+        y=o.y;
+        z=o.z;
+    }
+
 
     inline V operator- (const V& o) const {
         return V(x-o.x, y-o.y,z-o.z);
@@ -158,40 +180,49 @@ V(double x, double y, double z):x(x), y(y), z(z){}
         return V(this->y*B.z - this->z*B.y, -this->x*B.z + this->z*B.x, this->x*B.y - this->y*B.x);
     }
 
-    inline void orthogonal(V& B) {
-        extern int Rndm(int, int);
+    inline void orthogonal(const V& B) {
+        //extern int Rndm(int, int);
         this->x = Rndm(1,5);
         this->y = Rndm(1,5);
-        this->z = (x*B.x + y*B.y)/B.z;
+        this->z = (- x*B.x - y*B.y)/B.z;
         normalise();
         
     }
+
+    inline void rndUnit()
+    {
+        this->x = Rndm(1,5);
+        this->y = Rndm(1,5);
+        this->z = Rndm(1,5);
+        normalise();
+    }
 	
 
-    //Input -- azia and two angles
-    // using Vector&, double, double instead of Quat -> circular include
-    inline void rotate(V& axis, double cosAngle, double sinAngle) {
-        double t2,t3,t4,t5,t6,t7,t8,t9,t10,newx,newy,newz;
-        double qw = cosAngle, qx = (axis.x * sinAngle), qy = (axis.y * sinAngle), qz = (axis.z * sinAngle);
+    inline void rotate(V& axis, double angle) 
+    {
+        double c,s,c_1;
+        c = cos(angle); s = sin(angle); c_1 = 1-c;
 
-        //    t1 = quat.w * quat.w;
-        t2 =  qw * qx;
-        t3 =  qw * qy;
-        t4 =  qw * qz;
-        t5 = -qx * qx;
-        t6 =  qx * qy;
-        t7 =  qx * qz;
-        t8 = -qy * qy;
-        t9 =  qy * qz;
-        t10 = -qz * qz;
+    double t1 =  axis.x * axis.x * c_1 + c;
+    double t2 =  axis.x * axis.y * c_1 - axis.z * s;
+    double t3 =  axis.x * axis.z * c_1 + axis.y * s;
+    double t4 =  axis.y * axis.x * c_1 + axis.z * s;
+    double t5 =  axis.y * axis.y * c_1 + c;
+    double t6 =  axis.y * axis.z * c_1 - axis.x * s;
+    double t7 =  axis.z * axis.x * c_1 - axis.y * s;
+    double t8 =  axis.z * axis.y * c_1 + axis.x * s;
+    double t9 =  axis.z * axis.z * c_1 + c;
+        
+        double newx = t1*this->x + t2*this->y + t3*this->z;
+        double newy = t4*this->x + t5*this->y + t6*this->z;
+        double newz = t7*this->x + t8*this->y + t9*this->z;
 
-        newx = 2.0 * ( (t8+t10) * x + (t6-t4)  * y + (t3+t7) * z ) + x;
-        newy = 2.0 * ( (t4+t6)  * x + (t5+t10) * y + (t9-t2) * z ) + y;
-        newz = 2.0 * ( (t7-t3)  * x + (t2+t9)  * y + (t5+t8) * z ) + z;
+        this->x = newx;
+        this->y = newy;
+        this->z = newz;
+        cout<<"Rotate actuated"<<endl;
 
-        x = newx;
-        y = newy;
-        z = newz;
+
     }
 
     inline void rotate(Q &q) {
@@ -215,6 +246,16 @@ V(double x, double y, double z):x(x), y(y), z(z){}
         x = newx;
         y = newy;
         z = newz;
+    }
+
+    inline V point(V &other)
+    {
+        V temp;
+        temp.x = other.x - x;
+        temp.y = other.y - y;
+        temp.z = other.z - z;
+        temp.normalise();
+        return temp;
     }
 
 

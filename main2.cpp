@@ -40,7 +40,6 @@ if(RunParam::term2)
 	}
 //Terminal Paths Set
 
-
 	//Print System Parameters
 	std::ostringstream runlog;
 	runlog<<"RunID: "<<RunID<<" (default: -1)"<<endl<<"Sweeps: "<<sweeps<<" (default: 1000)"<<endl;

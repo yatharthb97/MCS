@@ -1,4 +1,25 @@
 #include "runparam.h"
+#include"particle.h"
+
+
+//Macro Definations
+#define EtaRep 0.25e-20
+#define SigmaRep 1
+#define CutOffRep 2
+#define EtaAtrr 1
+#define SigmaAtrr 0.25e-20
+
+//Particle Types:
+
+#define T_SC_1CP 1
+//Spherocylinder with 1 chiral patch
+//Particle Parrameters
+double Patch::width = 1.000000;
+double Particle::L = 4*SigmaAtrr;
+double Particle::D = SigmaAtrr;
+
+
+
 
 
 bool RunParam::RUN = true;
@@ -19,15 +40,15 @@ bool RunParam::MaxRot= true;
 
 
 //Log Parameters
-bool RunParam::term2 = true;
-bool RunParam::sysInterrupt = true;
+bool RunParam::term2 = false;
+bool RunParam::sysInterrupt = false;
 const char* RunParam::LogOutput = "./Output/log.txt";
 const char* RunParam::LogErrorOut = "./Output/error.txt";
 
 
 //
-const char* RunParam::ParentPath = "/home/";
-std::string RunParam::ParentPathS = "/home/";
+const char* RunParam::ParentPath = "/home/yatharth1997/";
+std::string RunParam::ParentPathS = "/home/yatharth1997/";
 
 
 
@@ -36,3 +57,6 @@ std::string RunParam::ParentPathS = "/home/";
 //Estimated Time Per Sweep
 double RunParam::ETPSl = 0.15;
 double RunParam::ETPSu = 0.20;
+
+
+

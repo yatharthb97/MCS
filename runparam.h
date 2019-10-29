@@ -1,8 +1,6 @@
 #pragma once
 #include<iostream>
-#define EtaRep 0.25e-20
-#define SigmaRep 1
-#define CutOffRep 2
+
 
 
 
