@@ -16,7 +16,6 @@
 #include"random.h" //For Random(int, int)
 #include "log.h" //For logoutput()
 #include "runparam.h" //Obvious
-#include "particle_energy_calc.h" //For LJ Loop
 using namespace std;
 
 //Class Box
@@ -40,7 +39,7 @@ public: //Member Functions
 //@brief - Constructor - Create empty countainer with edge 1
 Box():count(0), ghost(0), edge(1), ACCEPT(0), REJECT(0)
 {
-	RunParam::BoxSize = 1;
+	edge = RunParam::BoxSize;s
 	//Particle p(-1);
 	//p.setEDGE(1.000000);
 }
@@ -50,10 +49,11 @@ Box():count(0), ghost(0), edge(1), ACCEPT(0), REJECT(0)
 //@brief - Create a box container with a fixed size and particles
 //@param - count - number of particles
 //		 - size - edge size of the box
-Box(int count):count(count), ghost(0), energy(energy), ACCEPT(0), REJECT(0), edge(5.00000)
+Box(int count):count(count), ghost(0), energy(energy), ACCEPT(0), REJECT(0)
 {
 	//Particle p(-1);
 	//p.setEDGE(this->edge);
+	edge = RunParam::BoxSize;
 	for(unsigned int i = 0; i<count; i++ )
 	{
 		partlist.push_back(Particle((int)i));
@@ -199,8 +199,18 @@ void AddParticle()
 
 //17
 //Remove all ghost particles and renormalize the list
-void RemoveAllGhosts()
-{}
+void FlushGhosts()
+{
+	//Add function to renormalize particle ids. - Remove all ghosts from the list.
+	/*int total = count-ghost;
+	for(unsigned int i = 0; i< total; i++)
+	{
+		if(partlist.at(i).ghost = true)
+		{
+
+		}
+	}*/
+}
 
 //18
 volatile void Reject(int a)
@@ -215,16 +225,18 @@ volatile void Accept(int a)
 }
 
 //20
-double trialPos()
+double trialMove()
 {
 	extern int Rndm(int, int);
-	int pid = Rndm(0, count-1); //Random not defined
-	V temp;
-	//temp.null(); //define in vector V class
-	extern void Updator3(V &temp);
-	Updator3(temp);
+	int pid = Rndm(0, count-1);
+	Particle temp;
+	temp = partlist.at(pid); //Copy particle to a temp particle
+	extern void UpdatorO(Particle &p);
+	extern void UpdatorP(Particle &p);
+	UpdatorO(partlist.at(pid));
+	UpdatorP(partlist.at(pid));
 	//cout<<"Temp Vector"<<temp.info()<<endl;
-	partlist.at(pid).translator(temp); //Edit Updator3 function
+	//partlist.at(pid).translator(temp); //Edit Updator3 function
 	extern double LjLoop(std::vector<Particle> &vect);
 	double E_new = LjLoop(this->partlist); //Run LJ Loop
 
@@ -238,9 +250,9 @@ double trialPos()
 		}
 	else
 	{
-		int LJRR = RunParam::checkLJARatio();
+		//int LJRR = RunParam::checkLJARatio();
 		//Increased energy - acceptance move
-		if(Rndm(0,100) < LJRR)
+		if(Rndm(0,100) < RunParam::LJARatio && E_new < 999)
 		{
 			Accept(1);
 			this->energy = E_new;
@@ -250,9 +262,10 @@ double trialPos()
 
 		else
 		{
-			partlist.at(pid).translator(temp*-1);
+			partlist.at(pid).position = temp; //Copy back from temp, if rejected.
 			Reject(1);
 			cout<<"___Move Rejected!___"<<endl;
+			cout<<"---Particle "<<pid<<" moved to "<<partlist.at(pid).position.info()<<endl;
 			/*Log trial;
 			trial.logoutput("particle.h","Move Rejected!", true);*/
 			
@@ -260,14 +273,8 @@ double trialPos()
 
 		
 	}
-
-
-
 }
 
 //Friend class Declarations
 
 };//End of Class Box
-
-
-//Add function to renormalize particle ids. - Remove all ghosts from the list.
