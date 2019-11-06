@@ -15,7 +15,7 @@
 //#include<log.h> //Log errors
 using namespace std;
 
-#define PI 3.14159
+#define PI 3.141592653
 
 extern volatile double checkBoxSize();
 void initializerP(V &v);

@@ -220,7 +220,7 @@ V(double x, double y, double z):x(x), y(y), z(z){}
         this->x = newx;
         this->y = newy;
         this->z = newz;
-        cout<<"Rotate actuated"<<endl;
+        //cout<<"Rotate actuated"<<endl;
 
 
     }

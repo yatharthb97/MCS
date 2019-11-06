@@ -18,6 +18,7 @@
 #include "Vector.h"
 #include"runparam.h"
 #include<random>
+#include"particle.h"
 using namespace std;
 
 void UpdatorP(Particle &p);
@@ -76,10 +77,9 @@ void UpdatorP(Particle &p)
 							 break;}
 		}
 		
-		double check = RunParam::MaxStep;
 		if(RunParam::MaxStep) //Output Max Step Size
 		{
-			p.translate(V(x*RunParam::MaxStep, y*RunParam::MaxStep, z*RunParam::MaxStep));
+			p.translator(V(x*RunParam::MaxStep, y*RunParam::MaxStep, z*RunParam::MaxStep));
 		}
 
 		else if(RunParam::MaxStep == false) //Output Dynamic Step Sizes
@@ -90,7 +90,7 @@ void UpdatorP(Particle &p)
 			int st = sx+std::rand();
 			rlx2.seed(st);
 
-			p.translate(V(x*erandom(rlx2), y*erandom(rlx2), z*erandom(rlx2)));
+			p.translator(V(x*erandom(rlx2), y*erandom(rlx2), z*erandom(rlx2)));
 
 		//cout<<temp.info()<<endl;
 		}
@@ -102,16 +102,17 @@ void UpdatorO(Particle &p)
 {
 	
 	V temp; temp.rndUnit();
-	extern double Rndm(double, double);
+	//extern double Rndm(double, double);
 
-	if(MaxRot)
+	if(RunParam::MaxRot)
 	{
-		p.patch.rotate(temp, maxRotor);
+		p.patch.rotate(temp, RunParam::maxRotor);
 	}
 
 	else
 	{
-		double angle = Rndm(minRotor, maxRotor);
+		//extern double Rndm(double, double);
+		double angle = Rndm(RunParam::minRotor, RunParam::maxRotor);
 		p.patch.rotate(temp, angle);
 	}
 

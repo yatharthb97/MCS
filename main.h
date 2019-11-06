@@ -66,7 +66,7 @@ int dirExists(const char* const path)
 	}
 
 
-void setFileSystem(double RunID, std::string &parent)
+void setFileSystem(double RunID, std::string &parent, int threads)
 {
 	parent = RunParam::ParentPathS; 
 	ostringstream mkd;
@@ -98,14 +98,33 @@ void setFileSystem(double RunID, std::string &parent)
 	    Log l; l.logerror("runtime.cpp", "Filesystem not created! ==> 'Parent/Plots'");
 	}
 
-	string rawrend = parent+"/Raw_Render";
+	string rawrend = parent+"/Raw_Render/";
 	const int dir_err3 = mkdir(rawrend.c_str(), 0777);
 	if (-1 == dir_err3)
 	{
 	    Log l; l.logerror("runtime.cpp", "Filesystem not created! ==> 'Parent/Raw_Render'");
 	}
 
-	if((dir_err1!=-1) && (dir_err2!=-1) && (dir_err3!=-1)){Log l; l.logoutput("runtime.cpp", "Filesystem created without any errors.", true);}
+	bool threadfileerror = false;
+	for(int i = 0; i<threads; i++)
+	{
+
+		std::ostringstream thr;
+		thr<<rawrend<<i;
+		//string thr = rawrend+i;
+		const int dir_err = mkdir(thr.str().c_str(), 0777);
+		if (-1 == dir_err)
+		{
+		    std::ostringstream o;
+		    o<<"Filesystem not created! ==> Parent Directory/Raw_Render_Thread_"<<i;
+		    Log l; l.logerror("runtime.cpp", o.str());
+		    threadfileerror = true;
+
+		}
+	}
+
+	if((dir_err1!=-1) && (dir_err2!=-1) && (dir_err3!=-1) &&(threadfileerror==false)){Log l; l.logoutput("runtime.cpp", "Filesystem created without any errors.", true);}
+	else{Log l; l.logerror("runtime.cpp", "Filesystem created with errors.End Program to resolve.");}
 	//File System set
 }
 
@@ -133,10 +152,10 @@ void setTermPath(std::string s, const char* filename)
 		std:: string tpath = "/dev/pts/";
 		tpath.append(1,pq);
 		//cout<<tpath<<endl;
-		const char* tpath2 = tpath.c_str();
+		//const char* tpath2 = tpath.c_str();
 		ofstream f;
-		f.open(tpath2);
-		f<<PrintInitText()<<endl<<"Path: "<<tpath2<<endl<<s<<endl;
+		f.open(tpath);
+		f<<PrintInitText()<<endl<<"Path: "<<tpath<<endl<<s<<endl;
 		f.close();
 		//cout<<tpath2<<endl;
 
@@ -144,7 +163,8 @@ void setTermPath(std::string s, const char* filename)
 		//Call the File class and write the path to it.
 		//return void
 		//return(tpath2);
-		static SetFile log(filename, true, true, tpath);
+		static SetFile logt(filename, true, true, tpath);
+		Log t_path; t_path.logoutput("main.h/setTermPath()", "TermPath Set: "+ tpath, true);
 }
 
 
@@ -284,11 +304,11 @@ void BoxManager(std::string ParentPath, int RunID, int scope_particles, int scop
 	{
 		for(int j=0; j<loop_runs; j++)
 		{
-			b.trialPos();
+			b.trialMove();
 		}
 
 		std::ostringstream filename;
-		filename<<ParentPath<<"/Raw_Render/"<<"Thread_"<<i<<"_Run_"<<RunID<<"_checkpoint_"<<k;
+		filename<<ParentPath<<"/Raw_Render/"<<i<<"/"<<k;
 		Render(b, filename.str().c_str());
 	}
 
@@ -299,6 +319,7 @@ void BoxManager(std::string ParentPath, int RunID, int scope_particles, int scop
 	////std::chrono::duration<double> elapsed_seconds = end-start;
 	
 	std::ostringstream la;
+	la<<"Run ID: "<<RunID<<std::endl;
 	la<<"Thread ID: "<<i<<endl;
 	la<<"Time of Completion: "<< std::ctime(&end_time)<<std::endl;
 	la<<"Elapsed Time: "<< elapsed_seconds<<endl;

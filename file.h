@@ -10,7 +10,7 @@ class SetFile{
 
 public:
 
-const char* filename;
+string filename;
 bool temp;
 ofstream f;
 
@@ -23,7 +23,7 @@ ofstream f;
 		if(hidden){parent+=".";}
 		parent+=file;
 		this->filename = parent.c_str();
-		if(write!=" ")
+		if(write!="")
 		{
 			f.open(filename, ios::out);
 			f<<write;
@@ -41,7 +41,11 @@ ofstream f;
 	//Destructor
 	~SetFile()
 	{
-		if(temp){remove(this->filename);}
+		if(temp)
+		{
+			remove(this->filename.c_str());
+			cout<<filename<<" deleted."<<endl;
+		}
 	}
 
 };//End of File class

@@ -13,7 +13,7 @@
 #include<vector>
 #include<sstream> //ostringstream used in Constructor
 #include "particle.h" //for the Particle class
-#include"random.h" //For Random(int, int)
+//#include"random.h" //For Random(int, int)
 #include "log.h" //For logoutput()
 #include "runparam.h" //Obvious
 using namespace std;
@@ -26,10 +26,15 @@ private: //Member Variables
 
 int count;
 double edge;
-vector<int> ghostlist;
-int ghost;
 double energy;
 vector<Particle> partlist;
+
+vector<int> ghostlist;
+int ghost;
+
+
+double totdis;
+double totdisSq;
 int ACCEPT;
 int REJECT;
 
@@ -37,9 +42,9 @@ public: //Member Functions
 
 //1
 //@brief - Constructor - Create empty countainer with edge 1
-Box():count(0), ghost(0), edge(1), ACCEPT(0), REJECT(0)
+Box():count(0), ghost(0), edge(1), ACCEPT(0), REJECT(0), totdis(0.00000), totdisSq(0.00000)
 {
-	edge = RunParam::BoxSize;s
+	edge = RunParam::BoxSize;
 	//Particle p(-1);
 	//p.setEDGE(1.000000);
 }
@@ -49,14 +54,14 @@ Box():count(0), ghost(0), edge(1), ACCEPT(0), REJECT(0)
 //@brief - Create a box container with a fixed size and particles
 //@param - count - number of particles
 //		 - size - edge size of the box
-Box(int count):count(count), ghost(0), energy(energy), ACCEPT(0), REJECT(0)
+Box(int count):count(count), ghost(0), energy(energy), ACCEPT(0), REJECT(0), totdis(0.00000), totdisSq(0.00000)
 {
 	//Particle p(-1);
 	//p.setEDGE(this->edge);
 	edge = RunParam::BoxSize;
 	for(unsigned int i = 0; i<count; i++ )
 	{
-		partlist.push_back(Particle((int)i));
+		partlist.push_back(Particle(i, 1));
 		//Include code to catch exception thrown and generate error log
 		//cout<<partlist.at(i).getPosition().info()<<endl;
 
@@ -189,11 +194,19 @@ void CPRParticle(int partid, int vectorpos)
 	ghostlist.erase(ghostlist.begin() + vectorpos);
 }
 
+void CPRRandGhost()
+{
+	unsigned int partid = Rndm(0, ghost-1);
+	partlist.at(ghostlist(partid)).ghost=false;
+	ghostlist.erase(partid);
+	ghost--;
+}
+
 //16
 //Add new Particle to the container
-void AddParticle()
+void AddParticle(int type)
 {
-	this->partlist.push_back(count+1);
+	this->partlist.push_back(Particle(count+1,type));
 	count+=1;
 }
 
@@ -227,7 +240,7 @@ volatile void Accept(int a)
 //20
 double trialMove()
 {
-	extern int Rndm(int, int);
+	//extern int Rndm(int, int);
 	int pid = Rndm(0, count-1);
 	Particle temp;
 	temp = partlist.at(pid); //Copy particle to a temp particle
@@ -235,6 +248,7 @@ double trialMove()
 	extern void UpdatorP(Particle &p);
 	UpdatorO(partlist.at(pid));
 	UpdatorP(partlist.at(pid));
+	double disp = V(temp.position-partlist.at(pid).position).size();
 	//cout<<"Temp Vector"<<temp.info()<<endl;
 	//partlist.at(pid).translator(temp); //Edit Updator3 function
 	extern double LjLoop(std::vector<Particle> &vect);
@@ -245,6 +259,11 @@ double trialMove()
 		{
 			Accept(1);
 			this->energy = E_new;
+			partlist.at(pid).accept++;
+			partlist.at(pid).partdis+=disp;
+			partlist.at(pid).partdisSq+=disp*disp;
+			totdis+=disp;
+			totdisSq+=disp*disp;
 			/*Log trial;
 			trial.logoutput("particle.h","Move Accepted! Energy Decreased!", true);*/
 		}
@@ -256,16 +275,29 @@ double trialMove()
 		{
 			Accept(1);
 			this->energy = E_new;
+			partlist.at(pid).accept++;
+			totdis+=disp;
+			totdisSq+=disp*disp;
+			partlist.at(pid).partdis+=disp;
+			partlist.at(pid).partdisSq+=disp*disp;
 			/*Log trial;
 			trial.logoutput("particle.h","Move Accepted! Energy Increased!", true);*/
 		}
 
 		else
 		{
-			partlist.at(pid).position = temp; //Copy back from temp, if rejected.
+			partlist.at(pid) = temp; //Copy back from temp, if rejected.
+			partlist.at(pid).reject++; //Particle reject incremented
 			Reject(1);
-			cout<<"___Move Rejected!___"<<endl;
-			cout<<"---Particle "<<pid<<" moved to "<<partlist.at(pid).position.info()<<endl;
+			if(RunParam::term2)
+			{
+				cout<<"___Move Rejected!___"<<endl;
+				cout<<"---Particle "<<pid<<" moved to "<<partlist.at(pid).position.info()<<endl;
+			}
+			else
+			{
+				cout<<"/_"<<flush;
+			}
 			/*Log trial;
 			trial.logoutput("particle.h","Move Rejected!", true);*/
 			

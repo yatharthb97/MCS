@@ -43,7 +43,7 @@ public:
 
     }
 
-    void rotate(double angle, V newaxis) 
+    void rotate(V &newaxis, double &angle) 
     {
         double vc, vs, t2, t3, t4, t5, t6, t7, t8, t9, t10;
         double d1, d2, d3, d4, d5, d6, d7, d8, d9 , newx, newy, newz;
@@ -132,6 +132,8 @@ public:
 	double energy;
 	int accept;
 	int reject;
+	double partdis;
+	double partdisSq;
 
 
 	//Particle Properties
@@ -142,13 +144,15 @@ public:
 	static double L; //Length of the SPC
 	static double D; //Diameter of the SPC
 
-
+	//Default Empty constructor
+	Particle(): ghost(false), energy(0.000000), accept(0), reject(0), type(type), partdis(0.00000), partdisSq(0.00000)
+	{}
 
 //1
 //Constructor
 	//@brief - Calls initializer and sets up the particle
 	//@param - partid ==> particle ID	
-	Particle(int partid, int type): partid(partid), ghost(false), energy(0.000000), accept(0), reject(0), type(type)
+	Particle(int partid, int type): partid(partid), ghost(false), energy(0.000000), accept(0), reject(0), type(type), partdis(0.00000), partdisSq(0.00000)
 	{
 		extern void initializerP(V &v); //Defined in initial.cpp
 		extern void initializerO(V &v);
@@ -158,7 +162,7 @@ public:
 		//unit.rndUnit();
 		patch.normal.orthogonal(patch.unit);//Orthogonal to the unit
 		patch.side[0] = patch.normal; patch.side[1] = patch.normal;
-		cout<<patch.side[0].info()<<"   "<<patch.side[1].info()<<endl;
+		//cout<<patch.side[0].info()<<"   "<<patch.side[1].info()<<endl;
 		patch.side[0].rotate(patch.unit, patch.width/2);
 		patch.side[1].rotate(patch.unit, -(patch.width/2));
 		
@@ -277,7 +281,15 @@ public:
 	
 
 		//Translation Info
-		cout<<"---Particle "<<partid<<" moved to "<<position.info()<<endl;
+		if(RunParam::term2)
+		{
+			cout<<"---Particle "<<partid<<" moved to "<<position.info()<<endl;
+		}
+
+		else
+		{
+			cout<<"."<<flush;
+		}
 	}
 
 	

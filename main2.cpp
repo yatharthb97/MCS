@@ -49,7 +49,7 @@ if(RunParam::term2)
 
 
 //4.3 - Set Up filesystem
-setFileSystem(RunID, ParentPath);
+setFileSystem(RunID, ParentPath, threads);
 Log mkdr; mkdr.logoutput("main2.cpp", "Parent Path of Filesystem:"+ParentPath, true);
 //Filesystem Set
 
@@ -61,23 +61,28 @@ a<<"Estimated Time For Run:"<<t1<<" - "<<t2<<" seconds per thread."<<endl<<"Tota
 Log l; l.logoutput("runtime.cpp", a.str(), true);
 
 //Start Simulation run
-//if()
-//std::vector<thread> t;
+/*std::vector<thread> t;
 
-/*for(unsigned int i=0; i<threads;i++)
-	t.push_back(BoxManager(ParentPath, RunID, particles, sweeps, checkpoints, i));
+for(unsigned int i=0; i<threads;i++)
+{	
+	t.push_back(std::thread(BoxManager(ParentPath, RunID, particles, sweeps, checkpoints, i)));
 	Log threadlog; threadlog.logoutput("Main Function", "Thread Created: Thread "+i,true);
 
-}*/
-int i = 1;
-BoxManager(ParentPath, RunID, particles, sweeps, checkpoints, i);
+	BoxManager(ParentPath, RunID, particles, sweeps, checkpoints, i);
+}
 
-/*for(unsigned int i=0; i<threads;i++)
+
+for(unsigned int i=0; i<threads;i++)
 {
 	t.at(i).join();
 	Log threadlog; threadlog.logoutput("Main Function", "Thread Ended: Thread "+i,true);
 
 }*/
+int i = 0;
+BoxManager(ParentPath, RunID, particles, sweeps, checkpoints, i);
+Log threadlog; threadlog.logoutput("Main Function", "Thread Created: Thread "+i,true);
+
+
 
 }//End of Main
 

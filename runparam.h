@@ -1,12 +1,21 @@
 #pragma once
 #include<iostream>
 
-
+//Macro Definations
+#define EtaRep 0.25e-15
+#define SigmaRep 1
+#define CutOffRep 2
+#define EtaAtrr 1
+#define SigmaAtrr 0.25e-18
 
 
 class RunParam{
 
 public:
+
+//
+static bool printRunParamData;
+
 //Member VAriables
 static bool RUN;
 static double StepSize;
@@ -18,7 +27,7 @@ static bool MaxStep;
 //Log File Config
 static const char* LogOutput;
 static const char* LogErrorOut;
-const char* termpath;
+//const char* termpath;
 static bool term2;
 static bool sysInterrupt;
 
@@ -34,6 +43,13 @@ static std::string ParentPathS;
 static double ETPSl;
 static double ETPSu;
 
+
+
+/*void printRunParamData()
+{
+	ostringstream paramdat;
+	paramdet<<
+}*/
 /*RunParam()
 {
 extern const char* setTermPath();

@@ -49,7 +49,7 @@ public:
 		//Check if the program is running
 		RunParam l;
 		RUN = l.checkRUN();
-		is_term2 = l.checkTerm2();
+		is_term2 = RunParam::term2;
 		//cout<<is_term2<<endl;
 		is_interrupt = l.checkInterrupt();
 		//cout<<is_interrupt<<endl;
@@ -65,10 +65,11 @@ public:
 			t2>>t2path;
 			termpath = t2path.c_str();
 			t2.close();
+			
 		}
 
 		else{termpath = "" ;}
-
+		cout<<termpath<<endl;
 	if(RUN == false){eo.close(); oo.close(); }
 
 	else{
