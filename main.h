@@ -106,21 +106,23 @@ void setFileSystem(double RunID, std::string &parent, int threads)
 	}
 
 	bool threadfileerror = false;
-	for(int i = 0; i<threads; i++)
+	if(threads>1)
 	{
-
-		std::ostringstream thr;
-		thr<<rawrend<<i;
-		//string thr = rawrend+i;
-		const int dir_err = mkdir(thr.str().c_str(), 0777);
-		if (-1 == dir_err)
+		for(int i = 0; i<threads; i++)
 		{
-		    std::ostringstream o;
-		    o<<"Filesystem not created! ==> Parent Directory/Raw_Render_Thread_"<<i;
-		    Log l; l.logerror("runtime.cpp", o.str());
-		    threadfileerror = true;
 
-		}
+			std::ostringstream thr;
+			thr<<rawrend<<i;
+			//string thr = rawrend+i;
+			const int dir_err = mkdir(thr.str().c_str(), 0777);
+			if (-1 == dir_err)
+			{
+			    std::ostringstream o;
+			    o<<"Filesystem not created! ==> Parent Directory/Raw_Render_Thread_"<<i;
+			    Log l; l.logerror("runtime.cpp", o.str());
+			    threadfileerror = true;
+
+		}	}
 	}
 
 	if((dir_err1!=-1) && (dir_err2!=-1) && (dir_err3!=-1) &&(threadfileerror==false)){Log l; l.logoutput("runtime.cpp", "Filesystem created without any errors.", true);}
@@ -176,7 +178,7 @@ void setParam(int &argc, char** &argv, bool &arg_run_counter, double &RunID, int
 		if(argv[i]==s)
 		{
 			RunID = atoi(argv[i+1]);
-			ofstream f(".RunID.simx", ios::out);
+			ofstream f(".RunID.simx", ios::out | std::ofstream::trunc);
 			f<<RunID;
 			f.close();
 			ifstream ff(".RunID.simx",ios::in);
@@ -191,7 +193,7 @@ void setParam(int &argc, char** &argv, bool &arg_run_counter, double &RunID, int
 		if(argv[i]==s)
 		{
 			RunID = 0;
-			ofstream f(".RunID.simx", ios::out);
+			ofstream f(".RunID.simx", ios::out | std::ofstream::trunc);
 			f<<RunID;
 			f.close();
 			ifstream ff(".RunID.simx",ios::in);
@@ -247,8 +249,8 @@ void setParam(int &argc, char** &argv, bool &arg_run_counter, double &RunID, int
 		ifstream f(".RunID.simx", ios::in);
 			f>>RunID;
 			f.close();
-			RunID+=1;
-			ofstream ff(".RunID.simx",ios::out);
+			RunID = int(RunID)+1;
+			ofstream ff(".RunID.simx",ios::out | std::ofstream::trunc);
 			ff<<RunID;
 			ff.close();
 			cout<<"RunID is set to: "<<RunID<<endl;
@@ -276,6 +278,17 @@ void Render(Box &b, const char* filename)
 
 }
 
+
+void AutoPlot(string filename, string filename2, int sweeps, double energy)
+{
+	std::ostringstream command;
+    command<<"./autoplot.gnu "<<filename<<" "<<filename2<<" "<<sweeps<<" "<<energy;
+    system(command.str().c_str());
+    std::ostringstream l;
+    l<<"Autoplot render after sweeps: "<<sweeps<<": actuated.";
+    Log autoplot; autoplot.logoutput("main.h/AutoPlot()",l.str() , true);
+}
+
 std::time_t TimeStamp()
 {
 	auto stamp = std::chrono::system_clock::now();
@@ -287,29 +300,57 @@ std::time_t TimeStamp()
 
 
 
-void BoxManager(std::string ParentPath, int RunID, int scope_particles, int scope_sweeps, int scope_checkpoints, int i)
+void BoxManager(std::string ParentPath, int RunID, int scope_particles, int scope_sweeps, int scope_checkpoints, int threads, int i)
 {
 
 	int loop_runs = scope_sweeps/scope_checkpoints;
 	Box b(scope_particles);
 	double e1 = b.getEnergy();
 
+	//Initial timestamp
 	std::ostringstream t_stamp;
 	std:: time_t start_time = TimeStamp();
 	t_stamp<<"Thread: "<<i<<" Time of Initiation: "<< std::ctime(&start_time)<<std::endl;
 	Log tstamp; tstamp.logoutput("main.h", t_stamp.str(), true);
 
+	//Initial Render
+	std::ostringstream filename;
+	if(threads>1) {filename<<ParentPath<<"/Raw_Render/"<<i<<"/"<<0;}
+	else {filename<<ParentPath<<"/Raw_Render/"<<0;}
+	Render(b, filename.str().c_str());
 
+	if(RunParam::autoplotraw)
+	{
+		std::ostringstream filename2;
+		if(threads>1) {filename2<<ParentPath<<"/Plots/"<<i<<"/"<<0;}
+		else {filename2<<ParentPath<<"/Plots/"<<0;}
+		AutoPlot(filename.str(), filename2.str(),0, b.getEnergy());
+	}
+	cout<<"Rendered: "<<0<<endl;
+	//End of Initial Render
+
+	//BoxManager Main Loop
+	int count = 0;
 	for(int k = 0; k<scope_checkpoints; k++)
 	{
 		for(int j=0; j<loop_runs; j++)
 		{
 			b.trialMove();
+			count++;
 		}
 
 		std::ostringstream filename;
-		filename<<ParentPath<<"/Raw_Render/"<<i<<"/"<<k;
+		if(threads>1) {filename<<ParentPath<<"/Raw_Render/"<<i<<"/"<<k+1;}
+		else {filename<<ParentPath<<"/Raw_Render/"<<k+1;}
 		Render(b, filename.str().c_str());
+		if(RunParam::autoplotraw)
+		{
+			std::ostringstream filename2;
+			if(threads>1) {filename2<<ParentPath<<"/Plots/"<<i<<"/"<<k+1;}
+			else {filename2<<ParentPath<<"/Plots/"<<k+1;}
+			AutoPlot(filename.str(), filename2.str(),count, b.getEnergy());
+		}
+		cout<<"Rendered: "<<k+1<<endl;
 	}
 
 	//Output of Vital Information

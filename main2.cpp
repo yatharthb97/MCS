@@ -79,7 +79,7 @@ for(unsigned int i=0; i<threads;i++)
 
 }*/
 int i = 0;
-BoxManager(ParentPath, RunID, particles, sweeps, checkpoints, i);
+BoxManager(ParentPath, RunID, particles, sweeps, checkpoints, threads, i);
 Log threadlog; threadlog.logoutput("Main Function", "Thread Created: Thread "+i,true);
 
 

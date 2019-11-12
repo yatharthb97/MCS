@@ -190,15 +190,16 @@ void RemoveParticle(int partid)
 void CPRParticle(int partid, int vectorpos)
 {
 	this->partlist.at(partid).MakeGhost(false);
-	ghost-=ghost;
 	ghostlist.erase(ghostlist.begin() + vectorpos);
+	ghost--;
 }
 
 void CPRRandGhost()
 {
 	unsigned int partid = Rndm(0, ghost-1);
-	partlist.at(ghostlist(partid)).ghost=false;
-	ghostlist.erase(partid);
+	unsigned int pid = ghostlist.at(partid);
+	partlist.at(pid).ghost=false;
+	ghostlist.erase(ghostlist.begin() + partid);
 	ghost--;
 }
 

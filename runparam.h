@@ -2,11 +2,11 @@
 #include<iostream>
 
 //Macro Definations
-#define EtaRep 0.25e-15
+#define EtaRep 0.25e-12
 #define SigmaRep 1
-#define CutOffRep 2
+#define CutOffRep 1
 #define EtaAtrr 1
-#define SigmaAtrr 0.25e-18
+#define SigmaAtrr 0.25e-6
 
 
 class RunParam{
@@ -15,6 +15,7 @@ public:
 
 //
 static bool printRunParamData;
+static bool autoplotraw;
 
 //Member VAriables
 static bool RUN;
