@@ -22,31 +22,34 @@ using namespace std;
 class Box{
 
 
-private: //Member Variables
+public: //Member Variables
 
+//Box Param
 int count;
 double edge;
 double energy;
+
+//Particle Vector Container
 vector<Particle> partlist;
 
+//Ghost parameters
 vector<int> ghostlist;
 int ghost;
 
-
+//Statistical Quantities
 double totdis;
 double totdisSq;
 int ACCEPT;
 int REJECT;
 
-public: //Member Functions
+//Member Functions
 
 //1
 //@brief - Constructor - Create empty countainer with edge 1
 Box():count(0), ghost(0), edge(1), ACCEPT(0), REJECT(0), totdis(0.00000), totdisSq(0.00000)
 {
 	edge = RunParam::BoxSize;
-	//Particle p(-1);
-	//p.setEDGE(1.000000);
+	
 }
 
 //2
@@ -61,10 +64,9 @@ Box(int count):count(count), ghost(0), energy(energy), ACCEPT(0), REJECT(0), tot
 	edge = RunParam::BoxSize;
 	for(unsigned int i = 0; i<count; i++ )
 	{
-		partlist.push_back(Particle(i, 1));
+		partlist.push_back(Particle(i, 1)); //1 is the type of the particle
 		//Include code to catch exception thrown and generate error log
 		//cout<<partlist.at(i).getPosition().info()<<endl;
-
 	}
 
 	//Assign initial Energy to the Box
@@ -81,11 +83,12 @@ Box(int count):count(count), ghost(0), energy(energy), ACCEPT(0), REJECT(0), tot
 	Log box;
 	box.logoutput("box.h", o.str(), true);
 	}
+
 }
 
 //3
 //Destructor
-//Logs that the box was destroyed
+//@brief - Logs that the box was destroyed
 ~Box()
 {
 	//std::cout<<"The Box class destructor was called. The container is destroyed!"
@@ -97,37 +100,13 @@ Box(int count):count(count), ghost(0), energy(energy), ACCEPT(0), REJECT(0), tot
 ///Accessors
 
 //4
-//Returns the box size - Redundant after RunParam
-volatile double checkBoxSize()
+//@brief - Get Acceptance Ratio
+volatile double const getRatio()
 {
-	return(edge); //Size of the box
+	return ((double)ACCEPT/(REJECT+ACCEPT));
 }
 
 //5
-//Returns the number of particles in the box excluding the ghost particles
-//@return - int count - ghost
-int const getCount()
-{
-	return(count);
-}
-
-//6
-//@brief - Returns the number of ghost particles in the box
-//@return - int ghost 
-int const getGhostCount()
-{
-	return(ghost);
-}
-
-//7
-//@brief - Returns the ghostlist vector
-//@return - vector<int> ghostlist
-std::vector<int> const getGhostList()
-{
-	return ghostlist;
-}
-
-//8
 //@brief - prints the ghostlist vector - tab seperated
 void const printGhostList()
 {
@@ -137,47 +116,28 @@ void const printGhostList()
 	}
 	std::cout<<std::endl;
 }
-//9
-double const getEnergy()
+
+//6
+//Runs a complete LJ loop insted of partial energy calculation
+void UpdateEnergy()
 {
-	return this->energy;
+	extern double LjLoop(std::vector<Particle> &vect);
+	this->energy = LjLoop(this->partlist); //Run LJ Loop
 }
 
-//10
-std::vector<Particle> PassPartlist()
-{
-	return vector<Particle>(this->partlist);
-}
+///Mutators
 
-//10
-volatile int countReject()
-{
-	return REJECT;
-}
-
-//11
-volatile int countAccept()
-{
-	return ACCEPT;
-}
-
-//12
-volatile double getRatio()
-{
-	return ((double)ACCEPT/REJECT);
-}
-
-
-//13
-//Changes the box size - use with causion
+//7
+//@brief - Changes the box size - use with causion
 volatile void setBoxSize(double size)
 {
 	this->edge = size;
 	RunParam::BoxSize = size;
 }
 
-//14
-//Remove Particle
+
+//8
+//@brief - Remove Particle - Ghost Particle
 void RemoveParticle(int partid)
 {
 	this->partlist.at(partid).MakeGhost(true);
@@ -185,8 +145,8 @@ void RemoveParticle(int partid)
 	ghostlist.push_back(partid); //Maintain a ghost list
 }
 
-//15
-//Bring back a removed particle
+//9
+//@brief - Bring back a removed particle
 void CPRParticle(int partid, int vectorpos)
 {
 	this->partlist.at(partid).MakeGhost(false);
@@ -194,6 +154,8 @@ void CPRParticle(int partid, int vectorpos)
 	ghost--;
 }
 
+//10
+//@brief - Bring Back a Random Ghost particle
 void CPRRandGhost()
 {
 	unsigned int partid = Rndm(0, ghost-1);
@@ -203,87 +165,113 @@ void CPRRandGhost()
 	ghost--;
 }
 
-//16
-//Add new Particle to the container
+//11
+//@brief - Add new Particle to the container
 void AddParticle(int type)
 {
 	this->partlist.push_back(Particle(count+1,type));
 	count+=1;
 }
 
-//17
-//Remove all ghost particles and renormalize the list
+//12
+//@brief - Remove all ghost particles and renormalize the list
 void FlushGhosts()
 {
 	//Add function to renormalize particle ids. - Remove all ghosts from the list.
-	/*int total = count-ghost;
-	for(unsigned int i = 0; i< total; i++)
-	{
-		if(partlist.at(i).ghost = true)
-		{
+	//This approach needs rearrangement of the partlist
 
-		}
-	}*/
 }
 
-//18
+//13
+//@brief - Increment RETECT
 volatile void Reject(int a)
 {
 	if(a==1) {REJECT+=1;}
 }
 
-//19
+//14
+//@brief - Increment ACCEPT
 volatile void Accept(int a)
 {
 	if(a==1){ACCEPT+=1; }
 }
 
-//20
+//15
+//@brief - Creates a TrialMove
 double trialMove()
 {
 	//extern int Rndm(int, int);
 	int pid = Rndm(0, count-1);
 	Particle temp;
 	temp = partlist.at(pid); //Copy particle to a temp particle
+
+	extern double PartEnergyCalc(std::vector<Particle> &vect, int pid);
+	double E_old = PartEnergyCalc(this->partlist, pid);
+	//Store Old Partial Energy
+
 	extern void UpdatorO(Particle &p);
 	extern void UpdatorP(Particle &p);
 	UpdatorO(partlist.at(pid));
 	UpdatorP(partlist.at(pid));
 	double disp = V(temp.position-partlist.at(pid).position).size();
-	//cout<<"Temp Vector"<<temp.info()<<endl;
-	//partlist.at(pid).translator(temp); //Edit Updator3 function
-	extern double LjLoop(std::vector<Particle> &vect);
-	double E_new = LjLoop(this->partlist); //Run LJ Loop
+	//Move Particle
+
+	//Calculate New Partial Energy
+	double E_new = PartEnergyCalc(this->partlist, pid);
+	
 
 	//Energy Considerations
-	if(E_new < this->energy)
+	if(E_new < E_old)
 		{
+			//Update Box Parameters
 			Accept(1);
-			this->energy = E_new;
+			energy = energy + E_new - E_old;
+			totdis+=disp;
+			totdisSq+=disp*disp;
+
+			//Update Particle Parameters
 			partlist.at(pid).accept++;
 			partlist.at(pid).partdis+=disp;
 			partlist.at(pid).partdisSq+=disp*disp;
-			totdis+=disp;
-			totdisSq+=disp*disp;
+			
 			/*Log trial;
 			trial.logoutput("particle.h","Move Accepted! Energy Decreased!", true);*/
 		}
 	else
 	{
-		//int LJRR = RunParam::checkLJARatio();
+		double E_inc = ((E_new-E_old)/energy)*100;
 		//Increased energy - acceptance move
-		if(Rndm(0,100) < RunParam::LJARatio && E_new < 999)
+		if(E_inc <= RunParam::MaxEnergyFluctuation && E_new <= 999 && Rndm(0,100) < RunParam::LJARatio)
 		{
+			//Update Box Parameters
 			Accept(1);
-			this->energy = E_new;
-			partlist.at(pid).accept++;
+			energy = energy + E_new - E_old;
 			totdis+=disp;
 			totdisSq+=disp*disp;
+
+			//Update Particle Parameters
+			partlist.at(pid).accept++;
 			partlist.at(pid).partdis+=disp;
 			partlist.at(pid).partdisSq+=disp*disp;
 			/*Log trial;
 			trial.logoutput("particle.h","Move Accepted! Energy Increased!", true);*/
+			//cout<<"1";
 		}
+
+		/*else if(Rndm(0,100) < RunParam::LJARatio &&  E_new<999)
+		{
+			//Update Box Parameters
+			Accept(1);
+			energy = energy + E_new - E_old;
+			totdis+=disp;
+			totdisSq+=disp*disp;
+
+			//Update Particle Parameters
+			partlist.at(pid).accept++;
+			partlist.at(pid).partdis+=disp;
+			partlist.at(pid).partdisSq+=disp*disp;
+			cout<<"2";
+		}*/
 
 		else
 		{
@@ -297,7 +285,8 @@ double trialMove()
 			}
 			else
 			{
-				cout<<"/_"<<flush;
+				//cout<<"r"<<flush;
+				//cout<<"3";
 			}
 			/*Log trial;
 			trial.logoutput("particle.h","Move Rejected!", true);*/
@@ -306,6 +295,15 @@ double trialMove()
 
 		
 	}
+}
+
+void Graph(string path, int sweeps)
+{
+	string filename=path+"/energyflux.dat";
+	ofstream graph(filename, ios::app);
+	graph<<sweeps<<":"<<energy<<":"<<totdis<<":"<<totdisSq<<":"<<ACCEPT<<":"<<REJECT<<endl;
+	graph.close();
+	
 }
 
 //Friend class Declarations
