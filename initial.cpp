@@ -17,25 +17,24 @@ using namespace std;
 
 #define PI 3.141592653
 
-extern volatile double checkBoxSize();
+
 void initializerP(V &v);
 void initializerO(V &v);
-
 
 
 void initializerP(V &v)
 {
 	RunParam r;
-	double BoxSize = r.checkBoxSize();
+	double BoxSize = RunParam::BoxSize;
 		//**double BoxSize = Box::checkBoxSize();
 		ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
 		Urandom urandom;//Object for Urandom class
 		int sx = urandom.seedby_urandom(); //Seeding
 		rlx.seed(sx);
 		//Uniform
-		//uniform_real_distribution<double> drandom(0, BoxSize);
+		uniform_real_distribution<double> drandom(0, BoxSize);
 		//Gaussian
-		normal_distribution<double> drandom(2.5, BoxSize/5); //StdDev = Range/5
+		//normal_distribution<double> drandom(2.5, BoxSize/5); //StdDev = Range/5
 		//std::srand(std::time(nullptr)); // use current time as seed for random generator
 
 		v.x = abs(drandom(rlx));

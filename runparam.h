@@ -22,6 +22,8 @@ static bool RUN;
 static double StepSize;
 static double MinStepSize;
 static int LJARatio;
+static double MaxEnergyFluctuation;
+static int PlotEnergyAfter;
 static double BoxSize;
 static bool MaxStep;
 

@@ -12,18 +12,14 @@ static std::string ParentPath = "";
 
 int main(int argc, char** argv)
 {
-	/*static bool arg_run_counter = false;
-	static double RunID = -1;
-	static int sweeps = 1000;
-	static int checkpoints = 1;
-	static int threads = 1;*/
 	
-	//Check Arguements
-	/*cout << "You have entered " << argc 
-         << " arguments:" << endl; 
+	
+//Check Arguements - Output Args
+/*cout << "You have entered " << argc 
+     << " arguments:" << endl; 
   
-    for (int i = 0; i < argc; ++i) 
-        cout << argv[i] << endl;*/ 
+for (int i = 0; i < argc; ++i) 
+    cout << argv[i] << endl;*/ 
 
 
 //Read Arguements
