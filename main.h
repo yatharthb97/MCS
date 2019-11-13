@@ -258,16 +258,17 @@ void setParam(int &argc, char** &argv, bool &arg_run_counter, double &RunID, int
 	}
 }
 
+//Graph/CreatePlots
 void Render(Box &b, const char* filename)
 {
 	fstream rend;
 	rend.open(filename, ios::out);
 	if(rend.is_open())
 	{
-		int count = b.getCount();
+		int count = b.count;
 		for(unsigned int i= 0; i<count; i++)
 		{
-		rend<<b.PassPartlist().at(i).getPosition().infoRaw()<<std::endl;
+		rend<<b.partlist.at(i).getPosition().infoRaw()<<std::endl;
 		}
 		rend.close();
 	}
@@ -289,6 +290,19 @@ void AutoPlot(string filename, string filename2, int sweeps, double energy)
     Log autoplot; autoplot.logoutput("main.h/AutoPlot()",l.str() , true);
 }
 
+void PlotEnergyFlux(int RunID, string ParentPath)
+{
+	std::ostringstream opfile;
+	opfile<<ParentPath<<"/Plots/";
+	std::ostringstream infile;
+	infile<<ParentPath<<"/energyflux.dat";
+	std::ostringstream command;
+	command<<"./fluxplot.gnu "<<infile.str()<<" "<<opfile.str()<<" "<<RunID;
+	system(command.str().c_str());
+}
+//
+
+
 std::time_t TimeStamp()
 {
 	auto stamp = std::chrono::system_clock::now();
@@ -297,15 +311,12 @@ std::time_t TimeStamp()
 }
 
 
-
-
-
 void BoxManager(std::string ParentPath, int RunID, int scope_particles, int scope_sweeps, int scope_checkpoints, int threads, int i)
 {
 
 	int loop_runs = scope_sweeps/scope_checkpoints;
 	Box b(scope_particles);
-	double e1 = b.getEnergy();
+	double e1 = b.energy;
 
 	//Initial timestamp
 	std::ostringstream t_stamp;
@@ -324,19 +335,26 @@ void BoxManager(std::string ParentPath, int RunID, int scope_particles, int scop
 		std::ostringstream filename2;
 		if(threads>1) {filename2<<ParentPath<<"/Plots/"<<i<<"/"<<0;}
 		else {filename2<<ParentPath<<"/Plots/"<<0;}
-		AutoPlot(filename.str(), filename2.str(),0, b.getEnergy());
+		AutoPlot(filename.str(), filename2.str(),0, b.energy);
 	}
 	cout<<"Rendered: "<<0<<endl;
 	//End of Initial Render
 
 	//BoxManager Main Loop
-	int count = 0;
+	int energyrendercount = 0; //For EnergyFlux File
+	int counter = 0; //Overall Sweep Counter
 	for(int k = 0; k<scope_checkpoints; k++)
 	{
 		for(int j=0; j<loop_runs; j++)
 		{
 			b.trialMove();
-			count++;
+			energyrendercount++;
+			counter++;
+			if(energyrendercount>=RunParam::PlotEnergyAfter)
+			{
+				b.Graph(ParentPath, counter);
+				energyrendercount=0;
+			}
 		}
 
 		std::ostringstream filename;
@@ -348,30 +366,31 @@ void BoxManager(std::string ParentPath, int RunID, int scope_particles, int scop
 			std::ostringstream filename2;
 			if(threads>1) {filename2<<ParentPath<<"/Plots/"<<i<<"/"<<k+1;}
 			else {filename2<<ParentPath<<"/Plots/"<<k+1;}
-			AutoPlot(filename.str(), filename2.str(),count, b.getEnergy());
+			AutoPlot(filename.str(), filename2.str(),counter, b.energy);
 		}
 		cout<<"Rendered: "<<k+1<<endl;
 	}
 
 	//Output of Vital Information
-	double e2 = b.getEnergy();
+	double e2 = b.energy;
 	std:: time_t end_time = TimeStamp();
-	double elapsed_seconds = double(end_time - start_time)/CLOCKS_PER_SEC;
+	double elapsed_seconds = double(end_time - start_time);
 	////std::chrono::duration<double> elapsed_seconds = end-start;
 	
 	std::ostringstream la;
 	la<<"Run ID: "<<RunID<<std::endl;
 	la<<"Thread ID: "<<i<<endl;
 	la<<"Time of Completion: "<< std::ctime(&end_time)<<std::endl;
-	la<<"Elapsed Time: "<< elapsed_seconds<<endl;
-	la<<"Accepted Moves: "<<b.countAccept()<<"  Rejected Moves: "<<b.countReject()<<endl;
-	la<<"Accept/Reject Ratio: "<<b.getRatio()<<endl;
+	la<<"Elapsed Time: "<< elapsed_seconds<<" seconds"<<endl;
+	la<<"Accepted Moves: "<<b.ACCEPT<<"  Rejected Moves: "<<b.REJECT<<endl;
+	la<<"Acceptance Ratio: "<<b.getRatio()<<endl;
 	la<<"Initial Energy: "<<e1<<endl;
 	la<<"Final Energy: "<<e2<<endl;
 	la<<"Energy Change: "<<e2-e1<<endl<<endl<<endl;
 	Log last;
 	last.logoutput("main.cpp", la.str(), true);
-}
 
+	PlotEnergyFlux(RunID, ParentPath);
+}
 
 
