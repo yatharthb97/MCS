@@ -288,7 +288,7 @@ public:
 
 		else
 		{
-			cout<<"."<<flush;
+			//cout<<"."<<flush;
 		}
 	}
 
