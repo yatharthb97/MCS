@@ -36,12 +36,13 @@ if(RunParam::term2)
 	}
 //Terminal Paths Set
 
-	//Print System Parameters
-	std::ostringstream runlog;
-	runlog<<"RunID: "<<RunID<<" (default: -1)"<<endl<<"Sweeps: "<<sweeps<<" (default: 1000)"<<endl;
-	runlog<<"Checkpoint: "<<checkpoints<<" (default: 1)"<<endl<<"Threads: "<<threads<<" (default: 1)"<<endl;
-	runlog<<"Particles in Box: "<<particles<<" (default: 100)";
-	Log p; p.logoutput("runtime.cpp",runlog.str() ,true);
+
+//Print System Parameters
+std::ostringstream runlog;
+runlog<<"RunID: "<<RunID<<" (default: -1)"<<endl<<"Sweeps: "<<sweeps<<" (default: 1000)"<<endl;
+runlog<<"Checkpoint: "<<checkpoints<<" (default: 1)"<<endl<<"Threads: "<<threads<<" (default: 1)"<<endl;
+runlog<<"Particles in Box: "<<particles<<" (default: 100)";
+Log p; p.logoutput("runtime.cpp",runlog.str() ,true);
 
 
 //4.3 - Set Up filesystem
@@ -49,11 +50,12 @@ setFileSystem(RunID, ParentPath, threads);
 Log mkdr; mkdr.logoutput("main2.cpp", "Parent Path of Filesystem:"+ParentPath, true);
 //Filesystem Set
 
+
 //ETRun Set
 double t1 = (RunParam::ETPSl)*sweeps;
 double t2 = (RunParam::ETPSu)*sweeps;
 std::ostringstream a;
-a<<"Estimated Time For Run:"<<t1<<" - "<<t2<<" seconds per thread."<<endl<<"Total time: "<<t1*threads<<" - "<<t2*threads<< "seconds."<<endl;
+a<<"Estimated Time For Run:"<<t1<<" - "<<t2<<" seconds per thread."<<endl<<"Total time: "<<t1*threads<<" - "<<t2*threads<< " seconds."<<endl;
 Log l; l.logoutput("runtime.cpp", a.str(), true);
 
 //Start Simulation run

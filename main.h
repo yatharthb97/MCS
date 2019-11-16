@@ -22,7 +22,119 @@ using namespace std;
 #include<thread>
 
 
+//setparam - ReadArgs
+void setParam(int &argc, char** &argv, bool &arg_run_counter, double &RunID, int &sweeps, int &checkpoints, int &threads, int &particles)
+{
+	for(int i=0; i<argc; i++)
+	{
+		std::string s = "set"; 
+		if(argv[i]==s && i<argc)
+		{
+			RunID = atoi(argv[i+1]);
+			ofstream f(".RunID.simx", ios::out | std::ofstream::trunc);
+			f<<RunID;
+			f.close();
+			ifstream ff(".RunID.simx",ios::in);
+			double RunID2;
+			ff>>RunID2;
+			ff.close();
+			cout<<"RunID is set to: "<<RunID2<<endl;
+			arg_run_counter = true;
 
+		}
+		s = "reset";
+		if(argv[i]==s && i<argc)
+		{
+			RunID = 0;
+			ofstream f(".RunID.simx", ios::out | std::ofstream::trunc);
+			f<<RunID;
+			f.close();
+			ifstream ff(".RunID.simx",ios::in);
+			double RunID2;
+			ff>>RunID2;
+			ff.close();
+			cout<<"RunID is reset to: "<<RunID2<<endl;
+			arg_run_counter = true;
+		}
+		s = "noincrement";
+		if(argv[i]==s && i<argc)
+		{
+			ifstream f(".RunID.simx", ios::in);
+			f>>RunID;
+			f.close();
+			RunID+=0.1;
+			ofstream ff(".RunID.simx",ios::out);
+			ff<<RunID;
+			ff.close();
+			cout<<"RunID is set to: "<<RunID<<endl;
+			arg_run_counter = true;
+		}
+
+
+		s="sweeps";
+		if(argv[i]==s && i<argc)
+		{
+			sweeps = atoi(argv[i+1]);
+		}
+
+
+		s="checkpoints";
+		if(argv[i]==s && i<argc)
+		{
+			checkpoints=atoi(argv[i+1]);
+		}
+
+		s="threads";
+		if(argv[i]==s && i<argc)
+		{
+			threads=atoi(argv[i+1]);
+		}
+
+		s="particles";
+		if(argv[i]==s && i<argc)
+		{
+			particles = atoi(argv[i+1]);
+		}
+	}
+
+	if(!arg_run_counter)
+	{
+		ifstream f(".RunID.simx", ios::in);
+			f>>RunID;
+			f.close();
+			RunID = int(RunID)+1;
+			ofstream ff(".RunID.simx",ios::out | std::ofstream::trunc);
+			ff<<RunID;
+			ff.close();
+			cout<<"RunID is set to: "<<RunID<<endl;
+			arg_run_counter = true;
+	}
+}
+//End of setParam
+
+
+//PrintInitText - Print Welcome Text
+std::string PrintInitText()
+{
+	ifstream Reader("./Resource/inittext");
+	
+	std::string out;
+	while(Reader.good())
+	{
+		std::string TempLine;                  //Temp line
+	    std::getline (Reader , TempLine);        //Get temp line
+	    TempLine += "\n";                      //Add newline character
+	    
+	    out += TempLine;                     //Add newline
+	}
+
+	Reader.close();
+	return out;
+}
+//End of Print Welcome Text
+
+
+//dirExists
 /******************************************************************************
  * Checks to see if a directory exists. Note: This method only checks the
  * existence of the full path AND if path leaf is a dir.
@@ -45,27 +157,9 @@ int dirExists(const char* const path)
 
     return ( info.st_mode & S_IFDIR ) ? 1 : 0;
 }
+//End of dirExists
 
-
-	std::string PrintInitText()
-	{
-		ifstream Reader("./Resource/inittext");
-		
-		std::string out;
-		while(Reader.good())
-		{
-			std::string TempLine;                  //Temp line
-		    std::getline (Reader , TempLine);        //Get temp line
-		    TempLine += "\n";                      //Add newline character
-		    
-		    out += TempLine;                     //Add newline
-		}
-
-		Reader.close();
-		return out;
-	}
-
-
+//setFileSystem
 void setFileSystem(double RunID, std::string &parent, int threads)
 {
 	parent = RunParam::ParentPathS; 
@@ -129,8 +223,9 @@ void setFileSystem(double RunID, std::string &parent, int threads)
 	else{Log l; l.logerror("runtime.cpp", "Filesystem created with errors.End Program to resolve.");}
 	//File System set
 }
+//End of setFileSystem
 
-
+//setTermPath - Set Paths for extra terminals
 void setTermPath(std::string s, const char* filename)
 {
 	
@@ -168,97 +263,12 @@ void setTermPath(std::string s, const char* filename)
 		static SetFile logt(filename, true, true, tpath);
 		Log t_path; t_path.logoutput("main.h/setTermPath()", "TermPath Set: "+ tpath, true);
 }
+//End of setTerminalPath
 
 
-void setParam(int &argc, char** &argv, bool &arg_run_counter, double &RunID, int &sweeps, int &checkpoints, int &threads, int &particles)
-{
-	for(int i=0; i<argc; i++)
-	{
-		std::string s = "set"; 
-		if(argv[i]==s)
-		{
-			RunID = atoi(argv[i+1]);
-			ofstream f(".RunID.simx", ios::out | std::ofstream::trunc);
-			f<<RunID;
-			f.close();
-			ifstream ff(".RunID.simx",ios::in);
-			double RunID2;
-			ff>>RunID2;
-			ff.close();
-			cout<<"RunID is set to: "<<RunID2<<endl;
-			arg_run_counter = true;
-
-		}
-		s = "reset";
-		if(argv[i]==s)
-		{
-			RunID = 0;
-			ofstream f(".RunID.simx", ios::out | std::ofstream::trunc);
-			f<<RunID;
-			f.close();
-			ifstream ff(".RunID.simx",ios::in);
-			double RunID2;
-			ff>>RunID2;
-			ff.close();
-			cout<<"RunID is reset to: "<<RunID2<<endl;
-			arg_run_counter = true;
-		}
-		s = "noincrement";
-		if(argv[i]==s)
-		{
-			ifstream f(".RunID.simx", ios::in);
-			f>>RunID;
-			f.close();
-			RunID+=0.1;
-			ofstream ff(".RunID.simx",ios::out);
-			ff<<RunID;
-			ff.close();
-			cout<<"RunID is set to: "<<RunID<<endl;
-			arg_run_counter = true;
-		}
 
 
-		s="sweeps";
-		if(argv[i]==s)
-		{
-			sweeps = atoi(argv[i+1]);
-		}
-
-
-		s="checkpoints";
-		if(argv[i]==s)
-		{
-			checkpoints=atoi(argv[i+1]);
-		}
-
-		s="threads";
-		if(argv[i]==s)
-		{
-			threads=atoi(argv[i+1]);
-		}
-
-		s="particles";
-		if(argv[i]==s)
-		{
-			particles = atoi(argv[i+1]);
-		}
-	}
-
-	if(!arg_run_counter)
-	{
-		ifstream f(".RunID.simx", ios::in);
-			f>>RunID;
-			f.close();
-			RunID = int(RunID)+1;
-			ofstream ff(".RunID.simx",ios::out | std::ofstream::trunc);
-			ff<<RunID;
-			ff.close();
-			cout<<"RunID is set to: "<<RunID<<endl;
-			arg_run_counter = true;
-	}
-}
-
-//Graph/CreatePlots
+//Render - Create XYZ Plots Raw
 void Render(Box &b, const char* filename)
 {
 	fstream rend;
@@ -278,8 +288,9 @@ void Render(Box &b, const char* filename)
 	}
 
 }
+//End of Render
 
-
+//AutoPlot - Run Gnuplot Script to plot XYZ Plots
 void AutoPlot(string filename, string filename2, int sweeps, double energy)
 {
 	std::ostringstream command;
@@ -289,7 +300,9 @@ void AutoPlot(string filename, string filename2, int sweeps, double energy)
     l<<"Autoplot render after sweeps: "<<sweeps<<": actuated.";
     Log autoplot; autoplot.logoutput("main.h/AutoPlot()",l.str() , true);
 }
+//End of AutoPlot
 
+//PlotEnergyFlux - Run Gnuplot Script to render energyflux plots
 void PlotEnergyFlux(int RunID, string ParentPath)
 {
 	std::ostringstream opfile;
@@ -300,29 +313,59 @@ void PlotEnergyFlux(int RunID, string ParentPath)
 	command<<"./fluxplot.gnu "<<infile.str()<<" "<<opfile.str()<<" "<<RunID;
 	system(command.str().c_str());
 }
-//
+//End of PlotEnergyFlux
 
-
+//TimeStamp - Create TimeStamps
 std::time_t TimeStamp()
 {
 	auto stamp = std::chrono::system_clock::now();
 	std::time_t stamp_time = std::chrono::system_clock::to_time_t(stamp);
 	return(std::time_t (stamp_time));
 }
+//End of TimeStamp
 
+//Scheduler - Event Scheduler
+bool Scheduler(Box &b)
+{
+	bool ret = true;
+	int addpart_num = RunParam::AddPartRate*10;
+	int rmpart_num = RunParam::RmPartRate*10;
+	int mutpart_num = RunParam::MutPartRate*10;
+	
+	int eventid =  roll();
 
+	if(eventid <= RunParam::AddPartRate && RunParam::GrandCanonical)
+	{
+		int counter = roll(); int type;
+		if(counter<=AddRate1){type = 1;}
+		if(counter > RunParam::AddRate1 && counter <= RunParam::AddRate1 + RunParam::AddRate2) {type = 2;}
+		b.AddParticle(type);
+		ret = true;
+	}
+
+	else if(eventid > RunParam::AddPartRate && eventid <= (RunParam::AddPartRate + RunParam::RmPartRate) && RunParam::GrandCanonical)
+	{
+		b.RemoveRndParticle();
+		ret=true;
+	}
+
+	else if(eventid > (RunParam::AddPartRate + RunParam::RmPartRate) && eventid <= (RunParam::AddPartRate + RunParam::RmPartRate + RunParam::MutPartRate))
+	{
+		b.MutateRandom();
+		ret=true;
+	}
+
+	return ret;
+}
+//End of Scheduler
+
+//The BoxManager - Create Box
 void BoxManager(std::string ParentPath, int RunID, int scope_particles, int scope_sweeps, int scope_checkpoints, int threads, int i)
 {
 
 	int loop_runs = scope_sweeps/scope_checkpoints;
 	Box b(scope_particles);
 	double e1 = b.energy;
-
-	//Initial timestamp
-	std::ostringstream t_stamp;
-	std:: time_t start_time = TimeStamp();
-	t_stamp<<"Thread: "<<i<<" Time of Initiation: "<< std::ctime(&start_time)<<std::endl;
-	Log tstamp; tstamp.logoutput("main.h", t_stamp.str(), true);
 
 	//Initial Render
 	std::ostringstream filename;
@@ -337,8 +380,14 @@ void BoxManager(std::string ParentPath, int RunID, int scope_particles, int scop
 		else {filename2<<ParentPath<<"/Plots/"<<0;}
 		AutoPlot(filename.str(), filename2.str(),0, b.energy);
 	}
-	cout<<"Rendered: "<<0<<endl;
+	cout<<"Rendered: "<<0<<"  "<<flush;
 	//End of Initial Render
+
+	//Initial timestamp
+	std::ostringstream t_stamp;
+	std:: time_t start_time = TimeStamp();
+	t_stamp<<"Thread: "<<i<<" Time of Initiation: "<< std::ctime(&start_time)<<std::endl;
+	Log tstamp; tstamp.logoutput("main.h", t_stamp.str(), true);
 
 	//BoxManager Main Loop
 	int energyrendercount = 0; //For EnergyFlux File
@@ -347,16 +396,25 @@ void BoxManager(std::string ParentPath, int RunID, int scope_particles, int scop
 	{
 		for(int j=0; j<loop_runs; j++)
 		{
-			b.trialMove();
+			if(Scheduler(b))
+			{b.TrialMove();}
+			
 			energyrendercount++;
 			counter++;
+
+			//EnergyFlux Graphs Render
 			if(energyrendercount>=RunParam::PlotEnergyAfter)
 			{
-				b.Graph(ParentPath, counter);
+				//b.UpdateEnergy();
+				std:: time_t now_time = TimeStamp();
+				double elapsed_seconds = double(now_time - start_time);
+				b.Graph(ParentPath, counter, elapsed_seconds);
 				energyrendercount=0;
 			}
+			//End of EnergyFlux Graphs Render
 		}
 
+		//XYZ Render
 		std::ostringstream filename;
 		if(threads>1) {filename<<ParentPath<<"/Raw_Render/"<<i<<"/"<<k+1;}
 		else {filename<<ParentPath<<"/Raw_Render/"<<k+1;}
@@ -368,7 +426,8 @@ void BoxManager(std::string ParentPath, int RunID, int scope_particles, int scop
 			else {filename2<<ParentPath<<"/Plots/"<<k+1;}
 			AutoPlot(filename.str(), filename2.str(),counter, b.energy);
 		}
-		cout<<"Rendered: "<<k+1<<endl;
+		cout<<"Rendered: "<<k+1<<"  "<<flush;
+		//End of XYZ Render
 	}
 
 	//Output of Vital Information
@@ -392,5 +451,6 @@ void BoxManager(std::string ParentPath, int RunID, int scope_particles, int scop
 
 	PlotEnergyFlux(RunID, ParentPath);
 }
+//End of BoxManager
 
 
