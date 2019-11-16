@@ -46,6 +46,12 @@ static std::string ParentPathS;
 static double ETPSl;
 static double ETPSu;
 
+//Recipie - Expressed in percentages
+//Type 1
+static int SC_1CP_recipie;
+//Type 2
+static int SC_1TP_recipie;
+
 
 
 /*void printRunParamData()
