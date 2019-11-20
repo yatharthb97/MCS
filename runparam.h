@@ -2,55 +2,85 @@
 #include<iostream>
 
 //Macro Definations
-#define EtaRep 0.25e-12
-#define SigmaRep 1
-#define CutOffRep 1
-#define EtaAtrr 1
-#define SigmaAtrr 0.25e-6
+#define EtaRep 0.5 //Strength of Repulsive Potential
+#define SigmaRep 0.05 //Sigma of Repulsive Potential
+#define CutOffRep 1 //CutOff distance of Repulsive Potential
+#define EtaAtrr -1 //Strength of Repulsive Potential
+#define SigmaAtrr 0.0005 //Sigma of Repulsive Potential
 
 
 class RunParam{
 
 public:
 
-//
-static bool printRunParamData;
-static bool autoplotraw;
-
-//Member VAriables
-static bool RUN;
-static double StepSize;
-static double MinStepSize;
-static int LJARatio;
-static double MaxEnergyFluctuation;
-static int PlotEnergyAfter;
-static double BoxSize;
-static bool MaxStep;
-
-//Log File Config
-static const char* LogOutput;
-static const char* LogErrorOut;
-//const char* termpath;
-static bool term2;
-static bool sysInterrupt;
-
-//Rotation parameters
-static double minRotor;
-static double maxRotor;
-static double resoRotor;
-static bool MaxRot;
-
-
-static const char* ParentPath;
-static std::string ParentPathS;
-static double ETPSl;
-static double ETPSu;
+//Monte Carlo Parameters
+double static BoxSize;
+bool static GrandCanonical;
+int static LJARatio; //Expressed in Percentage
+double static MaxEnergyFluctuation; //Expressed in Percentage
+int static PlotEnergyAfter;
+//Monte Carlo Parameters
 
 //Recipie - Expressed in percentages
-//Type 1
-static int SC_1CP_recipie;
-//Type 2
-static int SC_1TP_recipie;
+//Initial Recipie
+//**Exhaustive Rates**
+int static SC_1CP_recipie; //Type 1
+int static SC_1TP_recipie; //Type 2
+//Initial Recipie
+
+//Recipie - Mutators
+//**Absolute Rates** - Relates per number of Sweeps 
+double static AddPartRate;
+double static RmPartRate;
+double static MutaPartRate;
+//Recipie - Mutators 
+
+//Addition and Removal Rates
+//**Exhaustive Rates**
+float static AddRate1;
+float static AddRate2;
+//**Absolute Rates**
+double static RmPartTrialAcceptRate;
+//Addition and Removal Rates
+
+//Recipie-Mutation Rates
+//**Absolute Rates**
+float static MutaMatrix[2][2]; //TotalSpecies*TotalSpecies
+int static TotalSpecies;
+
+//Translation Switches
+double static StepSize;
+double static MinStepSize;
+bool static MaxStep;
+//Translation Switches
+
+
+//Rotation switches
+double static minRotor;
+double static maxRotor;
+double static resoRotor; //Not used anywhere
+bool static MaxRot;
+//Rotation switches
+
+
+//Log Parameters
+bool static term2;
+bool static sysInterrupt;
+static const char* LogOutput;
+static const char* LogErrorOut;
+//Estimated Time Per Sweep for logging
+double static ETPSl;
+double static ETPSu;
+//Log Parameters
+
+
+//Environmental Setup Board
+bool static RUN;
+static const char*  ParentPath;
+std::string static ParentPathS;
+bool static printRunParamData;
+bool static autoplotraw;
+//Environmental Setup Board;
 
 
 
