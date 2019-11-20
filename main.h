@@ -330,14 +330,14 @@ bool Scheduler(Box &b)
 	bool ret = true;
 	int addpart_num = RunParam::AddPartRate*10;
 	int rmpart_num = RunParam::RmPartRate*10;
-	int mutpart_num = RunParam::MutPartRate*10;
-	
+	int mutpart_num = RunParam::MutaPartRate*10;
+	extern int roll();
 	int eventid =  roll();
 
 	if(eventid <= RunParam::AddPartRate && RunParam::GrandCanonical)
 	{
 		int counter = roll(); int type;
-		if(counter<=AddRate1){type = 1;}
+		if(counter<=RunParam::AddRate1){type = 1;}
 		if(counter > RunParam::AddRate1 && counter <= RunParam::AddRate1 + RunParam::AddRate2) {type = 2;}
 		b.AddParticle(type);
 		ret = true;
@@ -349,9 +349,9 @@ bool Scheduler(Box &b)
 		ret=true;
 	}
 
-	else if(eventid > (RunParam::AddPartRate + RunParam::RmPartRate) && eventid <= (RunParam::AddPartRate + RunParam::RmPartRate + RunParam::MutPartRate))
+	else if(eventid > (RunParam::AddPartRate + RunParam::RmPartRate) && eventid <= (RunParam::AddPartRate + RunParam::RmPartRate + RunParam::MutaPartRate))
 	{
-		b.MutateRandom();
+		b.MutateRndm();
 		ret=true;
 	}
 

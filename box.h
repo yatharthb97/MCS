@@ -16,6 +16,7 @@
 //#include"random.h" //For Random(int, int)
 #include "log.h" //For logoutput()
 #include "runparam.h" //Obvious
+#include<cmath>
 using namespace std;
 
 //Class Box
@@ -207,19 +208,20 @@ volatile void setBoxSize(double size)
 //@brief - Mutate a Random Particle in the box
 void MutateRndm()
 {
-	pid = Rndm(0, count-1);
-	ptype = partlist.at(pid)type;
-	int roll = roll();
+	int pid = Rndm(0, count-1);
+	int ptype = partlist.at(pid).type;
+	extern int roll();
+	int rolldie = roll();
 	int counter  = 0;
 	int ifbreak = false;
 	for(int i = 1; i<4; i++)
 	{
-		counter += RunParam::MutaMatrix[ptype][i]*10
-		if(counter <=roll && !ifbreak)
+		counter += RunParam::MutaMatrix[ptype][i]*10;
+		if(counter <=rolldie && !ifbreak)
 		{
 			int mtype = ptype+i;
-			if(m>4){m = m-4;}
-			partlist.at(pid).type = m;
+			if(mtype>4){mtype = mtype-4;}
+			partlist.at(pid).type = mtype;
 		}
 	}
 }
@@ -241,7 +243,7 @@ void RemoveParticle(int partid)
 //@brief - Remove a random particle from the box 
 void RemoveRndParticle()
 {
-	if(Rndm(1,1000)<=RunParam::RemoveTrialAcceptRate*10)
+	if(Rndm(1,1000)<=RunParam::RmPartTrialAcceptRate*10)
 	{
 		int partid = Rndm(1, count-1);
 		this->partlist.at(partid).MakeGhost(true);
@@ -315,7 +317,7 @@ volatile void Accept(int a)
 
 //17
 //@brief - Creates a TrialMove
-double trialMove()
+double TrialMove()
 {
 	//extern int Rndm(int, int);
 	int pid = Rndm(0, count-1);
@@ -330,7 +332,7 @@ double trialMove()
 	extern void UpdatorP(Particle &p);
 	UpdatorO(partlist.at(pid));
 	UpdatorP(partlist.at(pid));
-	double disp = V(temp.position-partlist.at(pid).position).size();
+	double disp = V(temp.position - partlist.at(pid).position).size();
 	//Move Particle
 
 	//Calculate New Partial Energy
@@ -356,7 +358,7 @@ double trialMove()
 		}
 	else
 	{
-		double E_inc = ((E_new-E_old)/energy)*100;
+		double E_inc = (abs(E_new-E_old)/energy)*100;
 		//Increased energy - acceptance move
 		if(E_inc <= RunParam::MaxEnergyFluctuation && E_new <= 999 && Rndm(0,100) < RunParam::LJARatio)
 		{
@@ -424,6 +426,12 @@ void Graph(string path, int sweeps, double elapsedseconds)
 	graph<<sweeps<<":"<<energy<<":"<<totdis<<":"<<totdisSq/elapsedseconds<<":"<<ACCEPT<<":"<<REJECT<<endl;
 	graph.close();
 	
+}
+
+//19
+double NumberDensity()
+{
+
 }
 //End of 18
 

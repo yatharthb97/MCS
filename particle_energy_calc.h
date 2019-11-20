@@ -45,7 +45,7 @@ double LjLoop(std::vector<Particle> &partlist)
 
 				if(point.arccos(partlist.at(i).patch.unit) > PI/4)
 				{
-					if(rval<=(Particle::L+Particle::D)/2)
+					if(rval<=(Particle::L+Particle::D/2))
 					{
 						return 999;
 					}
@@ -53,7 +53,7 @@ double LjLoop(std::vector<Particle> &partlist)
 
 				else
 				{
-					if(rval<=Particle::D/2)
+					if(rval<=Particle::D)
 					{
 						return 999;
 					}
@@ -62,7 +62,7 @@ double LjLoop(std::vector<Particle> &partlist)
 				point = point*-1;
 				if(point.arccos(partlist.at(j).patch.unit) > PI/4)
 				{
-					if(rval<=(Particle::L+Particle::D)/2)
+					if(rval<=(Particle::L+Particle::D/2))
 					{
 						return 999;
 					}
@@ -70,7 +70,7 @@ double LjLoop(std::vector<Particle> &partlist)
 
 				else
 				{
-					if(rval<=Particle::D/2)
+					if(rval<=Particle::D)
 					{
 						return 999;
 					}
@@ -89,18 +89,17 @@ double LjLoop(std::vector<Particle> &partlist)
 				//End of Repulsion part - LJLoop
 
 				//Attraction Portion
-				double normo = partlist.at(i).patch.normal.dot(partlist.at(i).patch.normal);
-				double unito = partlist.at(i).patch.unit.dot(partlist.at(i).patch.unit);
+				double normo = partlist.at(i).patch.normal.dot(partlist.at(j).patch.normal);
+				double unito = partlist.at(i).patch.unit.dot(partlist.at(j).patch.unit);
 
 				if (rval <= 1.5*SigmaAtrr)
 				{
-					if(acos(normo) < (Patch::width)/2 && acos(normo) > -(Patch::width)/2)
+					if(acos(normo) <= (Patch::width)/2 && acos(normo) >= -(Patch::width)/2)
 					{
-						Vlj+= -EtaAtrr*unito*unito - EtaAtrr*2; //Last Term: -EtaAtrr*SigmaAtrr/Radius ==> diameter = SigmaAtrr
+						Vlj+= +EtaAtrr*unito*unito + EtaAtrr*2; //Last Term: -EtaAtrr*SigmaAtrr/Radius ==> diameter = SigmaAtrr
 					}
 				}
-			}	
-		}
+			}
 	}
 
 	//cout<<"Energy: "<<Vlj<<endl;

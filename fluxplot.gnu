@@ -33,6 +33,6 @@ label1 = label1_1.label1_2
 labelfinal = sprintf("%s%s%s", "Simulator X", "\n", label1)
 set title labelfinal
 
-plot ARG1 using 1:3 with lines lc rgb "grey" title "Total Displacement", ARG1 using 1:4 with lines lc "black" title "Total Displacement Squared", ARG1 using 1:5 with lines lc "blue" title "Acceptance Count",ARG1 using 1:6 with lines lc "orange" title "Rejection Count"
+plot ARG1 using 1:3 with lines lc rgb "black" title "Total Displacement", ARG1 using 1:4 with lines lc "green" title "Efficiency", ARG1 using 1:5 with lines lc "blue" title "Acceptance Count",ARG1 using 1:6 with lines lc "red" title "Rejection Count"
 
 reset
