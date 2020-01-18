@@ -19,6 +19,9 @@
 #include"runparam.h"
 #include<random>
 #include"particle.h"
+#include <stdio.h> 
+#include <stdlib.h>
+#include<time.h>  
 using namespace std;
 
 void UpdatorP(Particle &p);
@@ -75,6 +78,7 @@ void UpdatorP(Particle &p)
 			default: {x = 0; Log updator;
 							updator.logerror("updator.cpp",  "Random number generator overflow. 'default' invoked.");
 							 break;}
+
 		}
 		
 		if(RunParam::MaxStep) //Output Max Step Size

@@ -85,10 +85,11 @@ double RunParam::ETPSu = 0.0005;
 
 //Environmental Setup Board
 bool RunParam::RUN = true;
-const char* RunParam::ParentPath = "/home/yatharth1997/Runs/";
-std::string RunParam::ParentPathS = "/home/yatharth1997/Runs/";
+const char* RunParam::ParentPath = "/mnt/m/Runs/";
+std::string RunParam::ParentPathS = "/mnt/m/Runs/";
 bool RunParam::printRunParamData = true; //Not implemented Yet
 bool RunParam::autoplotraw = true;
+bool RunParam::UseSysEntropy = true;
 //Environmental Setup Board
 
 

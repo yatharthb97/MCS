@@ -80,6 +80,7 @@ static const char*  ParentPath;
 std::string static ParentPathS;
 bool static printRunParamData;
 bool static autoplotraw;
+bool static UseSysEntropy;
 //Environmental Setup Board;
 
 

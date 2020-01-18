@@ -1,9 +1,10 @@
 #!/usr/bin/gnuplot -c
 
 reset
-set term pngcairo size 800, 800
+set term pngcairo size 1200, 1200 enhanced font 'Verdana,15'
 
-set output  ARG2
+oup = sprintf("%s%s", ARG2, ".png")
+set output  oup
 arg3=ARG3
 arg4=ARG4
 label1_1 = 'Sweeps: '

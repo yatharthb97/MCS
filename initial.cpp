@@ -29,7 +29,12 @@ void initializerP(V &v)
 		//**double BoxSize = Box::checkBoxSize();
 		ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
 		Urandom urandom;//Object for Urandom class
-		int sx = urandom.seedby_urandom(); //Seeding
+		int sx = 0;
+		if(RunParam::UseSysEntropy){
+		sx = urandom.seedby_urandom(); //Seeding
+		}
+
+		else {srand(time(0)); sx = std::rand();}
 		rlx.seed(sx);
 		//Uniform
 		//uniform_real_distribution<double> drandom(0, BoxSize);
@@ -72,7 +77,12 @@ void initializerO(V &v)
 
 	ranlux48 rlx; // ranlux48_base rlx; //Creating object for RANLUX random number generator
 		Urandom urandom;//Object for Urandom class
-		int sx = urandom.seedby_urandom(); //Seeding
+		int sx = 0;
+		if(RunParam::UseSysEntropy){
+		sx = urandom.seedby_urandom(); //Seeding
+		}
+
+		else {srand(time(0)); sx = std::rand();}
 		rlx.seed(sx);
 		//Uniform
 		uniform_real_distribution<double> drandom(0,1);
