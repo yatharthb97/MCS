@@ -11,12 +11,14 @@
 #pragma once
 #include<iostream>
 #include<vector>
+#include<bits/stdc++.h>
 #include<sstream> //ostringstream used in Constructor
 #include "particle.h" //for the Particle class
 //#include"random.h" //For Random(int, int)
 #include "log.h" //For logoutput()
 #include "runparam.h" //Obvious
 #include<cmath>
+#include<algorithm>
 using namespace std;
 
 //Class Box
@@ -43,6 +45,14 @@ double totdisSq;
 int ACCEPT;
 int REJECT;
 
+
+//Cluster parameters
+vector<Cluster> clustlist;
+int ClusterCount;
+int ParticleInClusterCount;
+vector<int> ClusterIDActiveList;
+vector<int> ClusterIDBin;
+
 //Member Functions
 
 //1
@@ -59,7 +69,7 @@ Box():count(0), ghost(0), edge(1), ACCEPT(0), REJECT(0), totdis(0.00000), totdis
 //@brief - Create a box container with a fixed size and particles
 //@param - count - number of particles
 //		 - size - edge size of the box
-Box(int count):count(count), ghost(0), energy(energy), ACCEPT(0), REJECT(0), totdis(0.00000), totdisSq(0.00000)
+Box(int count):count(count), ghost(0), energy(energy), ACCEPT(0), REJECT(0), totdis(0.00000), totdisSq(0.00000), ClusterCount(0), ParticleInClusterCount(0)
 {
 	//Particle p(-1);
 	//p.setEDGE(this->edge);
@@ -426,14 +436,139 @@ void Graph(string path, int sweeps, double elapsedseconds)
 	graph<<sweeps<<":"<<energy<<":"<<totdis<<":"<<totdisSq/elapsedseconds<<":"<<ACCEPT<<":"<<REJECT<<endl;
 	graph.close();
 	
-}
+}//End of 18
 
 //19
 double NumberDensity()
 {
 
 }
-//End of 18
+
+
+//20
+int newClustID()
+{
+	if(ClusterIDBin.size()!=0)
+	{
+		sort(ClusterIDBin.begin(), ClusterIDBin.end); //Sort ClusterID Bin
+		int tempClustID = ClustIDBin.pop();
+		clustlist.at(tempClustID).active = true;
+		ClusterIDActiveList.push_back(tempClustID);
+		ClusterCount++;
+	}
+ 
+	else
+	{
+		int tempClustID = ClusterCount;
+		clustlist.push_back(Cluster(tempClustID)); //Call Constructor of the Cluster Class
+		ClusterIDActiveList.push_back(tempClustID);
+		ClusterCount++;
+	}
+
+	return tempClustID;
+}//End of 20
+
+//21
+void ClusterPair(int partid1, intpartid2)
+{
+	if(partlist.at(partid1).ClusterSwitch = true && partlist.at(partid2).ClusterSwitch = true && )
+	{
+		
+		if(partlist.at(partid1).ClusterID != -1 || partlist.at(partid2).ClusterID != -1) 
+		{
+			cerr<<"Particle's cluster state undefined: "<<partid1<<"or"<<partid2<<endl;
+		}
+
+		else
+		{
+			if(partlist.at(partid1).ClusterSwitch ==true && partlist.at(partid2).ClusterSwitch == true)
+			{
+			//
+			}
+
+			else
+			{
+					int retainClustID = std::min(partlist.at(partid1).ClusterID, partlist.at(partid1).ClusterID);
+					int binClustID = std::max(partlist.at(partid1).ClusterID, partlist.at(partid1).ClusterID);
+
+
+				}
+
+				//Copy one Cluster in another
+				clustlist.at(retainClustID).CopyCluster(&clustlist.at(binClustID));
+				//Clear the spare Cluster
+				clustlist.at(binClustID).binCluster();
+
+				//Find Clust ID in ClusterIDActiveList
+				std::vector<int>::iterator it;
+				// std::find function call 
+   				it = std::find(ClusterIDActiveList.begin(), ClusterIDActiveList.end(), binClustID); 
+    			if (it != ClusterIDActiveList.end()) 
+    			{ 
+        			
+        			//Erase ClustID from ClusterIDActiveList
+        			ClusterIDActiveList.erase(it);
+        			//Add ClustID to ClusterIDBin
+        			ClusterIDBin.push_back(binClustID);
+    			} 
+    			else
+    			{
+        			cerr << "ClustID not present in ClusterIDActiveList container."<<endl;; 
+    			}
+
+				ClusterCount--;
+			} 
+		}
+
+	else if(partlist.at(partid1).ClusterSwitch = true && partlist.at(partid2).ClusterSwitch = false)
+	{
+		int tempClustID = partlist.at(partid1).ClusterID;
+
+		//Allowed?
+		partlist.at(partid2).ClusterSwitch = true;
+		partlist.at(partid2).ClusterID = tempClustID;
+		//
+		clustlist.at(tempClustID).clustadd(partid1);
+
+		ParticleInClusterCount++;
+
+	}
+
+	else if(partlist.at(partid1).ClusterSwitch = false && partlist.at(partid2).ClusterSwitch = true)
+	{
+		int tempClustID = partlist.at(partid2).ClusterID;
+
+		//Allowed?
+		partlist.at(partid1).ClusterSwitch = true;
+		partlist.at(partid1).ClusterID = tempClustID;
+		//
+		clustlist.at(tempClustID).clustadd(partid1);
+
+		ParticleInClusterCount++;
+
+	}
+
+	else if(partlist.at(partid1).ClusterSwitch = false && partlist.at(partid2).ClusterSwitch = false)
+	{
+		int tempClustID = newClustID();
+
+		//Allowed?
+
+		partlist.at(partid1).ClusterSwitch = true;
+		partlist.at(partid1).ClusterID = tempClustID;
+		partlist.at(partid2).ClusterSwitch = true;
+		partlist.at(partid2).ClusterID = tempClustID;
+		//
+		clustlist.at(tempClustID).clustadd(partid1);
+		clustlist.at(tempClustID).clustadd(partid2);
+		
+		ParticleInClusterCount + 2;
+	}
+
+	
+}//End of 21
+
+
 
 //Friend class Declarations
 

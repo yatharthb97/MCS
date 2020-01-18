@@ -145,14 +145,19 @@ public:
 	static double D; //Diameter of the SPC
 
 	//Default Empty constructor
-	Particle(): ghost(false), energy(0.000000), accept(0), reject(0), type(type), partdis(0.00000), partdisSq(0.00000)
+	Particle(): ghost(false), energy(0.000000), accept(0), reject(0), type(type), partdis(0.00000), partdisSq(0.00000), ClusterSwitch(false), ClusterID(-1)
 	{}
+
+
+	//Cluster Parameters
+	bool ClusterSwitch;
+	int ClusterID;
 
 //1
 //Constructor
 	//@brief - Calls initializer and sets up the particle
 	//@param - partid ==> particle ID	
-	Particle(int partid, int type): partid(partid), ghost(false), energy(0.000000), accept(0), reject(0), type(type), partdis(0.00000), partdisSq(0.00000)
+	Particle(int partid, int type): partid(partid), ghost(false), energy(0.000000), accept(0), reject(0), type(type), partdis(0.00000), partdisSq(0.00000), ClusterSwitch(false), ClusterID(-1)
 	{
 		extern void initializerP(V &v); //Defined in initial.cpp
 		extern void initializerO(V &v);
