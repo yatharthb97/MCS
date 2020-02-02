@@ -83,7 +83,9 @@ bool static autoplotraw;
 bool static UseSysEntropy;
 //Environmental Setup Board;
 
-
+std::string static patch_color;
+std::string static default_color;
+int static render_resolution;
 
 /*void printRunParamData()
 {

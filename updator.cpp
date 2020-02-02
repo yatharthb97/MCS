@@ -1,4 +1,4 @@
-//Implementation of Updator mechanism - Random Walker Static Step Size
+  //Implementation of Updator mechanism - Random Walker Static Step Size
 
 //Dependencies ==> urandom.h for seedby_urandom()
 //			   ==> log.h for logerror()

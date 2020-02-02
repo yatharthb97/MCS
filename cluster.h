@@ -43,7 +43,7 @@ public:
 
 	}
 
-	void CopyClust(Cluster &other)
+	void CopyCluster (Cluster &other)
 	{
 		 
 		 int TempSize = this->ClustPartCount;

@@ -10,7 +10,8 @@
 //Preprocessors
 #pragma once
 #include<iostream>
-#include<vector>
+
+
 #include<bits/stdc++.h>
 #include<sstream> //ostringstream used in Constructor
 #include "particle.h" //for the Particle class
@@ -19,6 +20,7 @@
 #include "runparam.h" //Obvious
 #include<cmath>
 #include<algorithm>
+//#include "cluster.h"
 using namespace std;
 
 //Class Box
@@ -47,11 +49,11 @@ int REJECT;
 
 
 //Cluster parameters
-vector<Cluster> clustlist;
+//vector<Cluster> clustlist;
 int ClusterCount;
 int ParticleInClusterCount;
-vector<int> ClusterIDActiveList;
-vector<int> ClusterIDBin;
+//vector<int> ClusterIDActiveList;
+//vector<int> ClusterIDBin;
 
 //Member Functions
 
@@ -342,7 +344,7 @@ double TrialMove()
 	extern void UpdatorP(Particle &p);
 	UpdatorO(partlist.at(pid));
 	UpdatorP(partlist.at(pid));
-	double disp = V(temp.position - partlist.at(pid).position).size();
+	double disp = V(temp.position - this->partlist.at(pid).position).size();
 	//Move Particle
 
 	//Calculate New Partial Energy
@@ -445,7 +447,7 @@ double NumberDensity()
 }
 
 
-//20
+/*//20
 int newClustID()
 {
 	if(ClusterIDBin.size()!=0)
@@ -567,7 +569,7 @@ void ClusterPair(int partid1, intpartid2)
 
 	
 }//End of 21
-
+*/
 
 
 //Friend class Declarations

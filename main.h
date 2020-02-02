@@ -396,8 +396,8 @@ void BoxManager(std::string ParentPath, int RunID, int scope_particles, int scop
 	{
 		for(int j=0; j<loop_runs; j++)
 		{
-			if(Scheduler(b))
-			{b.TrialMove();}
+			//if(Scheduler(b))
+			b.TrialMove();
 			
 			energyrendercount++;
 			counter++;
@@ -426,6 +426,8 @@ void BoxManager(std::string ParentPath, int RunID, int scope_particles, int scop
 			else {filename2<<ParentPath<<"/Plots/"<<k+1;}
 			AutoPlot(filename.str(), filename2.str(),counter, b.energy);
 		}
+		void ParticleRenderTCLTk(std::vector<Particle> &partlist);
+		ParticleRenderTCLTk(b.partlist);
 		cout<<"Rendered: "<<k+1<<"  "<<flush;
 		//End of XYZ Render
 	}

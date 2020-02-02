@@ -171,6 +171,10 @@ V(double x, double y, double z):x(x), y(y), z(z){}
         this->x*=scale, this->y*=scale, this->z*=scale;
     }
 
+    inline void operator*= (int scale) {
+        this->x*=scale, this->y*=scale, this->z*=scale;
+    }
+
     /*inline V operator* (double, const V&)
     {
         

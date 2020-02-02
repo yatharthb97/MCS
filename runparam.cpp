@@ -92,6 +92,6 @@ bool RunParam::autoplotraw = true;
 bool RunParam::UseSysEntropy = true;
 //Environmental Setup Board
 
-
-
-
+string RunParam::patch_color =  "red" ;
+string RunParam::default_color =  "blue";
+int RunParam::render_resolution = 20;
